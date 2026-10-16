@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phân Tích Bệnh Sinh Mạch Máu & Viêm Mãn Tính</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#faf8f5',
+                        warmcard: '#f4efe6',
+                        crimson: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            600: '#e11d48',
+                            700: '#be123c',
+                            800: '#9f1239'
+                        },
+                        tealcustom: {
+                            50: '#f0fdf4',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59'
+                        },
+                        slatecustom: {
+                            800: '#1e293b',
+                            900: '#0f172a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Minimal Embedded CSS for Chart Containers & Utilities */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+        .tab-active {
+            border-bottom: 3px solid #be123c;
+            color: #be123c;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="bg-cream text-slatecustom-800 font-sans antialiased leading-relaxed min-h-screen flex flex-col">
+
+<!-- Chosen Palette: Warm Clinical & Editorial Neutral (Cream background #faf8f5, Slate #1e293b, Crimson Accent #be123c, Emerald/Teal #0f766e) -->
+
+<!-- Application Structure Plan: 
+     Cấu trúc ứng dụng được thiết kế thành 5 phân vùng chức năng chính:
+     1. Tổng Quan & Bảng Điều Khiển Chỉ Số: Nắm bắt nhanh thông số tác phẩm, thông điệp cốt lõi và chỉ số tiếp nhận.
+     2. Mô Phỏng Sinh Bệnh Học (5 Giai Đoạn Viêm): Thiết kế dạng Stepper tương tác cho phép khám phá từng bước biến đổi từ tế bào nội mô đến huyết khối.
+     3. Khung Can Thiệp 4 Trụ Cột Kháng Viêm: Dạng thẻ Tab tương tác chuyển đổi giữa Dinh dưỡng, Autophagy, Vận động và Thần kinh.
+     4. Phân Tích Kỹ Thuật Điện Ảnh & Phân Đoạn Tâm Lý: Biểu đồ thời lượng kết hợp phân tích kiến trúc âm thanh và chiến lược tạo hiệu ứng tâm lý.
+     5. Thẩm Định Y Khoa & Cảnh Báo An Toàn: Ma trận đối chiếu bằng chứng y học thực chứng (Thử nghiệm CANTOS, ApoB vs Viêm) và khuyến nghị an toàn.
+     Cấu trúc này giúp chuyển đổi nội dung báo cáo dài thành trải nghiệm khám phá chủ động, trực quan và có chiều sâu.
+-->
+
+<!-- Visualization & Content Choices:
+     - 5 Giai đoạn tiến triển bệnh lý -> Interactive Step-by-Step Viewer (Vanilla JS) -> Giúp người dùng nắm rõ cơ chế phân tử mà không bị ngợp thông tin.
+     - Phân đoạn thời gian video -> Biểu đồ Donut (Chart.js Canvas) -> Thể hiện tỷ lệ phân bổ nội dung và chiến lược tác động nhận thức.
+     - Ma trận ApoB vs Viêm (Điều kiện Cần vs Đủ) -> Biểu đồ Cột So sánh (Chart.js Canvas) -> Minh họa rõ nét vai trò độc lập và kết hợp trong xơ vữa động mạch.
+     - Khung 4 Trụ Cột -> Thẻ Tab điều hướng linh hoạt -> Giúp tra cứu nhanh các biện pháp ứng dụng thực tế.
+     - Xác nhận: KHÔNG sử dụng đồ họa SVG, KHÔNG sử dụng Mermaid JS.
+-->
+
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-stone-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+            <div class="flex items-center space-x-3">
+                <span class="text-2xl font-black text-crimson-700 tracking-tight">🫀 Y Sinh Interactive</span>
+                <span class="hidden md:inline-block text-xs bg-crimson-100 text-crimson-800 px-2.5 py-1 rounded-full font-semibold">Báo Cáo Phân Tích Chuyên Sâu</span>
+            </div>
+            <nav class="hidden lg:flex space-x-6 text-sm font-medium text-stone-600">
+                <a href="#overview" class="hover:text-crimson-700 transition">Tổng Quan</a>
+                <a href="#pathology" class="hover:text-crimson-700 transition">Cơ Sở Bệnh Sinh</a>
+                <a href="#pillars" class="hover:text-crimson-700 transition">4 Trụ Cột</a>
+                <a href="#media" class="hover:text-crimson-700 transition">Kỹ Thuật Truyền Thông</a>
+                <a href="#appraisal" class="hover:text-crimson-700 transition">Thẩm Định Y Khoa</a>
+            </nav>
+            <a href="#appraisal" class="bg-crimson-700 hover:bg-crimson-800 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-lg transition shadow-sm">
+                Xem Cảnh Báo Y Khoa
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- SECTION 1: TỔNG QUAN & BẢNG ĐIỀU KHIỂN CHỈ SỐ -->
+        <section id="overview" class="scroll-mt-20">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm space-y-6">
+                <div>
+                    <span class="text-xs font-bold tracking-wider uppercase text-crimson-700 bg-crimson-50 px-3 py-1 rounded-full">Hồ Sơ Tác Phẩm Truyền Thông Y Tế</span>
+                    <h1 class="text-2xl sm:text-4xl font-extrabold text-slatecustom-900 mt-3 leading-tight">
+                        Mạch Máu Tắc Nghẽn Không Do Mỡ: Kẻ Sát Nhân Thực Sự Là Viêm Mãn Tính
+                    </h1>
+                    <p class="text-sm sm:text-base text-stone-600 mt-2">
+                        Phân tích chuyên sâu video giáo dục y sinh của kênh <strong>Mít tơ B (@MittoB)</strong> – Tái định hình góc nhìn cộng đồng về bệnh lý mạch vành và đột quỵ não từ góc độ miễn dịch học tế bào.
+                    </p>
+                </div>
+
+                <!-- Intro Paragraph Required -->
+                <div class="p-4 bg-warmcard/60 rounded-xl border border-stone-200/80 text-sm text-stone-700 leading-relaxed">
+                    <strong>Giới thiệu phân đoạn:</strong> Mục này tổng hợp các chỉ số phát hành kỹ thuật, thông điệp cốt lõi và định vị của tác phẩm trong hệ sinh thái nội dung sức khỏe số. Người dùng có thể đánh giá quy mô tiếp cận cũng như luận điểm trung tâm chuyển dịch từ mô hình mỡ máu đơn thuần sang cơ chế viêm mạn tính cấp thấp.
+                </div>
+
+                <!-- Core Metrics Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-stone-50 p-4 rounded-xl border border-stone-200">
+                        <div class="text-xs text-stone-500 font-medium">Kênh Phát Hành</div>
+                        <div class="text-lg font-bold text-slatecustom-800 mt-1">Mít tơ B (@MittoB)</div>
+                        <div class="text-xs text-tealcustom-700 font-medium mt-1">Nội dung Y học Dự phòng</div>
+                    </div>
+                    <div class="bg-stone-50 p-4 rounded-xl border border-stone-200">
+                        <div class="text-xs text-stone-500 font-medium">Thời Lượng Video</div>
+                        <div class="text-lg font-bold text-slatecustom-800 mt-1">22 phút 44 giây</div>
+                        <div class="text-xs text-stone-500 mt-1">Nhịp dựng 4-7s / cú máy</div>
+                    </div>
+                    <div class="bg-stone-50 p-4 rounded-xl border border-stone-200">
+                        <div class="text-xs text-stone-500 font-medium">Lượt Tiếp Nhận Sơ Cấp</div>
+                        <div class="text-lg font-bold text-slatecustom-800 mt-1">~45.000 Lượt xem</div>
+                        <div class="text-xs text-crimson-700 font-semibold mt-1">~1.800 Tương tác thích</div>
+                    </div>
+                    <div class="bg-stone-50 p-4 rounded-xl border border-stone-200">
+                        <div class="text-xs text-stone-500 font-medium">Hạ Tầng Tích Hợp</div>
+                        <div class="text-lg font-bold text-slatecustom-800 mt-1">AI Auto-Dubbed</div>
+                        <div class="text-xs text-stone-500 mt-1">Lồng tiếng Anh đa ngôn ngữ</div>
+                    </div>
+                </div>
+
+                <!-- Core Message Box -->
+                <div class="p-5 bg-crimson-50 border-l-4 border-crimson-700 rounded-r-xl">
+                    <h3 class="text-sm font-bold text-crimson-800 uppercase tracking-wide">Thông Điệp Cốt Lõi Tác Phẩm</h3>
+                    <p class="text-base font-semibold text-slatecustom-900 mt-1">
+                        "Cholesterol không tự phát kết tụ để bít tắc một mạch máu hoàn toàn khỏe mạnh. Tắc nghẽn chỉ phát sinh khi lớp tế bào nội mô bị phá hủy cấu trúc bởi tình trạng viêm mãn tính âm thầm."
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SECTION 2: CƠ SỞ BỆNH SINH HỌC & 5 GIAI ĐOẠN TIẾN TRIỂN -->
+        <section id="pathology" class="scroll-mt-20">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm space-y-6">
+                <div>
+                    <span class="text-xs font-bold tracking-wider uppercase text-crimson-700 bg-crimson-50 px-3 py-1 rounded-full">Sinh Bệnh Học Tế Bào</span>
+                    <h2 class="text-xl sm:text-3xl font-extrabold text-slatecustom-900 mt-3">
+                        Sự Chuyển Dịch Nhận Thức: Từ Giả Thuyết Lipid Đến Chuỗi Phản Ứng Viêm
+                    </h2>
+                </div>
+
+                <!-- Intro Paragraph Required -->
+                <div class="p-4 bg-warmcard/60 rounded-xl border border-stone-200/80 text-sm text-stone-700 leading-relaxed">
+                    <strong>Giới thiệu phân đoạn:</strong> Phần này phân tích cơ chế chi tiết ở cấp độ tế bào về cách tình trạng viêm mạn tính cấp thấp (low-grade systemic inflammation) biến các hạt lipid LDL bình thường thành dị vật gây độc. Hãy sử dụng bộ điều khiển 5 giai đoạn bên dưới để theo dõi sự biến đổi từ vi tổn thương ban đầu đến biến cố nứt vỡ huyết khối.
+                </div>
+
+                <!-- Interactive 5-Stage Stepper -->
+                <div class="border border-stone-200 rounded-2xl p-5 sm:p-6 bg-stone-50/50 space-y-6">
+                    <div class="flex flex-wrap gap-2 border-b border-stone-200 pb-4" id="stage-buttons">
+                        <button onclick="setStage(1)" id="btn-stage-1" class="px-3 py-2 text-xs sm:text-sm font-bold rounded-lg transition bg-crimson-700 text-white">GĐ 1: Vi Tổn Thương</button>
+                        <button onclick="setStage(2)" id="btn-stage-2" class="px-3 py-2 text-xs sm:text-sm font-bold rounded-lg transition bg-stone-200 text-stone-700 hover:bg-stone-300">GĐ 2: Thâm Nhập & Oxy Hóa</button>
+                        <button onclick="setStage(3)" id="btn-stage-3" class="px-3 py-2 text-xs sm:text-sm font-bold rounded-lg transition bg-stone-200 text-stone-700 hover:bg-stone-300">GĐ 3: Thực Bào Mạn Tính</button>
+                        <button onclick="setStage(4)" id="btn-stage-4" class="px-3 py-2 text-xs sm:text-sm font-bold rounded-lg transition bg-stone-200 text-stone-700 hover:bg-stone-300">GĐ 4: Lõi Hoại Tử</button>
+                        <button onclick="setStage(5)" id="btn-stage-5" class="px-3 py-2 text-xs sm:text-sm font-bold rounded-lg transition bg-stone-200 text-stone-700 hover:bg-stone-300">GĐ 5: Nứt Vỡ & Huyết Khối</button>
+                    </div>
+
+                    <!-- Dynamic Stage Content Box -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center" id="stage-content-container">
+                        <div class="md:col-span-2 space-y-3">
+                            <div class="inline-block px-2.5 py-1 bg-crimson-100 text-crimson-800 text-xs font-bold rounded-md" id="stage-badge">
+                                Giai Đoạn 1 / 5
+                            </div>
+                            <h3 class="text-lg sm:text-xl font-bold text-slatecustom-900" id="stage-title">
+                                Khởi Phát Vi Tổn Thương Nội Mô Mạch Máu
+                            </h3>
+                            <p class="text-sm text-stone-700 leading-relaxed" id="stage-desc">
+                                Tế bào nội mô bị tổn thương do tăng đường huyết mạn tính, gốc tự do (ROS), độc tố nicotin và áp lực cơ học từ cao huyết áp. Điều này làm giảm sản sinh Nitric Oxide (NO) bảo vệ và tăng biểu lộ các phân tử kết dính bạch cầu.
+                            </p>
+                            <div class="pt-2">
+                                <span class="text-xs font-bold text-stone-500 uppercase tracking-wide">Tác nhân trung gian xúc tác:</span>
+                                <div class="text-xs font-semibold text-crimson-700 mt-1" id="stage-mediators">
+                                    Tăng đường huyết mạn, Gốc tự do ROS, Độc tố Nicotin, Shear Stress bất thường
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Visual Card Indicator (No SVG) -->
+                        <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-sm text-center space-y-2">
+                            <div class="text-3xl" id="stage-icon">⚡</div>
+                            <div class="text-xs font-bold text-stone-400 uppercase">Trạng Thái Thành Mạch</div>
+                            <div class="text-sm font-bold text-slatecustom-800" id="stage-status">Mất chức năng nội mô</div>
+                            <div class="text-xs text-stone-500" id="stage-detail">Giảm NO, tăng tính thấm</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SECTION 3: KHUNG CAN THIỆP 4 TRỤ CỘT BẢO VỆ MẠCH MÁU -->
+        <section id="pillars" class="scroll-mt-20">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm space-y-6">
+                <div>
+                    <span class="text-xs font-bold tracking-wider uppercase text-tealcustom-700 bg-tealcustom-50 px-3 py-1 rounded-full">Khung Hành Động Thực Tiễn</span>
+                    <h2 class="text-xl sm:text-3xl font-extrabold text-slatecustom-900 mt-3">
+                        Mô Hình 4 Trụ Cột Khoa Học Kháng Viêm & Phục Hồi Mạch Máu
+                    </h2>
+                </div>
+
+                <!-- Intro Paragraph Required -->
+                <div class="p-4 bg-warmcard/60 rounded-xl border border-stone-200/80 text-sm text-stone-700 leading-relaxed">
+                    <strong>Giới thiệu phân đoạn:</strong> Sau khi xác định viêm mạn tính là nguyên nhân gốc rễ, video đưa ra hệ thống can thiệp toàn diện gồm 4 trụ cột. Nhấp vào các thẻ tab bên dưới để tìm hiểu chi tiết cơ chế tác động của Dinh dưỡng, Tự thực bào (Autophagy), Vận động thể chất và Cân bằng Thần kinh.
+                </div>
+
+                <!-- Interactive Pillars Tabs -->
+                <div class="space-y-6">
+                    <div class="flex border-b border-stone-200 overflow-x-auto">
+                        <button onclick="setPillar('nutrition')" id="tab-nutrition" class="px-5 py-3 text-sm font-bold transition whitespace-nowrap tab-active">
+                            🥗 1. Dinh Dưỡng Kháng Viêm
+                        </button>
+                        <button onclick="setPillar('autophagy')" id="tab-autophagy" class="px-5 py-3 text-sm font-bold transition whitespace-nowrap text-stone-500 hover:text-stone-800">
+                            🔄 2. Tự Thực Bào (Autophagy)
+                        </button>
+                        <button onclick="setPillar('exercise')" id="tab-exercise" class="px-5 py-3 text-sm font-bold transition whitespace-nowrap text-stone-500 hover:text-stone-800">
+                            🏃 3. Thủy Động Lực & Vận Động
+                        </button>
+                        <button onclick="setPillar('neuro')" id="tab-neuro" class="px-5 py-3 text-sm font-bold transition whitespace-nowrap text-stone-500 hover:text-stone-800">
+                            🧠 4. Cân Bằng Thần Kinh & Cortisol
+                        </button>
+                    </div>
+
+                    <!-- Dynamic Pillar Content Display -->
+                    <div id="pillar-content-container" class="bg-stone-50 p-6 rounded-2xl border border-stone-200 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Loaded dynamically via JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SECTION 4: PHÂN TÍCH KỸ THUẬT ĐIỆN ẢNH & TRUYỀN THÔNG -->
+        <section id="media" class="scroll-mt-20">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm space-y-6">
+                <div>
+                    <span class="text-xs font-bold tracking-wider uppercase text-slatecustom-800 bg-stone-100 px-3 py-1 rounded-full">Phân Tích Sản Xuất & Thị Giác</span>
+                    <h2 class="text-xl sm:text-3xl font-extrabold text-slatecustom-900 mt-3">
+                        Kỹ Thuật Dựng Phim, Đồ Họa Y Sinh & Cấu Trúc Dẫn Dắt Tâm Lý
+                    </h2>
+                </div>
+
+                <!-- Intro Paragraph Required -->
+                <div class="p-4 bg-warmcard/60 rounded-xl border border-stone-200/80 text-sm text-stone-700 leading-relaxed">
+                    <strong>Giới thiệu phân đoạn:</strong> Phần này khám phá nghệ thuật truyền thông khoa học của tác phẩm: cách kết hợp nhịp dựng 4-7 giây, thiết kế âm thanh tầng thấp (side-chain ambient) và chiến lược kích thích nhận thức theo chuỗi 4 phân đoạn thời gian nhằm chuyển hóa các khái niệm y sinh phức tạp thành trải nghiệm trực quan.
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <!-- Chart Container 1: Video Timeline Segmentation -->
+                    <div class="bg-stone-50 p-5 rounded-2xl border border-stone-200 space-y-3">
+                        <h3 class="text-sm font-bold text-slatecustom-900 text-center">
+                            Phân Bổ Thời Lượng & Chiến Lược Nhận Thức (22:44)
+                        </h3>
+                        <!-- Chart Canvas Wrapper -->
+                        <div class="chart-container">
+                            <canvas id="timelineChart"></canvas>
+                        </div>
+                        <p class="text-xs text-stone-500 text-center italic">
+                            Nhấp vào từng phần biểu đồ để xem chi tiết chiến lược tâm lý áp dụng.
+                        </p>
+                    </div>
+
+                    <!-- Production Details List -->
+                    <div class="space-y-4">
+                        <div class="border border-stone-200 p-4 rounded-xl bg-white shadow-sm space-y-1">
+                            <div class="text-xs font-bold text-crimson-700 uppercase">00:00 – 02:30 | Hook Xung Đột Nhận Thức</div>
+                            <h4 class="text-sm font-bold text-slatecustom-900">Bác bỏ trực tiếp quan niệm mỡ máu</h4>
+                            <p class="text-xs text-stone-600">Phá vỡ định kiến lâu đời của người xem về mỡ máu, tạo ra trạng thái thiếu hụt nhận thức (Cognitive Dissonance) để kích thích sự chú ý tập trung.</p>
+                        </div>
+                        <div class="border border-stone-200 p-4 rounded-xl bg-white shadow-sm space-y-1">
+                            <div class="text-xs font-bold text-crimson-700 uppercase">02:31 – 08:15 | Bệnh Lý Học Chi Tiết</div>
+                            <h4 class="text-sm font-bold text-slatecustom-900">Đồ họa mô phỏng dòng chảy & tế bào</h4>
+                            <p class="text-xs text-stone-600">Đồ họa 3D tương phản rõ nét giữa dòng máu đỏ và mảng bám xơ vữa vàng/xám, biến khái niệm miễn dịch học trừu tượng thành cuộc xung đột trực quan.</p>
+                        </div>
+                        <div class="border border-stone-200 p-4 rounded-xl bg-white shadow-sm space-y-1">
+                            <div class="text-xs font-bold text-tealcustom-700 uppercase">08:16 – 16:40 | Truy Tìm Nguyên Nhân Gốc Rễ</div>
+                            <h4 class="text-sm font-bold text-slatecustom-900">Cá nhân hóa nguy cơ lối sống</h4>
+                            <p class="text-xs text-stone-600">Kết nối thói quen ăn uống (carbs tinh chế, dầu thực vật) với phản ứng viêm ngầm, tạo mối liên hệ mật thiết với sinh hoạt thường nhật.</p>
+                        </div>
+                        <div class="border border-stone-200 p-4 rounded-xl bg-white shadow-sm space-y-1">
+                            <div class="text-xs font-bold text-tealcustom-700 uppercase">16:41 – 22:44 | Khung Giải Pháp 4 Trụ Cột</div>
+                            <h4 class="text-sm font-bold text-slatecustom-900">Trao quyền hành động & Giải tỏa lo âu</h4>
+                            <p class="text-xs text-stone-600">Đưa ra bộ giải pháp có tính khả thi cao, chuyển cảm giác sợ hãi tiêu cực thành hành vi tự chủ bảo vệ sức khỏe.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audio & AI Dubbing Note Box -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-stone-200">
+                    <div class="p-4 bg-stone-50 rounded-xl border border-stone-200">
+                        <h4 class="text-xs font-bold text-slatecustom-900 uppercase">Kiến Trúc Âm Thanh Phòng Thu</h4>
+                        <p class="text-xs text-stone-600 mt-1">Giọng đọc dải tần trầm ấm (130-140 từ/phút). Nhạc nền khí nhạc Cinematic Ambient làm mờ thấp hơn giọng nói 18-22 dB (side-chained) để giữ sự tập trung cao độ.</p>
+                    </div>
+                    <div class="p-4 bg-stone-50 rounded-xl border border-stone-200">
+                        <h4 class="text-xs font-bold text-slatecustom-900 uppercase">Công Nghệ Lồng Tiếng AI Đa Ngôn Ngữ</h4>
+                        <p class="text-xs text-stone-600 mt-1">Sử dụng YouTube Auto-dubbed phân phối phiên bản tiếng Anh chuẩn xác sắc thái y khoa, mở rộng phạm vi tiếp cận độc giả quốc tế.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SECTION 5: THẨM ĐỊNH Y KHOA & CẢNH BÁO AN TOÀN -->
+        <section id="appraisal" class="scroll-mt-20">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm space-y-6">
+                <div>
+                    <span class="text-xs font-bold tracking-wider uppercase text-crimson-700 bg-crimson-50 px-3 py-1 rounded-full">Y Học Bằng Chứng & Phản Biện</span>
+                    <h2 class="text-xl sm:text-3xl font-extrabold text-slatecustom-900 mt-3">
+                        Thẩm Định Chuyên Môn Dưới Góc Nhìn Dịch Tễ Học
+                    </h2>
+                </div>
+
+                <!-- Intro Paragraph Required -->
+                <div class="p-4 bg-warmcard/60 rounded-xl border border-stone-200/80 text-sm text-stone-700 leading-relaxed">
+                    <strong>Giới thiệu phân đoạn:</strong> Phân đoạn này thẩm định tính xác thực khoa học của video thông qua các thử nghiệm lâm sàng đối chiếu (như CANTOS). Đồng thời chỉ ra ranh giới quan trọng giữa giá trị giáo dục dự phòng và rủi ro truyền thông khi tuyên bố tiêu đề mang tính giản lược hóa quá mức.
+                </div>
+
+                <!-- Comparative Chart & Analysis -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <!-- Chart Container 2: ApoB vs Inflammation Risk Framework -->
+                    <div class="bg-stone-50 p-5 rounded-2xl border border-stone-200 space-y-3">
+                        <h3 class="text-sm font-bold text-slatecustom-900 text-center">
+                            Mô Hình Tương Tác Giữa ApoB/LDL & Viêm Mãn Tính
+                        </h3>
+                        <!-- Chart Canvas Wrapper -->
+                        <div class="chart-container">
+                            <canvas id="riskChart"></canvas>
+                        </div>
+                        <p class="text-xs text-stone-500 text-center italic">
+                            ApoB/LDL là "Điều kiện cần", Viêm mạn tính là "Điều kiện đủ" để gây biến cố tắc mạch.
+                        </p>
+                    </div>
+
+                    <!-- Clinical Assessment Points -->
+                    <div class="space-y-4">
+                        <div class="bg-tealcustom-50 p-4 rounded-xl border border-tealcustom-600/30">
+                            <h4 class="text-sm font-bold text-tealcustom-800 flex items-center gap-2">
+                                <span>✅</span> Giá Trị Thực Chứng Tiến Bộ (Thử Nghiệm CANTOS)
+                            </h4>
+                            <p class="text-xs text-stone-700 mt-1 leading-relaxed">
+                                Thử nghiệm lâm sàng bản lề <strong>CANTOS</strong> đã chứng minh rằng việc sử dụng kháng thể đơn dòng ức chế interleukin-1β (con đường viêm) giúp giảm đáng kể biến cố tim mạch tái phát <strong>mà không làm thay đổi nồng độ lipid máu</strong>. Điều này khẳng định vai trò độc lập của viêm đúng như video trình bày.
+                            </p>
+                        </div>
+
+                        <div class="bg-crimson-50 p-4 rounded-xl border border-crimson-600/30">
+                            <h4 class="text-sm font-bold text-crimson-800 flex items-center gap-2">
+                                <span>⚠️</span> Giới Hạn Truyền Thông & Cảnh Báo Nguy Cơ
+                            </h4>
+                            <p class="text-xs text-stone-700 mt-1 leading-relaxed">
+                                Việc tuyên bố "mỡ máu không phải là nguyên nhân" có xu hướng <strong>giản lược hóa quá mức (oversimplification)</strong>. Nếu bệnh nhân tổn thương mạch vành tự ý ngưng thuốc hạ lipid (Statin) để chỉ áp dụng các biện pháp tự nhiên, nguy cơ nhồi máu cơ tim cấp là cực kỳ nguy hiểm.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Appraisal Matrix Table -->
+                <div class="border border-stone-200 rounded-xl overflow-hidden">
+                    <div class="bg-stone-100 px-4 py-3 text-xs font-bold text-slatecustom-900 uppercase">
+                        Bảng Ma Trận Thẩm Định Chi Tiết Tác Phẩm
+                    </div>
+                    <div class="divide-y divide-stone-200 text-xs sm:text-sm">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 p-4 bg-white">
+                            <div class="font-bold text-slatecustom-800">Bản Chất Của Nội Mô Mạch Máu</div>
+                            <div class="sm:col-span-2 text-stone-600 mt-1 sm:mt-0">
+                                <span class="font-semibold text-tealcustom-700">Chính xác:</span> Nội mạc không phải ống dẫn thụ động mà là cơ quan nội tiết năng động, dễ tổn thương do cytokine tiền viêm.
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 p-4 bg-stone-50">
+                            <div class="font-bold text-slatecustom-800">Vai Trò Của Cholesterol / LDL</div>
+                            <div class="sm:col-span-2 text-stone-600 mt-1 sm:mt-0">
+                                <span class="font-semibold text-amber-700">Cần bổ sung:</span> LDL chứa ApoB là hạt mang tính xơ vữa (atherogenic particle). Cần có hạt ApoB xâm nhập thì phản ứng viêm mới phát triển thành mảng bám.
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 p-4 bg-white">
+                            <div class="font-bold text-slatecustom-800">Khuyên Lối Sống Kháng Viêm</div>
+                            <div class="sm:col-span-2 text-stone-600 mt-1 sm:mt-0">
+                                <span class="font-semibold text-tealcustom-700">Rất giá trị:</span> Cắt giảm carbs tinh chế, siro fructose, hạn chế dầu omega-6 tinh luyện và tập luyện thể thao giúp cải thiện rõ rệt chức năng nội mô.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: BẢNG KIỂM TỰ ĐÁNH GIÁ SỨC KHỎE MẠCH MÁU -->
+        <section id="checklist" class="scroll-mt-20">
+            <div class="bg-slatecustom-800 text-white rounded-2xl p-6 sm:p-8 shadow-md space-y-6">
+                <div>
+                    <span class="text-xs font-bold tracking-wider uppercase text-tealcustom-600 bg-slatecustom-900 px-3 py-1 rounded-full">Ứng Dụng Thực Hành</span>
+                    <h2 class="text-xl sm:text-3xl font-extrabold mt-3">
+                        Bảng Kiểm Hiểu Biết Sức Khỏe Mạch Máu (Health Literacy)
+                    </h2>
+                    <p class="text-xs sm:text-sm text-stone-300 mt-1">
+                        Đánh giá mức độ tiếp thu các nguyên lý y học kháng viêm từ video.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm">
+                    <label class="flex items-start gap-3 p-3 bg-slatecustom-900/60 rounded-xl border border-stone-700 cursor-pointer hover:bg-slatecustom-900 transition">
+                        <input type="checkbox" class="mt-1 rounded text-crimson-600 focus:ring-0">
+                        <span>Hiểu rằng Cholesterol/LDL chỉ bị biến thành chất độc khi bị **Oxy hóa (oxLDL)** bởi viêm mạn tính.</span>
+                    </label>
+                    <label class="flex items-start gap-3 p-3 bg-slatecustom-900/60 rounded-xl border border-stone-700 cursor-pointer hover:bg-slatecustom-900 transition">
+                        <input type="checkbox" class="mt-1 rounded text-crimson-600 focus:ring-0">
+                        <span>Nhận diện được **Carbohydrates tinh chế & Fructose** là tác nhân tạo sản phẩm glycation bền vững (AGEs) phá hủy nội mô.</span>
+                    </label>
+                    <label class="flex items-start gap-3 p-3 bg-slatecustom-900/60 rounded-xl border border-stone-700 cursor-pointer hover:bg-slatecustom-900 transition">
+                        <input type="checkbox" class="mt-1 rounded text-crimson-600 focus:ring-0">
+                        <span>Nắm rõ vận động nhịp độ vừa giúp tạo lực cọ xát (Shear Stress) kích thích tế bào sản sinh **Nitric Oxide (NO)** giãn mạch.</span>
+                    </label>
+                    <label class="flex items-start gap-3 p-3 bg-slatecustom-900/60 rounded-xl border border-stone-700 cursor-pointer hover:bg-slatecustom-900 transition">
+                        <input type="checkbox" class="mt-1 rounded text-crimson-600 focus:ring-0">
+                        <span>Ý thức rằng video mang tính **Giáo Dục Dự Phòng**, tuyệt đối không tự ý ngưng phác đồ điều trị mỡ máu của bác sĩ.</span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-stone-200 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-stone-500 space-y-2">
+            <p>Báo cáo phân tích chuyên sâu nội dung y sinh số – Dựa trên tác phẩm của kênh <strong>Mít tơ B (@MittoB)</strong>.</p>
+            <p class="text-stone-400">Ứng dụng hiển thị dữ liệu tương tác đơn trang (SPA) – Không sử dụng đồ họa SVG hay Mermaid JS.</p>
+        </div>
+    </footer>
+
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- 1. DATA FOR 5 STAGES OF VASCULAR PATHOLOGY ---
+        const stagesData = {
+            1: {
+                badge: "Giai Đoạn 1 / 5",
+                title: "Khởi Phát Vi Tổn Thương Nội Mô Mạch Máu",
+                desc: "Tế bào nội mô bị tổn thương kéo dài do tăng đường huyết mạn tính, gốc tự do (ROS), độc tố nicotin và áp lực cơ học từ cao huyết áp. Điều này làm suy giảm chức năng sản sinh Nitric Oxide (NO) giãn mạch và làm tăng biểu lộ phân tử kết dính bạch cầu.",
+                mediators: "Tăng đường huyết, Gốc tự do ROS, Độc tố Nicotin, Tăng áp lực máu",
+                icon: "⚡",
+                status: "Tổn thương nội mô",
+                detail: "Giảm tổng hợp NO, tăng tính thấm"
+            },
+            2: {
+                badge: "Giai Đoạn 2 / 5",
+                title: "Thâm Nhập Và Oxy Hóa Lipid (oxLDL)",
+                desc: "Các hạt LDL xuyên qua khe tế bào nội mô bị hở để xâm nhập vào khoang dưới nội mạc. Tại đây, trong môi trường vi mô giàu stress oxy hóa, LDL bị peroxy hóa chuyển thành oxLDL – một dạng dị vật sinh học kích hoạt phản ứng miễn dịch.",
+                mediators: "Gốc tự do dư thừa, Peroxy hóa Lipid, Hạt LDL tích tụ",
+                icon: "🧪",
+                status: "Tạo hạt oxLDL độc hại",
+                detail: "Mô liên kết bị biến đổi"
+            },
+            3: {
+                badge: "Giai Đoạn 3 / 5",
+                title: "Phản Ứng Thực Bào Mạn Tính & Tế Bào Bọt",
+                desc: "Bạch cầu đơn nhân thâm nhập vào thành mạch, biệt hóa thành đại thực bào và nuốt các hạt oxLDL một cách không kiểm soát. Quá trình này biến đại thực bào thành tế bào bọt (foam cells), đồng thời giải phóng hàng loạt cytokine tiền viêm.",
+                mediators: "Cytokine tiền viêm: TNF-α, IL-6, IL-1β, Chemokine",
+                icon: "🧫",
+                status: "Hình thành Tế Bào Bọt",
+                detail: "Bão Cytokine khu trú tại thành mạch"
+            },
+            4: {
+                badge: "Giai Đoạn 4 / 5",
+                title: "Tích Tụ Lõi Hoại Tử Và Mũ Xơ Bao Bọc",
+                desc: "Tế bào bọt chết theo chương trình (apoptosis) giải phóng lipid đọng lại thành lõi hoại tử. Cơ thể phản ứng bằng cách tăng sinh tế bào cơ trơn và lắng đọng canxi để tạo một mũ xơ (fibrous cap) bao bọc khối hoại tử lại.",
+                mediators: "Tăng sinh Tế bào cơ trơn, Canxi hóa màng nền, Lắng đọng Collagen",
+                icon: "🛡️",
+                status: "Hình thành Mảng Xơ Vữa",
+                detail: "Mũ xơ bao bọc lõi hoại tử"
+            },
+            5: {
+                badge: "Giai Đoạn 5 / 5",
+                title: "Nứt Vỡ Mũ Xơ Và Hình Thành Huyết Khối Cấp",
+                desc: "Các enzyme metalloproteinase (MMP) do đại thực bào tiết ra bào mòn mũ xơ. Khi mũ xơ bị nứt vỡ, lõi hoại tử tiếp xúc trực tiếp với dòng máu kích hoạt ngay lập tức chuỗi đông máu, tạo cục huyết khối bít tắc lòng mạch cấp tính.",
+                mediators: "Enzyme MMP ly giải protein, Yếu tố đông máu, Kích hoạt Tiểu cầu",
+                icon: "🚨",
+                status: "Nứt vỡ & Tắc mạch Cấp",
+                detail: "Gây Nhồi máu cơ tim hoặc Đột quỵ"
+            }
+        };
+
+        function setStage(stageNum) {
+            const data = stagesData[stageNum];
+            document.getElementById('stage-badge').innerText = data.badge;
+            document.getElementById('stage-title').innerText = data.title;
+            document.getElementById('stage-desc').innerText = data.desc;
+            document.getElementById('stage-mediators').innerText = data.mediators;
+            document.getElementById('stage-icon').innerText = data.icon;
+            document.getElementById('stage-status').innerText = data.status;
+            document.getElementById('stage-detail').innerText = data.detail;
+
+            // Update button styles
+            for (let i = 1; i <= 5; i++) {
+                const btn = document.getElementById(`btn-stage-${i}`);
+                if (i === stageNum) {
+                    btn.className = "px-3 py-2 text-xs sm:text-sm font-bold rounded-lg transition bg-crimson-700 text-white shadow-sm";
+                } else {
+                    btn.className = "px-3 py-2 text-xs sm:text-sm font-bold rounded-lg transition bg-stone-200 text-stone-700 hover:bg-stone-300";
+                }
+            }
+        }
+
+
+        // --- 2. DATA FOR 4 PILLARS FRAMEWORK ---
+        const pillarsData = {
+            nutrition: `
+                <div class="lg:col-span-2 space-y-3">
+                    <span class="text-xs font-bold text-tealcustom-700 uppercase bg-tealcustom-50 px-2.5 py-1 rounded-md">Trụ Cột 1</span>
+                    <h3 class="text-lg font-bold text-slatecustom-900">Dinh Dưỡng Kháng Viêm & Bảo Vệ Nội Mô</h3>
+                    <p class="text-sm text-stone-700 leading-relaxed">
+                        Cắt giảm triệt để các tác nhân thúc đẩy stress oxy hóa và đường hóa màng mạch. Ưu tiên các chất béo không bão hòa đơn và thực phẩm giàu polyphenols chống oxy hóa.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs">
+                        <div class="p-3 bg-white rounded-xl border border-stone-200">
+                            <span class="font-bold text-crimson-700">🚫 Cần Loạt Bỏ:</span>
+                            <p class="text-stone-600 mt-1">Carbohydrates tinh chế, Siro ngô cao fructose (HFCS), Dầu thực vật tinh luyện giàu Omega-6 dễ bị peroxy hóa.</p>
+                        </div>
+                        <div class="p-3 bg-white rounded-xl border border-stone-200">
+                            <span class="font-bold text-tealcustom-700">✅ Cần Tăng Cường:</span>
+                            <p class="text-stone-600 mt-1">Rau xanh đậm, Quả mọng giàu polyphenol, Acid béo Omega-3 (EPA/DHA), Dầu olive nguyên chất.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-stone-200 flex flex-col justify-center space-y-2">
+                    <div class="text-xs font-bold text-stone-400 uppercase">Cơ chế tác động</div>
+                    <div class="text-sm font-bold text-slatecustom-900">Giảm sản phẩm AGEs</div>
+                    <p class="text-xs text-stone-500">Ngăn ngừa glycation protein làm giòn thành mạch và ổn định tính thấm của màng tế bào.</p>
+                </div>
+            `,
+            autophagy: `
+                <div class="lg:col-span-2 space-y-3">
+                    <span class="text-xs font-bold text-tealcustom-700 uppercase bg-tealcustom-50 px-2.5 py-1 rounded-md">Trụ Cột 2</span>
+                    <h3 class="text-lg font-bold text-slatecustom-900">Kích Hoạt Cơ Chế Tự Thực Bào (Autophagy)</h3>
+                    <p class="text-sm text-stone-700 leading-relaxed">
+                        Tận dụng các khoảng trống tiêu hóa và nhịn ăn gián đoạn hợp lý để kích hoạt cơ chế dọn dẹp nội bào tự nhiên của cơ thể.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs">
+                        <div class="p-3 bg-white rounded-xl border border-stone-200">
+                            <span class="font-bold text-slatecustom-800">⚙️ Cơ Chế Tế Bào:</span>
+                            <p class="text-stone-600 mt-1">Khi năng lượng tạm thời thiếu hụt, Lysosome tiêu hóa các protein đường hóa hỏng và bào quan ty thể suy thoái.</p>
+                        </div>
+                        <div class="p-3 bg-white rounded-xl border border-stone-200">
+                            <span class="font-bold text-tealcustom-700">💡 Hiệu Quả Làm Sạch:</span>
+                            <p class="text-stone-600 mt-1">Hỗ trợ tiêu biến mảnh vụn tế bào tiền viêm và thu dọn các đại thực bào tích tụ lipid trong lòng mạch.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-stone-200 flex flex-col justify-center space-y-2">
+                    <div class="text-xs font-bold text-stone-400 uppercase">Cơ chế tác động</div>
+                    <div class="text-sm font-bold text-slatecustom-900">Dọn dẹp mảnh vụn vi mô</div>
+                    <p class="text-xs text-stone-500">Giải phóng năng lượng tái tạo tế bào nội mô khỏe mạnh.</p>
+                </div>
+            `,
+            exercise: `
+                <div class="lg:col-span-2 space-y-3">
+                    <span class="text-xs font-bold text-tealcustom-700 uppercase bg-tealcustom-50 px-2.5 py-1 rounded-md">Trụ Cột 3</span>
+                    <h3 class="text-lg font-bold text-slatecustom-900">Thủy Động Lực Học & Vận Động Thể Chất</h3>
+                    <p class="text-sm text-stone-700 leading-relaxed">
+                        Khai thác lực cọ xát của dòng chảy (Shear Stress) lên lớp nội mô thông qua hoạt động thể chất vừa phải để kích hoạt enzym tổng hợp Nitric Oxide.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs">
+                        <div class="p-3 bg-white rounded-xl border border-stone-200">
+                            <span class="font-bold text-slatecustom-800">💧 Lực Cọ Xát Dòng Chảy:</span>
+                            <p class="text-stone-600 mt-1">Dòng máu lưu thông đều đặn kích thích enzym eNOS tổng hợp Nitric Oxide (NO) tự nhiên.</p>
+                        </div>
+                        <div class="p-3 bg-white rounded-xl border border-stone-200">
+                            <span class="font-bold text-tealcustom-700">🛡️ Bảo Vệ Mạch Máu:</span>
+                            <p class="text-stone-600 mt-1">Duy trì khả năng giãn mạch tự nhiên, chống kết tập tiểu cầu và ngăn bạch cầu bám dính vào thành mạch.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-stone-200 flex flex-col justify-center space-y-2">
+                    <div class="text-xs font-bold text-stone-400 uppercase">Cơ chế tác động</div>
+                    <div class="text-sm font-bold text-slatecustom-900">Kích hoạt Enzym eNOS</div>
+                    <p class="text-xs text-stone-500">Tăng sản sinh NO giúp hạ huyết áp tâm trương và giãn mạch tự nhiên.</p>
+                </div>
+            `,
+            neuro: `
+                <div class="lg:col-span-2 space-y-3">
+                    <span class="text-xs font-bold text-tealcustom-700 uppercase bg-tealcustom-50 px-2.5 py-1 rounded-md">Trụ Cột 4</span>
+                    <h3 class="text-lg font-bold text-slatecustom-900">Cân Bằng Thần Kinh Thể Dịch & Kiểm Soát Cortisol</h3>
+                    <p class="text-sm text-stone-700 leading-relaxed">
+                        Giảm thiểu trạng thái kích thích giao cảm mạn tính và hormone Cortisol bằng cách tối ưu hóa nhịp sinh học và chất lượng giấc ngủ.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs">
+                        <div class="p-3 bg-white rounded-xl border border-stone-200">
+                            <span class="font-bold text-slatecustom-800">🌙 Giấc Ngủ Sinh Học:</span>
+                            <p class="text-stone-600 mt-1">Duy trì giấc ngủ sâu giúp hạ nhịp tim, giảm bớt áp lực co thắt vi mạch liên tục.</p>
+                        </div>
+                        <div class="p-3 bg-white rounded-xl border border-stone-200">
+                            <span class="font-bold text-tealcustom-700">🧘 Giảm Cortisol:</span>
+                            <p class="text-stone-600 mt-1">Ngăn chặn tình trạng tăng huyết áp ban đêm và giảm các vi nứt rạn mới hình thành trên thành mạch.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-stone-200 flex flex-col justify-center space-y-2">
+                    <div class="text-xs font-bold text-stone-400 uppercase">Cơ chế tác động</div>
+                    <div class="text-sm font-bold text-slatecustom-900">Ức chế Thần kinh Giao cảm</div>
+                    <p class="text-xs text-stone-500">Duy trì tính toàn vẹn hàng rào biểu mô mạch máu.</p>
+                </div>
+            `
+        };
+
+        function setPillar(pillarKey) {
+            document.getElementById('pillar-content-container').innerHTML = pillarsData[pillarKey];
+            
+            // Tab style toggle
+            const tabs = ['nutrition', 'autophagy', 'exercise', 'neuro'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === pillarKey) {
+                    btn.className = "px-5 py-3 text-sm font-bold transition whitespace-nowrap tab-active";
+                } else {
+                    btn.className = "px-5 py-3 text-sm font-bold transition whitespace-nowrap text-stone-500 hover:text-stone-800";
+                }
+            });
+        }
+
+
+        // --- 3. CHART.JS INITIALIZATION ---
+        window.addEventListener('DOMContentLoaded', () => {
+            // Load initial Pillar content
+            setPillar('nutrition');
+
+            // --- Chart 1: Video Timeline Doughnut Chart ---
+            const ctxTimeline = document.getElementById('timelineChart').getContext('2d');
+            new Chart(ctxTimeline, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        'Hook Bác Bỏ Định Kiến (00:00-02:30)',
+                        'Đồ Họa Y Sinh Chi Tiết (02:31-08:15)',
+                        'Phân Tích Thói Quên Viêm (08:16-16:40)',
+                        'Khung Can Thiệp 4 Trụ Cột (16:41-22:44)'
+                    ],
+                    datasets: [{
+                        data: [2.5, 5.75, 8.4, 6.05], // Minutes breakdown
+                        backgroundColor: [
+                            '#e11d48', // Crimson
+                            '#38bdf8', // Sky Blue
+                            '#f59e0b', // Amber
+                            '#0d9488'  // Teal
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 11 },
+                                boxWidth: 12,
+                                padding: 12
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const val = context.raw;
+                                    return ` Thời lượng: ${val} phút`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // --- Chart 2: ApoB vs Inflammation Risk Comparison Bar Chart ---
+            const ctxRisk = document.getElementById('riskChart').getContext('2d');
+            new Chart(ctxRisk, {
+                type: 'bar',
+                data: {
+                    labels: [
+                        'Mỡ Máu Thấp + Không Viêm',
+                        'Mỡ Máu Cao + Không Viêm',
+                        'Mỡ Máu Thấp + Viêm Mạn',
+                        'Mỡ Máu Cao + Viêm Mạn'
+                    ],
+                    datasets: [{
+                        label: 'Mức Độ Nguy Cơ Tắc Mạch Vành (Minh Họa Khái Niệm)',
+                        data: [15, 35, 65, 95],
+                        backgroundColor: [
+                            '#10b981', // Green
+                            '#f59e0b', // Amber
+                            '#f97316', // Orange
+                            '#be123c'  // Deep Crimson
+                        ],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: 'Chỉ Số Nguy Cơ Biến Cố (%)',
+                                font: { size: 11 }
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: { size: 10 },
+                                callback: function(value, index) {
+                                    // 16-char label wrapping logic
+                                    const label = this.getLabelForValue(value);
+                                    if (label.length > 16) {
+                                        return label.split(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` Nguy cơ ước tính: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
