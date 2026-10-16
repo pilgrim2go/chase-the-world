@@ -1,0 +1,783 @@
+<!-- Chosen Palette: Warm Editorial Sand & Slate (Background: bg-stone-50, Text: text-stone-900, Accent: emerald-800, Secondary Accent: amber-700, Borders: border-stone-200) -->
+<!-- Application Structure Plan: 
+     1. Header & Navigation: Thanh điều hướng đa chuyên mục bổ sung Chuyên đề Bất động sản.
+     2. Stage 1 Dashboard: Cập nhật Key Takeaways và bổ sung trụ cột thứ 6 về Bất động sản trong Chu kỳ nợ.
+     3. Stage 2 Editorial Hub: Chuỗi 6 bài báo chuyên sâu độc lập. Bổ sung Bài 6: "Bất Động Sản Trong Bẫy Lãi Suất Cao, Thuế Tài Sản Và Sự Phân Hóa AI".
+     4. Visual Analytics Center: Cập nhật biểu đồ so sánh thuộc tính tài sản (bao gồm BĐS) và phân bổ danh mục.
+     5. Interactive Toolkit: Mô phỏng kiểm tra rủi ro tài sản & bất động sản cá nhân.
+     Lý do thiết kế: Giúp độc giả dễ dàng đối chiếu BĐS với Vàng, Cổ phiếu, Tiền mặt và hiểu rõ vị thế của BĐS trong giai đoạn thắt chặt tín dụng dài hạn. -->
+<!-- Visualization & Content Choices:
+     - Donut Chart (Chart.js): Phân bổ Danh mục Mọi thời tiết (All-Weather) tích hợp Bất động sản thương mại & hạ tầng.
+     - Bar Chart (Chart.js): So sánh Vàng vs Bitcoin vs Tiền mặt vs Bất động sản (Thanh khoản, Rủi ro thuế, Khả năng phòng thủ lạm phát).
+     - Interactive Simulator: Đánh giá độ nhạy rủi ro vị thế BĐS cá nhân/doanh nghiệp.
+     - Confirming NO SVG used. NO Mermaid JS used. Dynamic interactions handled by Vanilla JavaScript. -->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ray Dalio: Chu Kỳ Lớn, Bất Động Sản & Tái Cấu Trúc Trật Tự Kinh Tế Toàn Cầu</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Merriweather', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#fcfbf7',
+                            100: '#f6f3e7',
+                            200: '#eee5cd',
+                            700: '#8c6d32',
+                            800: '#1e3a2b',
+                            900: '#0f1f17',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-900 font-sans antialiased selection:bg-amber-200 selection:text-amber-900">
+
+    <!-- Top Reading Bar -->
+    <header class="sticky top-0 z-50 bg-stone-900 text-stone-100 border-b border-stone-800 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <span class="text-amber-500 text-2xl font-black font-serif">MACRO</span>
+                <span class="text-stone-400 font-medium text-sm hidden sm:inline-block">| Hồ Sơ Phân Tích Vĩ Mô & Bất Động Sản</span>
+            </div>
+            <nav class="flex space-x-1 sm:space-x-3 text-xs sm:text-sm font-medium">
+                <button onclick="scrollToSection('stage1')" class="px-3 py-2 rounded-md hover:bg-stone-800 text-stone-300 hover:text-white transition">Tổng Quan</button>
+                <button onclick="scrollToSection('stage2')" class="px-3 py-2 rounded-md hover:bg-stone-800 text-amber-400 hover:text-amber-300 font-semibold transition">Chuyên Đề (6 Bài)</button>
+                <button onclick="scrollToSection('analytics')" class="px-3 py-2 rounded-md hover:bg-stone-800 text-stone-300 hover:text-white transition">Dữ Liệu & Mô Phỏng</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="bg-stone-900 text-white py-12 md:py-16 border-b border-amber-900/30">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="inline-flex items-center space-x-2 bg-amber-900/40 text-amber-300 text-xs font-semibold px-3 py-1 rounded-full border border-amber-700/50 mb-4">
+                <span>&#9733; ĐỐI THOẠI ĐẶC BIỆT & PHÂN TÍCH BẤT ĐỘNG SẢN</span>
+                <span>•</span>
+                <span>RAY DALIO x STEVEN BARTLETT</span>
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-serif font-bold tracking-tight text-stone-100 leading-tight mb-6">
+                Giải Mã Chu Kỳ Lớn, Bất Động Sản, Bong Bóng AI & Tái Cấu Trúc Trật Tự Kinh Tế Toàn Cầu
+            </h1>
+            <p class="text-base sm:text-xl text-stone-300 font-light max-w-3xl mx-auto leading-relaxed">
+                Phân tích toàn diện từ Ray Dalio về bẫy lãi suất cao, rủi ro BĐS thương mại, khủng hoảng nợ tài khóa và chiến lược phân bổ tài sản thực trong kỷ nguyên biến động vĩ mô.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
+
+        <!-- GIAI ĐOẠN 1: TÓM TẮT & BẮT BỆNH NỘI DUNG -->
+        <section id="stage1" class="scroll-mt-20 space-y-8">
+            <div class="border-b border-stone-200 pb-4">
+                <div class="text-xs font-bold uppercase tracking-wider text-amber-700">Giai Đoạn 1</div>
+                <h2 class="text-2xl sm:text-3xl font-serif font-bold text-stone-900">Tóm Tắt & Bắt Bệnh Nội Dung Vĩ Mô</h2>
+                <p class="text-stone-600 text-sm mt-1">Trích xuất diễn giả, thông điệp cốt lõi và 6 trụ cột phân tích vĩ mô & tài sản.</p>
+            </div>
+
+            <!-- Profile & Core Message Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Profile Card -->
+                <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm space-y-4">
+                    <div class="text-amber-800 font-semibold text-xs uppercase tracking-wider">Thông Tin Diễn Giả</div>
+                    <div class="flex items-center space-x-4">
+                        <div class="w-14 h-14 bg-stone-800 text-amber-400 rounded-full flex items-center justify-center font-bold text-xl font-serif">
+                            RD
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-stone-900">Ray Dalio</h3>
+                            <p class="text-xs text-stone-500">Nhà sáng lập Quỹ Bridgewater Associates</p>
+                        </div>
+                    </div>
+                    <ul class="text-xs text-stone-600 space-y-2 pt-2 border-t border-stone-100">
+                        <li>&#10004; Quản lý quỹ phòng hộ lớn nhất thế giới với hơn 53 tỷ USD lợi nhuận ròng.</li>
+                        <li>&#10004; Dự báo chính xác Cuộc khủng hoảng Tài chính Bất động sản 2008.</li>
+                        <li>&#10004; Tác giả mô hình "Chu Kỳ Lớn" (The Big Cycle) nghiên cứu 500 năm lịch sử.</li>
+                    </ul>
+                </div>
+
+                <!-- Core Message Card -->
+                <div class="md:col-span-2 bg-stone-900 text-stone-100 p-6 rounded-xl shadow-md flex flex-col justify-between">
+                    <div>
+                        <div class="text-amber-400 font-semibold text-xs uppercase tracking-wider mb-2">Thông Điệp Cốt Lõi Về Tài Sản & Bất Động Sản</div>
+                        <h3 class="text-xl font-serif font-bold text-white mb-3 leading-snug">
+                            "Bất động sản là lớp tài sản chống lạm phát thực sự trong dài hạn, nhưng lại là nạn nhân đầu tiên của bẫy đòn bẩy khi lãi suất thắt chặt và là mục tiêu hàng đầu của thuế tài sản."
+                        </h3>
+                        <p class="text-stone-300 text-sm leading-relaxed">
+                            Trong môi trường tiền tệ thắt chặt cuối chu kỳ nợ dài hạn, BĐS thương mại chịu áp lực tái định giá nghiêm trọng. Tuy nhiên, BĐS hạ tầng công nghệ (Data Centers) và BĐS tại các quốc gia an toàn tài khóa lại trở thành điểm tựa thu hút dòng vốn di tản.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-stone-800 flex flex-wrap gap-2 text-xs text-amber-300">
+                        <span class="bg-stone-800 px-2.5 py-1 rounded">#ChuKyLon</span>
+                        <span class="bg-stone-800 px-2.5 py-1 rounded">#BatDongSanViMo</span>
+                        <span class="bg-stone-800 px-2.5 py-1 rounded">#BongBongAI</span>
+                        <span class="bg-stone-800 px-2.5 py-1 rounded">#ThueTaiSan</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Takeaways Cards (6 Topics) -->
+            <div>
+                <h3 class="text-lg font-bold text-stone-900 mb-4 font-serif">6 Luận Điểm / Trụ Cột Đột Phá</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="bg-white p-4 rounded-lg border border-stone-200 shadow-sm hover:border-amber-600 transition cursor-pointer" onclick="openArticle(1)">
+                        <div class="text-amber-700 font-bold text-lg mb-1">01. Bong Bóng AI</div>
+                        <h4 class="font-bold text-sm text-stone-800 mb-2">Ảo Tưởng Thanh Khoản</h4>
+                        <p class="text-xs text-stone-600">Sự nhầm lẫn nguy hiểm giữa của cải trên giấy và cash-flow thực tế khi cổ phiếu công nghệ bị định giá phi lý.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-stone-200 shadow-sm hover:border-amber-600 transition cursor-pointer" onclick="openArticle(2)">
+                        <div class="text-amber-700 font-bold text-lg mb-1">02. Thị Trường Lao Động</div>
+                        <h4 class="font-bold text-sm text-stone-800 mb-2">Tự Động Hóa Nhận Thức</h4>
+                        <p class="text-xs text-stone-600">AI tấn công trực diện lao động trí thức, xóa bỏ việc làm đầu vào và đào sâu bất bình đẳng thu nhập.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-stone-200 shadow-sm hover:border-amber-600 transition cursor-pointer" onclick="openArticle(3)">
+                        <div class="text-amber-700 font-bold text-lg mb-1">03. Quản Trị Danh Mục</div>
+                        <h4 class="font-bold text-sm text-stone-800 mb-2">Tiền Mặt Là Rác</h4>
+                        <p class="text-xs text-stone-600">Chiến lược phân bổ "Mọi thời tiết", sức mạnh của Vàng vật chất và vị thế phòng thủ thực sự trước lạm phát.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-stone-200 shadow-sm hover:border-amber-600 transition cursor-pointer" onclick="openArticle(4)">
+                        <div class="text-amber-700 font-bold text-lg mb-1">04. Địa Chính Trị</div>
+                        <h4 class="font-bold text-sm text-stone-800 mb-2">Khoảnh Khắc Suez</h4>
+                        <p class="text-xs text-stone-600">Sự suy yếu quyền lực răn đe của phương Tây, dịch chuyển từ đơn cực sang trật tự đa cực khu vực.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-stone-200 shadow-sm hover:border-amber-600 transition cursor-pointer" onclick="openArticle(5)">
+                        <div class="text-amber-700 font-bold text-lg mb-1">05. Khủng Hoảng Tài Khóa</div>
+                        <h4 class="font-bold text-sm text-stone-800 mb-2">Bẫy Thuế Tài Sản</h4>
+                        <p class="text-xs text-stone-600">Bế tắc nợ công tại Anh - Mỹ và mô hình quản trị "sàn an sinh" bền vững kiểu Singapore.</p>
+                    </div>
+                    <!-- Topic 6: Real Estate -->
+                    <div class="bg-white p-4 rounded-lg border-2 border-amber-600/60 shadow-sm hover:border-amber-800 transition cursor-pointer bg-amber-50/30" onclick="openArticle(6)">
+                        <div class="text-amber-800 font-bold text-lg mb-1">06. Bất Động Sản Vĩ Mô</div>
+                        <h4 class="font-bold text-sm text-stone-900 mb-2">Bẫy Lãi Suất & Phân Hóa AI</h4>
+                        <p class="text-xs text-stone-700">Rủi ro tái tài trợ nợ, sự sụp đổ của BĐS văn phòng và làn sóng bùng nổ BĐS trung tâm dữ liệu.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GIAI ĐOẠN 2: TRIỂN KHAI CHUỖI BÀI BÁO CHUYÊN SÂU -->
+        <section id="stage2" class="scroll-mt-20 space-y-8">
+            <div class="border-b border-stone-200 pb-4 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <div class="text-xs font-bold uppercase tracking-wider text-amber-700">Giai Đoạn 2</div>
+                    <h2 class="text-2xl sm:text-3xl font-serif font-bold text-stone-900">Chuỗi Bài Báo Phân Tích Chuyên Sâu</h2>
+                    <p class="text-stone-600 text-sm mt-1">Các bài viết độc lập được biên tập chuẩn báo chí phân tích từ đối thoại Ray Dalio.</p>
+                </div>
+                <!-- Article Navigation Tabs -->
+                <div class="flex overflow-x-auto space-x-2 pb-2 md:pb-0 scrollbar-none">
+                    <button id="tab-btn-1" onclick="switchTab(1)" class="tab-btn px-3 py-2 text-xs font-bold rounded-lg bg-emerald-800 text-white whitespace-nowrap">Bài 1: Bong Bóng AI</button>
+                    <button id="tab-btn-2" onclick="switchTab(2)" class="tab-btn px-3 py-2 text-xs font-bold rounded-lg bg-stone-200 text-stone-700 hover:bg-stone-300 whitespace-nowrap">Bài 2: Lao Động AI</button>
+                    <button id="tab-btn-3" onclick="switchTab(3)" class="tab-btn px-3 py-2 text-xs font-bold rounded-lg bg-stone-200 text-stone-700 hover:bg-stone-300 whitespace-nowrap">Bài 3: Danh Mục Đầu Tư</button>
+                    <button id="tab-btn-4" onclick="switchTab(4)" class="tab-btn px-3 py-2 text-xs font-bold rounded-lg bg-stone-200 text-stone-700 hover:bg-stone-300 whitespace-nowrap">Bài 4: Địa Chính Trị</button>
+                    <button id="tab-btn-5" onclick="switchTab(5)" class="tab-btn px-3 py-2 text-xs font-bold rounded-lg bg-stone-200 text-stone-700 hover:bg-stone-300 whitespace-nowrap">Bài 5: Khủng Hoảng Tài Khóa</button>
+                    <button id="tab-btn-6" onclick="switchTab(6)" class="tab-btn px-3 py-2 text-xs font-bold rounded-lg bg-stone-200 text-stone-700 hover:bg-stone-300 whitespace-nowrap">Bài 6: Bất Động Sản</button>
+                </div>
+            </div>
+
+            <!-- ARTICLE CONTENT CONTAINER -->
+            <div class="bg-white rounded-2xl border border-stone-200 p-6 sm:p-10 shadow-md">
+
+                <!-- BÀI BÁO 1 -->
+                <article id="article-1" class="article-content space-y-6">
+                    <div class="space-y-3 border-b border-stone-100 pb-6">
+                        <div class="inline-block bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-1 rounded">Chuyên Đề Tài Chính & Công Nghệ</div>
+                        <h1 class="text-2xl sm:text-4xl font-serif font-bold text-stone-900 leading-tight">
+                            Ảo Tưởng Thanh Khoản Và Bong Bóng AI: Khi "Tài Sản Trên Giấy" Vượt Xa Thực Tế Cash-Flow
+                        </h1>
+                        <p class="text-base sm:text-lg text-stone-600 font-serif italic leading-relaxed bg-stone-50 p-4 rounded-lg border-l-4 border-amber-700">
+                            <strong>Sapo:</strong> Sự bùng nổ của trí tuệ nhân tạo đang kiến tạo một lượng của cải danh nghĩa khổng lồ trên thị trường chứng khoán. Tuy nhiên, dưới góc nhìn vĩ mô của Ray Dalio, thị trường đang rơi vào một cái bẫy lịch sử: nhầm lẫn giữa định giá vốn hóa và dòng tiền thanh khoản thực tế.
+                        </p>
+                    </div>
+
+                    <div class="prose max-w-none text-stone-800 space-y-4 text-sm sm:text-base leading-relaxed font-sans">
+                        <h3 class="text-lg sm:text-xl font-bold font-serif text-stone-900 mt-6">Của cải không đồng nghĩa với tiền mặt</h3>
+                        <p>
+                            Một trong những sai lầm căn bản nhất của các nhà đầu tư cá nhân lẫn tổ chức trong các đợt hưng phấn thị trường là niềm tin rằng giá trị vốn hóa tài sản phản ánh lượng tiền thực tế có sẵn. Ray Dalio chỉ ra nguyên lý toán học đơn giản nhưng tàn nhẫn: tổng giá trị tài sản danh nghĩa trên sổ sách luôn vượt xa lượng tiền mặt thực sự có thể rút ra khỏi hệ thống.
+                        </p>
+                        <blockquote class="my-4 border-l-4 border-amber-800 pl-4 italic text-stone-700 bg-stone-50 py-2">
+                            "Mọi người nhìn vào tài khoản chứng khoán của mình và nghĩ rằng họ có từng đó tiền để chi tiêu. Nhưng nếu tất cả đồng loạt bán tài sản để đổi lấy tiền mặt, toàn bộ cấu trúc giá trị sẽ sụp đổ. Của cải chỉ là một lời hứa, còn thanh khoản mới là thực tế." — <strong>Ray Dalio</strong>
+                        </blockquote>
+
+                        <h3 class="text-lg sm:text-xl font-bold font-serif text-stone-900 mt-6">Cơ chế tự củng cố của bong bóng công nghệ</h3>
+                        <p>
+                            Mọi bong bóng lớn trong lịch sử 500 năm qua – từ cuộc cách mạng đường sắt, điện khí hóa thập niên 1920, đến bong bóng Dot-com năm 2000 – đều bắt đầu bằng một đột phá công nghệ thực sự. AI tạo ra sự gia tăng năng suất có thật, nhưng tâm lý đầu cơ đã đẩy giá trị tài sản đi quá xa so với dòng tiền chiết khấu cơ bản.
+                        </p>
+                        <p>
+                            Sự biến dạng này được khuếch đại bởi đòn bẩy tài chính xoay vòng: Các tập đoàn dùng cổ phiếu tăng giá làm tài sản bảo đảm để vay vốn, sau đó dùng nguồn tiền vay này đầu tư trở lại vào hạ tầng trung tâm dữ liệu và chip bán dẫn. Hiện tượng tài trợ chéo này tạo ra một ảo giác tăng trưởng doanh thu liên tục, nhưng thực chất dòng tiền từ người tiêu dùng cuối cùng (end-users) vẫn chưa đạt mức tương xứng để bù đắp hàng trăm tỷ USD CapEx đã chi ra.
+                        </p>
+
+                        <div class="p-4 bg-amber-50 rounded-xl border border-amber-200 mt-6">
+                            <h4 class="font-bold text-amber-900 font-serif mb-1">Kết luận & Câu hỏi mở:</h4>
+                            <p class="text-stone-700 text-sm">
+                                Lịch sử dạy chúng ta rằng công nghệ có thể thay đổi thế giới, nhưng quy luật tài chính thì bất biến. Liệu danh mục đầu tư hiện tại của bạn đang nắm giữ năng lực tạo dòng tiền thực sự, hay chỉ đang sở hữu những "lời hứa thanh khoản" có nguy cơ bốc hơi khi vòi nước tiền tệ bị thắt chặt?
+                            </p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- BÀI BÁO 2 -->
+                <article id="article-2" class="article-content space-y-6 hidden">
+                    <div class="space-y-3 border-b border-stone-100 pb-6">
+                        <div class="inline-block bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-1 rounded">Chuyên Đề Thị Trường Lao Động</div>
+                        <h1 class="text-2xl sm:text-4xl font-serif font-bold text-stone-900 leading-tight">
+                            Cơn Lốc Tự Động Hóa Nhận Thức: AI Tấn Công Tầng Lớp Tri Thức Và Khủng Hoảng Bệ Phóng Cho Thế Hệ Trẻ
+                        </h1>
+                        <p class="text-base sm:text-lg text-stone-600 font-serif italic leading-relaxed bg-stone-50 p-4 rounded-lg border-l-4 border-emerald-800">
+                            <strong>Sapo:</strong> Khác với các cuộc cách mạng công nghiệp trước đây vốn thay thế sức mạnh cơ bắp, làn sóng AI hiện nay tấn công trực diện vào các chức năng nhận thức bậc cao. Ray Dalio cảnh báo về một cuộc khủng hoảng việc làm đầu vào nghiêm trọng đối với lực lượng lao động trẻ.
+                        </p>
+                    </div>
+
+                    <div class="prose max-w-none text-stone-800 space-y-4 text-sm sm:text-base leading-relaxed font-sans">
+                        <h3 class="text-lg sm:text-xl font-bold font-serif text-stone-900 mt-6">Sự phân ly giữa năng suất và tiền lương</h3>
+                        <p>
+                            Khi doanh nghiệp triển khai AI, chi phí vận hành giảm mạnh trong khi năng suất tổng thể tăng vọt. Tuy nhiên, sự gia tăng giá trị này không được phân phối lại dưới dạng tiền lương cho người lao động. Do 90% vốn cổ phần tập trung vào tay nhóm 10% hộ gia đình giàu nhất, thặng dư kinh tế từ AI chảy trực tiếp vào các tài khoản vốn, khiến khoảng cách giàu nghèo đào sâu tới ngưỡng rạn nứt thể chế.
+                        </p>
+
+                        <h3 class="text-lg sm:text-xl font-bold font-serif text-stone-900 mt-6">Sự biến mất của "Nấc thang thăng tiến"</h3>
+                        <p>
+                            Các vị trí cấp thấp (entry-level) như lập trình viên học việc, phân tích viên dữ liệu sơ cấp hay trợ lý pháp lý vốn là "trường học thực tế" để thế hệ trẻ tích lũy kinh nghiệm. Việc AI tự động hóa hoàn toàn các tác vụ này đã chặt đứt mắt xích đầu tiên trên nấc thang sự nghiệp. Thế hệ trẻ đối mặt với nguy cơ bị gạt ra ngoài nền kinh tế ngay khi vừa rời ghế nhà trường.
+                        </p>
+
+                        <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200 mt-6">
+                            <h4 class="font-bold text-emerald-900 font-serif mb-1">Kết luận & Câu hỏi mở:</h4>
+                            <p class="text-stone-700 text-sm">
+                                Giáo dục truyền thống đang đào tạo sinh viên cho một thị trường lao động đã không còn tồn tại. Bạn đang chuẩn bị những phẩm chất phi thuật toán nào để không bị biến thành một "mắt xích thừa" trong nền kinh tế do AI vận hành?
+                            </p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- BÀI BÁO 3 -->
+                <article id="article-3" class="article-content space-y-6 hidden">
+                    <div class="space-y-3 border-b border-stone-100 pb-6">
+                        <div class="inline-block bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-1 rounded">Chuyên Đề Chiến Lược Đầu Tư</div>
+                        <h1 class="text-2xl sm:text-4xl font-serif font-bold text-stone-900 leading-tight">
+                            Xóa Bỏ Ảo Tưởng Tiền Mặt: Chiến Lược "Danh Mục Mọi Thời Tiết" Và Cuộc Đấu Giữa Vàng Và Bitcoin
+                        </h1>
+                        <p class="text-base sm:text-lg text-stone-600 font-serif italic leading-relaxed bg-stone-50 p-4 rounded-lg border-l-4 border-amber-700">
+                            <strong>Sapo:</strong> Tiền gửi ngân hàng mang lại cảm giác an toàn giả tạo nhưng lại là công cụ bảo đảm sự hao mòn sức mua chắc chắn nhất. Ray Dalio giải mã nghệ thuật phân bổ tài sản phòng thủ và nguyên nhân ông ưu tiên Vàng hơn Bitcoin.
+                        </p>
+                    </div>
+
+                    <div class="prose max-w-none text-stone-800 space-y-4 text-sm sm:text-base leading-relaxed font-sans">
+                        <h3 class="text-lg sm:text-xl font-bold font-serif text-stone-900 mt-6">Bẫy lạm phát và sự mất giá của tiền tệ pháp định</h3>
+                        <p>
+                            Đa số mọi người nhầm lẫn giữa sự ổn định giá trị danh nghĩa của tiền mặt với khả năng bảo toàn sức mua thực tế. Trong môi trường mà lạm phát thực duy trì ở mức 3.5% - 4.0% và tiền gửi chịu thuế thu nhập, nắm giữ tiền mặt đồng nghĩa với việc chấp nhận mức thua lỗ ròng từ 2% - 3% mỗi năm. Tiền mặt là tài sản tồi tệ nhất trong dài hạn.
+                        </p>
+
+                        <h3 class="text-lg sm:text-xl font-bold font-serif text-stone-900 mt-6">Triết lý "Danh mục Mọi Thời Tiết" (All-Weather Portfolio)</h3>
+                        <p>
+                            Việc cố gắng căn thời điểm thị trường (market timing) là trò chơi nguy hiểm. Cốt lõi của quản trị rủi ro là sở hữu các lớp tài sản vô tương quan (uncorrelated assets) hoạt động tốt trong 4 môi trường kinh tế khác nhau: Tăng trưởng cao/thấp hơn kỳ vọng, và Lạm phát cao/thấp hơn kỳ vọng.
+                        </p>
+
+                        <div class="p-4 bg-amber-50 rounded-xl border border-amber-200 mt-6">
+                            <h4 class="font-bold text-amber-900 font-serif mb-1">Kết luận & Câu hỏi mở:</h4>
+                            <p class="text-stone-700 text-sm">
+                                Bạn đã chuẩn bị sẵn bao nhiêu tháng "đường băng thanh khoản" (liquidity runway) để không phải bán tháo tài sản ở vùng giá đáy khi cơn bão tài khóa càn quét qua?
+                            </p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- BÀI BÁO 4 -->
+                <article id="article-4" class="article-content space-y-6 hidden">
+                    <div class="space-y-3 border-b border-stone-100 pb-6">
+                        <div class="inline-block bg-stone-800 text-amber-400 text-xs font-semibold px-2.5 py-1 rounded">Chuyên Đề Địa Chính Trị Toàn Cầu</div>
+                        <h1 class="text-2xl sm:text-4xl font-serif font-bold text-stone-900 leading-tight">
+                            Thế Giới Sau "Khoảnh Khắc Suez": Sự Suy Thoái Bá Quyền Đơn Cực Và Trật Tự Đa Cực Mới
+                        </h1>
+                        <p class="text-base sm:text-lg text-stone-600 font-serif italic leading-relaxed bg-stone-50 p-4 rounded-lg border-l-4 border-stone-800">
+                            <strong>Sapo:</strong> Bằng việc so sánh bối cảnh hiện tại với Khủng hoảng Kênh đào Suez năm 1956, Ray Dalio vạch rõ sự suy giảm năng lực răn đe địa chính trị của Hoa Kỳ và quá trình phân mảnh thế giới thành các vùng ảnh hưởng riêng biệt.
+                        </p>
+                    </div>
+
+                    <div class="prose max-w-none text-stone-800 space-y-4 text-sm sm:text-base leading-relaxed font-sans">
+                        <h3 class="text-lg sm:text-xl font-bold font-serif text-stone-900 mt-6">Bài học lịch sử từ Khủng hoảng Suez 1956</h3>
+                        <p>
+                            Năm 1956, khi Anh Quốc thất bại trong việc áp đặt can thiệp quân sự tại Kênh đào Suez do bị trói buộc bởi kiệt quệ tài chính sau Thế chiến II, thế giới chính thức nhận ra kỷ nguyên bá quyền Anh đã sụp đổ. Tương tự, sự lưỡng lự chiến lược của Mỹ tại Trung Đông và những thách thức trên các tuyến hàng hải Biển Đỏ hiện nay phản ánh rằng chi phí duy trì mạng lưới quân sự toàn cầu đang vượt quá khả năng tài khóa của Washington.
+                        </p>
+
+                        <div class="p-4 bg-stone-100 rounded-xl border border-stone-300 mt-6">
+                            <h4 class="font-bold text-stone-900 font-serif mb-1">Kết luận & Câu hỏi mở:</h4>
+                            <p class="text-stone-700 text-sm">
+                                Mối đe dọa lớn nhất đối với một nền văn minh không đến từ kẻ thù bên ngoài, mà từ sự xói mòn nội sinh về giáo dục, tài khóa và sự phân cực chính trị. Doanh nghiệp của bạn đã có chiến lược đa dạng hóa địa lý để thích ứng với trật tự đa cực chưa?
+                            </p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- BÀI BÁO 5 -->
+                <article id="article-5" class="article-content space-y-6 hidden">
+                    <div class="space-y-3 border-b border-stone-100 pb-6">
+                        <div class="inline-block bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-1 rounded">Chuyên Đề Quản Trị Quốc Gia</div>
+                        <h1 class="text-2xl sm:text-4xl font-serif font-bold text-stone-900 leading-tight">
+                            Bế Tắc Tài Khóa Và Bẫy Thuế Tài Sản: Bài Học Sinh Tồn Từ Nước Anh Đến Singapore
+                        </h1>
+                        <p class="text-base sm:text-lg text-stone-600 font-serif italic leading-relaxed bg-stone-50 p-4 rounded-lg border-l-4 border-amber-700">
+                            <strong>Sapo:</strong> Phân tích sự bế tắc tài khóa của Vương quốc Anh với 6 đời Thủ tướng trong 7 năm và lý do Ray Dalio phản đối Thuế tài sản, đồng thời đề cao mô hình "Sàn an sinh nền tảng" kiểu Singapore.
+                        </p>
+                    </div>
+
+                    <div class="prose max-w-none text-stone-800 space-y-4 text-sm sm:text-base leading-relaxed font-sans">
+                        <h3 class="text-lg sm:text-xl font-bold font-serif text-stone-900 mt-6">Tam giác bế tắc tài khóa Anh Quốc</h3>
+                        <p>
+                            Sự bất ổn chính trị kỷ lục tại Anh là biểu hiện của một căn bệnh cấu trúc: Chính phủ không thể tăng thuế vì nguy cơ tháo chạy dòng vốn; không thể cắt giảm phúc lợi vì bất bình đẳng xã hội quá cao; và không thể vay thêm tiền vì thị trường trái phiếu đòi hỏi lãi suất bù rủi ro phạt.
+                        </p>
+
+                        <div class="p-4 bg-amber-50 rounded-xl border border-amber-200 mt-6">
+                            <h4 class="font-bold text-amber-900 font-serif mb-1">Kết luận & Định hướng chiến lược:</h4>
+                            <p class="text-stone-700 text-sm">
+                                Áp dụng triết lý "thỏ khôn có ba hang", các cá nhân và gia đình nắm giữ tài sản cần chủ động phân tán sự hiện diện pháp lý đến những quốc gia có kỷ luật tài khóa, ổn định xã hội và tôn trọng quyền sở hữu tư nhân.
+                            </p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- BÀI BÁO 6 (MỚI): BẤT ĐỘNG SẢN VĨ MÔ -->
+                <article id="article-6" class="article-content space-y-6 hidden">
+                    <div class="space-y-3 border-b border-stone-100 pb-6">
+                        <div class="inline-block bg-amber-800 text-amber-100 text-xs font-semibold px-2.5 py-1 rounded">Chuyên Đề Bất Động Sản Vĩ Mô</div>
+                        <h1 class="text-2xl sm:text-4xl font-serif font-bold text-stone-900 leading-tight">
+                            Bất Động Sản Trong Bẫy Lãi Suất Cao, Thuế Tài Sản Và Sự Phân Hóa Kỷ Nguyên AI
+                        </h1>
+                        <p class="text-base sm:text-lg text-stone-600 font-serif italic leading-relaxed bg-stone-50 p-4 rounded-lg border-l-4 border-amber-800">
+                            <strong>Sapo:</strong> Bất động sản là lớp tài sản thâm dụng đòn bẩy nhất trong nền kinh tế. Dưới khung phân tích Chu kỳ lớn của Ray Dalio, BĐS vừa sở hữu đặc tính bảo vệ sức mua thực trước lạm phát, vừa là nạn nhân đầu tiên rơi vào "bẫy tái tài trợ" khi mặt bằng lãi suất neo cao và là mục tiêu dễ bị tổn thương nhất trước các sắc thuế tài sản mới.
+                        </p>
+                    </div>
+
+                    <div class="prose max-w-none text-stone-800 space-y-4 text-sm sm:text-base leading-relaxed font-sans">
+                        <h3 class="text-lg sm:text-xl font-bold font-serif text-stone-900 mt-6">1. BĐS Trong Cuối Chu Kỳ Nợ Lớn: Rủi Ro Tái Tài Trợ (Refinancing Trap)</h3>
+                        <p>
+                            Bất động sản phát triển dựa trên đòn bẩy tín dụng dài hạn. Trong 15 năm nới lỏng tiền tệ (QE) sau khủng hoảng 2008, dòng vốn rẻ đã đẩy định giá BĐS (đặc biệt là BĐS thương mại) lên các mức kỷ lục với tỷ suất sinh lời cap rate rất thấp. Khi các ngân hàng trung ương buộc phải nâng lãi suất để kiềm chế lạm phát tài khóa, chi phí vay vốn tăng vọt từ 2-3% lên 6-8%.
+                        </p>
+                        <p>
+                            Ray Dalio nhấn mạnh rằng nguy cơ lớn nhất của BĐS hiện nay không phải là không có người thuê, mà là **Rủi ro tái tài trợ nợ**: Hàng ngàn tỷ USD các khoản vay BĐS thương mại đáo hạn trong vòng 2-3 năm tới sẽ phải đảo nợ ở mức lãi suất cao gấp đôi hoặc gấp ba. Điều này buộc các chủ sở hữu phải bơm thêm vốn tự có (equity call) hoặc chấp nhận bán tháo tài sản dưới mức định giá sổ sách.
+                        </p>
+
+                        <!-- Highlighting Quote -->
+                        <blockquote class="my-4 border-l-4 border-amber-800 pl-4 italic text-stone-700 bg-amber-50/50 py-3 rounded-r-lg">
+                            "Bất động sản không thể di chuyển. Khi chính phủ cạn kiệt ngân sách và nợ công bùng nổ, đất đai và công trình xây dựng là đối tượng đầu tiên bị đưa vào tầm ngắm của các sắc thuế tài sản và thuế BĐS mới." — <strong>Khung Phân Tích Vĩ Mô Ray Dalio</strong>
+                        </blockquote>
+
+                        <h3 class="text-lg sm:text-xl font-bold font-serif text-stone-900 mt-6">2. Sự Tái Cấu Trúc Ngành BĐS Dưới Tác Động Của AI</h3>
+                        <p>
+                            Sự bùng nổ của AI không tác động đồng đều lên toàn bộ thị trường BĐS mà tạo ra sự **phân hóa cực đoan**:
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+                            <div class="p-4 bg-red-50 rounded-xl border border-red-200">
+                                <h4 class="font-bold text-red-900 text-sm mb-1">BĐS Văn Phòng & Bán Lẻ Truyền Thống</h4>
+                                <p class="text-xs text-stone-700">
+                                    Xu hướng làm việc từ xa kết hợp với việc AI tự động hóa hàng triệu vị trí văn phòng (back-office) khiến nhu cầu thuê diện tích văn phòng trung tâm giảm vĩnh viễn từ 20-30%. Định giá phân khúc này chịu cú sốc kép: giảm tỷ lệ lấp đầy và tăng chi phí vốn.
+                                </p>
+                            </div>
+                            <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
+                                <h4 class="font-bold text-emerald-900 text-sm mb-1">BĐS Trung Tâm Dữ Liệu & Hạ Tầng Năng Lượng</h4>
+                                <p class="text-xs text-stone-700">
+                                    Sự bùng nổ tính toán AI đòi hỏi không gian đặt máy chủ khổng lồ và nguồn cấp điện công suất lớn. BĐS hạ tầng công nghệ, Data Centers và BĐS Logistics tiệm cận hạ tầng năng lượng trở thành lớp tài sản thực có tỷ suất sinh lời dòng tiền cao nhất kỷ nguyên mới.
+                                </p>
+                            </div>
+                        </div>
+
+                        <h3 class="text-lg sm:text-xl font-bold font-serif text-stone-900 mt-6">3. BĐS Như Một Tài Sản Phòng Thủ Trong Danh Mục "All-Weather"</h3>
+                        <p>
+                            Mặc dù gặp rủi ro đòn bẩy trong ngắn hạn, BĐS nhà ở tại các khu vực có tăng trưởng dân số cơ học và BĐS logistics vẫn giữ vai trò thiết yếu trong danh mục phòng thủ của Dalio. So với tiền mặt bị lạm phát bào mòn, BĐS là tài sản thực có khả năng tự điều chỉnh giá thuê theo chỉ số lạm phát (inflation-indexed cash flow).
+                        </p>
+                        <p>
+                            Tuy nhiên, Dalio đưa ra lời khuyên cốt tử cho nhà đầu tư BĐS cá nhân: **Loại bỏ đòn bẩy quá mức**. Nắm giữ BĐS với tỷ lệ nợ trên tài sản (LTV) dưới 30-40% bằng vốn tự có dài hạn sẽ giúp nhà đầu tư vượt qua được khúc ngoặt thắt chặt tín dụng và hưởng lợi trọn vẹn từ chu kỳ tăng giá tài sản thực tiếp theo.
+                        </p>
+
+                        <!-- Comparison Table for Real Estate vs Other Assets -->
+                        <div class="my-6 overflow-x-auto">
+                            <table class="min-w-full text-xs sm:text-sm border-collapse border border-stone-200">
+                                <thead>
+                                    <tr class="bg-stone-800 text-white">
+                                        <th class="p-3 text-left border border-stone-700">Tiêu Chí So Sánh</th>
+                                        <th class="p-3 text-left border border-stone-700">Bất Động Sản Nắm Giữ Direct</th>
+                                        <th class="p-3 text-left border border-stone-700">Vàng Vật Chất</th>
+                                        <th class="p-3 text-left border border-stone-700">Cổ Phiếu Công Nghệ AI</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="bg-stone-50">
+                                        <td class="p-3 border border-stone-200 font-bold">Tính Thanh Khoản</td>
+                                        <td class="p-3 border border-stone-200 text-red-600">Thấp (Cần tháng/năm)</td>
+                                        <td class="p-3 border border-stone-200 text-emerald-700 font-semibold">Cao (Toàn cầu)</td>
+                                        <td class="p-3 border border-stone-200 text-emerald-700 font-semibold">Rất Cao (Tức thì)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 border border-stone-200 font-bold">Dòng Tiền Thực (Yield)</td>
+                                        <td class="p-3 border border-stone-200 text-emerald-700 font-semibold">Có (Tiền thuê nhà/xưởng)</td>
+                                        <td class="p-3 border border-stone-200 text-stone-500">Không có dòng tiền</td>
+                                        <td class="p-3 border border-stone-200 text-amber-700">Tùy thuộc cổ tức/CapEx</td>
+                                    </tr>
+                                    <tr class="bg-stone-50">
+                                        <td class="p-3 border border-stone-200 font-bold">Rủi Ro Thuế & Pháp Lý</td>
+                                        <td class="p-3 border border-stone-200 text-red-600 font-semibold">Cao (Thuế BĐS, Thuế tài sản)</td>
+                                        <td class="p-3 border border-stone-200 text-emerald-700 font-semibold">Rất thấp (Vật chất phi lưu ký)</td>
+                                        <td class="p-3 border border-stone-200 text-amber-700">Trung bình (Thuế thặng dư vốn)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="p-4 bg-amber-50 rounded-xl border border-amber-200 mt-6">
+                            <h4 class="font-bold text-amber-900 font-serif mb-1">Kết luận & Khuyên nghị ứng biến cho nhà đầu tư BĐS:</h4>
+                            <p class="text-stone-700 text-sm">
+                                Bất động sản không còn là kênh "đầu tư nhắm mắt cũng thắng" nhờ đòn bẩy rẻ. Trong thập kỷ tới, chiến thắng sẽ thuộc về những nhà đầu tư biết dịch chuyển từ **BĐS đầu cơ đòn bẩy cao** sang **BĐS dòng tiền thực (Data Center, Logistics, BĐS nhà ở vừa túi tiền)** tại các quốc gia có chính sách tài khóa an toàn và hạ tầng năng lượng vượt trội.
+                            </p>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- VISUAL ANALYTICS & INTERACTIVE TOOLKIT -->
+        <section id="analytics" class="scroll-mt-20 space-y-8">
+            <div class="border-b border-stone-200 pb-4">
+                <div class="text-xs font-bold uppercase tracking-wider text-amber-700">Trung Tâm Trực Quan Hóa</div>
+                <h2 class="text-2xl sm:text-3xl font-serif font-bold text-stone-900">Dữ Liệu Vĩ Mô & Bộ Công Cụ Tương Tác BĐS</h2>
+                <p class="text-stone-600 text-sm mt-1">Mô phỏng phân bổ tài sản, so sánh thuộc tính trú ẩn bao gồm BĐS và kiểm tra độ nhạy rủi ro.</p>
+            </div>
+
+            <!-- Chart Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Chart 1: Asset Allocation -->
+                <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold font-serif text-lg text-stone-900">Mô Hình Phân Bổ Danh Mục "All-Weather" (Mở Rộng)</h3>
+                            <span class="text-xs bg-amber-100 text-amber-800 font-semibold px-2 py-0.5 rounded">Ray Dalio Concept</span>
+                        </div>
+                        <p class="text-xs text-stone-600 mb-4">Tỷ lệ tối ưu hóa tích hợp Bất động sản dòng tiền & Hạ tầng bên cạnh Vàng và Trái phiếu.</p>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="allWeatherChart"></canvas>
+                    </div>
+
+                    <div class="mt-4 pt-4 border-t border-stone-100 text-xs text-stone-500 text-center">
+                        *Lưu ý: BĐS dòng tiền và Hàng hóa được xếp vào nhóm tài sản thực chống lạm phát đột biến.
+                    </div>
+                </div>
+
+                <!-- Chart 2: Asset Comparison including Real Estate -->
+                <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold font-serif text-lg text-stone-900">So Sánh Thuộc Tính Trú Ẩn & Phòng Thủ</h3>
+                            <span class="text-xs bg-emerald-100 text-emerald-800 font-semibold px-2 py-0.5 rounded">BĐS vs Vàng vs BTC vs Cash</span>
+                        </div>
+                        <p class="text-xs text-stone-600 mb-4">Thang điểm 1-10 về Kháng Lạm Phát, Kháng Thuế, Thanh Khoản và An Toàn Đòn Bẩy.</p>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="assetComparisonChart"></canvas>
+                    </div>
+
+                    <div class="mt-4 pt-4 border-t border-stone-100 text-xs text-stone-500 text-center">
+                        BĐS điểm cao về phòng thủ lạm phát nhờ giá thuê, nhưng điểm thấp về rủi ro thuế và tính thanh khoản.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIMULATOR TOOLKIT -->
+            <div class="bg-stone-900 text-white rounded-2xl p-6 sm:p-8 shadow-xl space-y-6">
+                <div>
+                    <span class="text-xs font-bold text-amber-400 uppercase tracking-widest">CÔNG CỤ TƯƠNG TÁC MỞ RỘNG</span>
+                    <h3 class="text-xl sm:text-2xl font-serif font-bold text-white mt-1">
+                        Kiểm Tra Mức Độ Rủi Ro Việc Làm & Tài Sản Bất Động Sản Cá Nhân
+                    </h3>
+                    <p class="text-stone-300 text-xs sm:text-sm mt-1">
+                        Lựa chọn vị thế việc làm và tỷ lệ đòn bẩy BĐS của bạn để nhận khuyến nghị thích ứng vĩ mô từ Dalio.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-300 mb-2">Lĩnh vực việc làm / Thu nhập:</label>
+                        <select id="sim-industry" onchange="runSimulator()" class="w-full bg-stone-800 border border-stone-700 rounded-lg p-2.5 text-sm text-amber-300 focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                            <option value="junior">Cử nhân mới tốt nghiệp / Thực tập sinh</option>
+                            <option value="knowledge">Chuyên gia tri thức (Luật, Tài chính, IT)</option>
+                            <option value="capital">Nhà đầu tư / Giới sở hữu tư bản</option>
+                            <option value="service">Lao động dịch vụ chân tay thực nghiệm</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-300 mb-2">Tỷ lệ Nợ/Tài sản BĐS (LTV):</label>
+                        <select id="sim-re-ltv" onchange="runSimulator()" class="w-full bg-stone-800 border border-stone-700 rounded-lg p-2.5 text-sm text-stone-200 focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                            <option value="high">Đòn bẩy cao (Nợ vay > 60% giá trị BĐS)</option>
+                            <option value="mid">Đòn bẩy an toàn (Nợ vay 30% - 50%)</option>
+                            <option value="none">Không dùng nợ / Nắm giữ 100% vốn tự có</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-300 mb-2">Phân loại Bất động sản sở hữu:</label>
+                        <select id="sim-re-type" onchange="runSimulator()" class="w-full bg-stone-800 border border-stone-700 rounded-lg p-2.5 text-sm text-stone-200 focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                            <option value="office">BĐS Văn phòng thương mại / Đất nền đầu cơ</option>
+                            <option value="residential">BĐS Nhà ở tiêu dùng / Cho thuê dòng tiền</option>
+                            <option value="infra">BĐS Hạ tầng, Kho bãi & Data Center</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Simulator Output Box -->
+                <div id="sim-result" class="bg-stone-800/90 border border-amber-500/30 rounded-xl p-5 space-y-2">
+                    <!-- Dynamic Output Content Loaded via JS -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-stone-400 border-t border-stone-800 py-8 mt-12 text-xs text-center">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p class="font-serif text-stone-300 font-bold">TẠP CHÍ PHÂN TÍCH VĨ MÔ, BẤT ĐỘNG SẢN & CHU KỲ KINH TẾ</p>
+            <p>Biên tập dựa trên nội dung phỏng vấn Ray Dalio tại "The Diary Of A CEO" với Steven Bartlett.</p>
+            <p class="text-stone-600">© 2026 Macro Analysis Editorial Platform. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Smooth Scroll Navigation
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Article Tab Switcher
+        function switchTab(articleNum) {
+            // Hide all articles
+            const articles = document.querySelectorAll('.article-content');
+            articles.forEach(art => art.classList.add('hidden'));
+
+            // Reset tab styles
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(tab => {
+                tab.classList.remove('bg-emerald-800', 'text-white');
+                tab.classList.add('bg-stone-200', 'text-stone-700');
+            });
+
+            // Show target article
+            const targetArticle = document.getElementById(`article-${articleNum}`);
+            if (targetArticle) {
+                targetArticle.classList.remove('hidden');
+            }
+
+            // Highlight target tab
+            const targetTab = document.getElementById(`tab-btn-${articleNum}`);
+            if (targetTab) {
+                targetTab.classList.remove('bg-stone-200', 'text-stone-700');
+                targetTab.classList.add('bg-emerald-800', 'text-white');
+            }
+        }
+
+        function openArticle(num) {
+            scrollToSection('stage2');
+            switchTab(num);
+        }
+
+        // Initialize Charts when DOM Loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initAllWeatherChart();
+            initAssetComparisonChart();
+            runSimulator();
+        });
+
+        // Chart 1: All-Weather Portfolio with Real Estate
+        function initAllWeatherChart() {
+            const ctx = document.getElementById('allWeatherChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Cổ Phiếu (25%)', 'Trái Phiếu Dài Hạn (35%)', 'Trái Phiếu Trung Hạn (15%)', 'Vàng & Kim Loại Quý (10%)', 'BĐS Dòng Tiền & Hạ Tầng (10%)', 'Hàng Hóa (5%)'],
+                    datasets: [{
+                        data: [25, 35, 15, 10, 10, 5],
+                        backgroundColor: [
+                            '#1e3a2b', // Emerald dark
+                            '#8c6d32', // Amber gold
+                            '#d97706', // Amber light
+                            '#f59e0b', // Yellow gold
+                            '#b45309', // Brown amber for Real Estate
+                            '#57534e'  // Stone grey
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 11, family: 'Plus Jakarta Sans' },
+                                boxWidth: 12
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Chart 2: Asset Comparison (Including Real Estate)
+        function initAssetComparisonChart() {
+            const ctx = document.getElementById('assetComparisonChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Chống Lạm Phát', 'Kháng Thuế Tài Sản', 'Tính Thanh Khoản', 'An Toàn Trước Lãi Suất Cao'],
+                    datasets: [
+                        {
+                            label: 'Bất Động Sản',
+                            data: [8, 3, 2, 4],
+                            backgroundColor: '#b45309'
+                        },
+                        {
+                            label: 'Vàng Vật Chất',
+                            data: [9, 9, 8, 9],
+                            backgroundColor: '#8c6d32'
+                        },
+                        {
+                            label: 'Bitcoin (BTC)',
+                            data: [7, 4, 9, 3],
+                            backgroundColor: '#d97706'
+                        },
+                        {
+                            label: 'Tiền Mặt',
+                            data: [1, 2, 10, 10],
+                            backgroundColor: '#57534e'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10,
+                            ticks: { font: { size: 10 } }
+                        },
+                        x: {
+                            ticks: { font: { size: 10 } }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 10 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Simulator Logic
+        function runSimulator() {
+            const industry = document.getElementById('sim-industry').value;
+            const ltv = document.getElementById('sim-re-ltv').value;
+            const reType = document.getElementById('sim-re-type').value;
+            const resultBox = document.getElementById('sim-result');
+
+            let riskScore = 40;
+            let title = "";
+            let details = "";
+            let action = "";
+
+            // Evaluate Industry
+            if (industry === 'junior') riskScore += 25;
+            if (industry === 'knowledge') riskScore += 15;
+
+            // Evaluate LTV Debt
+            if (ltv === 'high') riskScore += 35;
+            if (ltv === 'mid') riskScore += 10;
+            if (ltv === 'none') riskScore -= 20;
+
+            // Evaluate RE Type
+            if (reType === 'office') riskScore += 25;
+            if (reType === 'residential') riskScore += 0;
+            if (reType === 'infra') riskScore -= 15;
+
+            // Clamp score
+            riskScore = Math.max(10, Math.min(95, riskScore));
+
+            let statusColor = "text-emerald-400";
+            if (riskScore > 45) statusColor = "text-amber-400";
+            if (riskScore > 70) statusColor = "text-red-400";
+
+            if (riskScore > 70) {
+                title = "MỨC ĐỘ RỦI RO CAO (" + riskScore + "%) - CẢNH BÁO ĐÒN BẨY & BĐS VĂN PHÒNG";
+                details = "Danh mục tài sản và việc làm của bạn đang chịu áp lực kép từ bẫy lãi suất neo cao và sự suy giảm nhu cầu BĐS văn phòng/đầu cơ. Chi phí trả nợ vay có nguy cơ bào mòn toàn bộ dòng tiền.";
+                action = "Khuyến nghị khẩn cấp: Tái cơ cấu giảm nợ vay LTV xuống dưới 30-40%, bán bớt BĐS không tạo ra dòng tiền thực và chuyển bớt một phần thanh khoản sang Vàng phòng thủ.";
+            } else if (riskScore > 45) {
+                title = "RỦI RO TRUNG BÌNH (" + riskScore + "%) - CẦN TỐI ƯU DÒNG TIỀN BĐS";
+                details = "Vị thế của bạn tương đối ổn định nhưng BĐS của bạn có thể chịu thuế tài sản hoặc biến động định giá ngắn hạn. Đòn bẩy tài chính ở mức vừa phải.";
+                action = "Khuyến nghị: Tập trung tối ưu hóa tỷ lệ lấp đầy để duy trì dòng tiền thuê nhà thực, tránh vay nợ mới để mua BĐS đầu cơ không có dòng tiền.";
+            } else {
+                title = "VỊ THẾ PHÒNG THỦ VỮNG CHẮC (" + riskScore + "%) - TỐI ƯU TÀI SẢN THỰC";
+                details = "Bạn không chịu áp lực đòn bẩy tài chính BĐS và sở hữu tài sản/kỹ năng thích ứng tốt với kỷ nguyên AI và lạm phát dài hạn.";
+                action = "Khuyến nghị: Duy trì phân bổ danh mục Mọi thời tiết (All-Weather) với 10% Vàng vật chất và 10-15% BĐS hạ tầng/dòng tiền thực để bảo tồn của cải qua chu kỳ.";
+            }
+
+            resultBox.innerHTML = `
+                <div class="flex items-center justify-between border-b border-stone-700 pb-2 mb-2">
+                    <span class="text-xs uppercase text-stone-400 font-bold">Đánh Giá Độ Nhạy Rủi Ro Vĩ Mô & BĐS:</span>
+                    <span class="text-sm font-bold ${statusColor}">${title}</span>
+                </div>
+                <p class="text-xs text-stone-300 leading-relaxed">${details}</p>
+                <p class="text-xs text-amber-300 font-semibold pt-1">${action}</p>
+            `;
+        }
+    </script>
+</body>
+</html>
