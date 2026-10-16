@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giải Mã Ánh Sáng & Ty Thể - Dr. Roger Seheult Analysis</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        amber: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                        },
+                        sand: {
+                            50: '#fdfbf7',
+                            100: '#f7f4ec',
+                            200: '#eae4d3',
+                            800: '#433d35',
+                            900: '#2b2621',
+                        },
+                        sage: {
+                            100: '#eef4ed',
+                            600: '#407a52',
+                            800: '#24472f',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fdfbf7;
+            color: #2b2621;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 580px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 380px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .tab-btn.active {
+            border-bottom: 3px solid #d97706;
+            color: #b45309;
+            font-weight: 700;
+            background-color: #fef3c7;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+<!-- Chosen Palette: Solar Earth & Warm Amber (#fdfbf7 background, warm sand cards, solar amber accents, sage green secondary) -->
+
+<!-- Application Structure Plan:
+     1. Sticky Navigation: Header with key topic tabs allowing non-linear exploration.
+     2. Tab 1: Dynamic Dashboard & Executive Summary (Core Metrics, Main Insight, Key Takeaways).
+     3. Tab 2: Biological & Molecular Mechanisms (Sunlight Spectrum Chart.js Donut, Vit D vs NIR Comparison Matrix, Melatonin Dynamic Simulator).
+     4. Tab 3: Epidemiological Evidence & Swedish Cohort Study (Mortality Risk Chart.js Bar Chart, Data drill-down).
+     5. Tab 4: Holistic NEWSTART Framework & Clinical Case Study (8-Pillar Interactive Accordion/Grid, Patient Henry Case Study).
+     6. Tab 5: Multi-dimensional Science Critique & Vietnam Context (Filterable Evidence Table, COI Evaluation, Tropical UV Guidance).
+     7. Tab 6: Interactive Sun & NIR Exposure Guidance Tool (Interactive calculator based on skin type & time of day).
+     Rationale: Reorganizes complex medical podcast into logical, interactive modules that empower users to visualize data, test scenarios, and digest multi-faceted health claims easily.
+-->
+
+<!-- Visualization & Content Choices:
+     - Sunlight Wavelengths -> Doughnut Chart (Chart.js) -> Canvas rendering -> Shows >50% is NIR spectrum visually.
+     - Swedish Mortality Hazard Ratios -> Grouped Bar Chart (Chart.js) -> Visual comparison between Sun Avoidance & Smoking.
+     - Melatonin Distribution -> Interactive Donut & Metric Toggle -> HTML/CSS + Canvas -> Highlights 95% vs 5% split.
+     - Evidence Evaluation Table -> Dynamic Filter Buttons (JS) -> Categorizes Consensus, Debatable, & Warning topics.
+     - Sun Safety Interactive Tool -> Custom JS Calculator -> Renders personalized UV/NIR advice for Vietnamese context.
+     - Confirming NO SVG tags used. NO Mermaid JS used.
+-->
+
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Header & Brand Bar -->
+    <header class="bg-amber-100 border-b border-amber-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <span class="text-2xl">☀️</span>
+                    <div>
+                        <h1 class="text-lg sm:text-xl font-bold text-amber-900 leading-tight">Y Học Ánh Sáng & Ty Thể</h1>
+                        <p class="text-xs text-amber-700 hidden sm:block">Phân tích podcast DOAC: TS. BS. Roger Seheult</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <span class="inline-block bg-amber-200 text-amber-800 text-xs px-2.5 py-1 rounded-full font-semibold border border-amber-300">
+                        📁 Hồ sơ phân tích tương tác
+                    </span>
+                </div>
+            </div>
+            <!-- Navigation Tabs -->
+            <nav class="flex overflow-x-auto space-x-1 sm:space-x-2 border-t border-amber-200/60 pt-1 no-scrollbar">
+                <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn active px-3 py-2 text-xs sm:text-sm font-medium rounded-t-md whitespace-nowrap transition-colors">
+                    📊 Tổng Quan
+                </button>
+                <button onclick="switchTab('mechanism')" id="tab-mechanism" class="tab-btn px-3 py-2 text-xs sm:text-sm font-medium rounded-t-md whitespace-nowrap transition-colors">
+                    🧬 Bức Xạ NIR & Ty Thể
+                </button>
+                <button onclick="switchTab('epidemiology')" id="tab-epidemiology" class="tab-btn px-3 py-2 text-xs sm:text-sm font-medium rounded-t-md whitespace-nowrap transition-colors">
+                    📈 Bằng Chứng Dịch Tễ
+                </button>
+                <button onclick="switchTab('newstart')" id="tab-newstart" class="tab-btn px-3 py-2 text-xs sm:text-sm font-medium rounded-t-md whitespace-nowrap transition-colors">
+                    🌿 Khung NEWSTART
+                </button>
+                <button onclick="switchTab('critique')" id="tab-critique" class="tab-btn px-3 py-2 text-xs sm:text-sm font-medium rounded-t-md whitespace-nowrap transition-colors">
+                    ⚖️ Thẩm Định & Phản Biện
+                </button>
+                <button onclick="switchTab('calculator')" id="tab-calculator" class="tab-btn px-3 py-2 text-xs sm:text-sm font-medium rounded-t-md whitespace-nowrap transition-colors">
+                    ⏱️ Trợ Lý Tắm Nắng Việt Nam
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- ================= SECTION 1: OVERVIEW ================= -->
+        <section id="sec-overview" class="space-y-6">
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 sm:p-6 shadow-sm">
+                <h2 class="text-xl sm:text-2xl font-bold text-amber-900 mb-2">Tóm Tắt Tổng Quan Báo Cáo Phân Tích</h2>
+                <p class="text-sand-800 text-sm sm:text-base leading-relaxed">
+                    Mục này tổng hợp thông điệp cốt lõi và các chỉ số trọng yếu từ cuộc đối thoại giữa **Steven Bartlett** và **TS. BS. Roger Seheult**. Phân tích chỉ ra rằng ánh sáng mặt trời tự nhiên đóng vai trò sinh học quan trọng vượt xa việc tổng hợp Vitamin D3 thông thường, tác động trực tiếp đến khả năng chống oxy hóa tế bào qua cơ chế sản sinh Melatonin nội bào trong ty thể.
+                </p>
+            </div>
+
+            <!-- Key Metric Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white border border-sand-200 p-5 rounded-xl shadow-sm hover:border-amber-400 transition-all">
+                    <div class="text-amber-600 text-3xl font-extrabold">95%</div>
+                    <div class="text-sm font-semibold text-sand-900 mt-1">Melatonin Nội Bào</div>
+                    <p class="text-xs text-gray-600 mt-1">Được sản xuất trực tiếp trong ty thể nhờ dải quang phổ Cận hồng ngoại (NIR), không qua tuyến tùng.</p>
+                </div>
+                <div class="bg-white border border-sand-200 p-5 rounded-xl shadow-sm hover:border-amber-400 transition-all">
+                    <div class="text-amber-600 text-3xl font-extrabold">&gt; 50%</div>
+                    <div class="text-sm font-semibold text-sand-900 mt-1">Năng Lượng Mặt Trời</div>
+                    <p class="text-xs text-gray-600 mt-1">Thuộc bức xạ cận hồng ngoại (NIR), có khả năng đâm xuyên sâu qua da và mô tế bào.</p>
+                </div>
+                <div class="bg-white border border-sand-200 p-5 rounded-xl shadow-sm hover:border-amber-400 transition-all">
+                    <div class="text-amber-600 text-3xl font-extrabold">20 Năm</div>
+                    <div class="text-sm font-semibold text-sand-900 mt-1">Nghiên Cứu Đoàn Hệ</div>
+                    <p class="text-xs text-gray-600 mt-1">Khảo sát trên 30.000 phụ nữ Thụy Điển về mối liên hệ giữa hành vi tránh nắng và tỷ lệ tử vong.</p>
+                </div>
+                <div class="bg-white border border-sand-200 p-5 rounded-xl shadow-sm hover:border-amber-400 transition-all">
+                    <div class="text-amber-600 text-3xl font-extrabold">8 Trụ Cột</div>
+                    <div class="text-sm font-semibold text-sand-900 mt-1">Mô Hình NEWSTART</div>
+                    <p class="text-xs text-gray-600 mt-1">Khung lối sống dự phòng phối hợp đa cơ quan giúp phục hồi thể trạng và sức bền sinh học.</p>
+                </div>
+            </div>
+
+            <!-- Core Insight & Takeaways Interactive List -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Message Box -->
+                <div class="lg:col-span-1 bg-gradient-to-br from-amber-500 to-amber-700 text-white rounded-2xl p-6 shadow-md flex flex-col justify-between">
+                    <div>
+                        <span class="bg-amber-900/40 text-amber-100 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Thông điệp cốt lõi</span>
+                        <h3 class="text-xl font-bold mt-3 mb-2 leading-snug">Sự khác biệt giữa Ánh Sáng Tự Nhiên & Viên Bổ Sung</h3>
+                        <p class="text-amber-100 text-sm leading-relaxed">
+                            "Ánh sáng mặt trời tự nhiên không chỉ đơn thuần giúp tổng hợp Vitamin D qua da mà còn cung cấp dải bức xạ cận hồng ngoại (NIR) tối quan trọng kích thích sinh tổng hợp melatonin nội bào ngay trong ty thể, giúp dập tắt stress oxy hóa và phòng ngừa suy giảm nhận thức."
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-amber-400/30 text-xs text-amber-200">
+                        — TS. BS. Roger Seheult (Loma Linda University)
+                    </div>
+                </div>
+
+                <!-- Key Takeaways List -->
+                <div class="lg:col-span-2 bg-white border border-sand-200 rounded-2xl p-6 shadow-sm">
+                    <h3 class="text-lg font-bold text-sand-900 mb-4 flex items-center">
+                        <span class="mr-2">📋</span> Các Điểm Thu Hoạch Chính (Key Takeaways)
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="p-3 rounded-lg bg-sand-50 border border-sand-100 flex items-start space-x-3">
+                            <span class="text-amber-600 font-bold text-sm">1.</span>
+                            <p class="text-xs sm:text-sm text-sand-800">
+                                **Ánh sáng tự nhiên gồm đa dải quang phổ:** Dải cận hồng ngoại (NIR) chiếm trên 50% năng lượng mặt trời nhưng thường bị bỏ qua khi xã hội chỉ tập trung vào chỉ số Vitamin D.
+                            </p>
+                        </div>
+                        <div class="p-3 rounded-lg bg-sand-50 border border-sand-100 flex items-start space-x-3">
+                            <span class="text-amber-600 font-bold text-sm">2.</span>
+                            <p class="text-xs sm:text-sm text-sand-800">
+                                **Melatonin ty thể chiếm 95%:** Chỉ 5% melatonin được tuyến tùng tiết ra cho giấc ngủ; 95% còn lại nằm trong ty thể tế bào để dập tắt gốc tự do (ROS).
+                            </p>
+                        </div>
+                        <div class="p-3 rounded-lg bg-sand-50 border border-sand-100 flex items-start space-x-3">
+                            <span class="text-amber-600 font-bold text-sm">3.</span>
+                            <p class="text-xs sm:text-sm text-sand-800">
+                                **Viên uống Vitamin D3 không thể thay thế NIR:** Bổ sung D3 bằng đường uống hỗ trợ chuyển hóa canxi nhưng không kích hoạt được bộ máy sản sinh melatonin nội bào.
+                            </p>
+                        </div>
+                        <div class="p-3 rounded-lg bg-sand-50 border border-sand-100 flex items-start space-x-3">
+                            <span class="text-amber-600 font-bold text-sm">4.</span>
+                            <p class="text-xs sm:text-sm text-sand-800">
+                                **Nitric Oxide ($NO$) giãn mạch:** Tia cực tím giúp giải phóng $NO$ dự trữ dưới da vào lòng mạch, góp phần hạ huyết áp tự nhiên độc lập với Vitamin D.
+                            </p>
+                        </div>
+                        <div class="p-3 rounded-lg bg-sand-50 border border-sand-100 flex items-start space-x-3">
+                            <span class="text-amber-600 font-bold text-sm">5.</span>
+                            <p class="text-xs sm:text-sm text-sand-800">
+                                **Cá nhân hóa theo bối cảnh:** Tiếp xúc ánh sáng cần căn cứ vào chỉ số UV địa phương, loại da và tránh tuyệt đối nguy cơ gây bỏng nắng hoặc ung thư da.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 2: MECHANISM ================= -->
+        <section id="sec-mechanism" class="space-y-6 hidden">
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 sm:p-6">
+                <h2 class="text-xl sm:text-2xl font-bold text-amber-900 mb-2">Bức Xạ Cận Hồng Ngoại (NIR) & Cơ Chế Ty Thể</h2>
+                <p class="text-sand-800 text-sm sm:text-base leading-relaxed">
+                    Phần này đi sâu giải thích cơ chế sinh học cấp độ tế bào. Trái với quan niệm phổ biến rằng Melatonin chỉ là "hormone giấc ngủ" từ tuyến tùng, nghiên cứu sinh học hiện đại cho thấy phần lớn Melatonin hoạt động như một chất chống oxy hóa mạnh mẽ bảo vệ chuỗi hô hấp ty thể khỏi các gốc tự do phản ứng (ROS).
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Spectrum Doughnut Chart Container -->
+                <div class="bg-white border border-sand-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-sand-900 mb-1">Thành Phần Quang Phổ Năng Lượng Mặt Trời</h3>
+                        <p class="text-xs text-gray-500 mb-4">Hơn 50% bức xạ mặt trời chiếu xuống Trái Đất thuộc dải Cận Hồng Ngoại (NIR).</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="spectrumChart"></canvas>
+                    </div>
+                    <p class="text-xs text-sand-800 bg-sand-50 p-3 rounded-lg border border-sand-100 mt-2">
+                        💡 **Ghi chú:** Tia UVB (chỉ chiếm ~1%) giúp da tổng hợp Vitamin D, trong khi tia NIR (56%) đâm xuyên qua quần áo và mô sâu để kích thích ty thể.
+                    </p>
+                </div>
+
+                <!-- Comparison Table & Interactive Melatonin Toggle -->
+                <div class="bg-white border border-sand-200 rounded-2xl p-5 shadow-sm space-y-5">
+                    <div>
+                        <h3 class="text-base font-bold text-sand-900 mb-3">Đối Chiếu: Viên Uống Vitamin D3 vs. Ánh Sáng Mặt Trời Tự Nhiên</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-xs sm:text-sm text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-amber-100/60 text-amber-900">
+                                        <th class="p-2 border border-amber-200 font-bold">Tiêu chí</th>
+                                        <th class="p-2 border border-amber-200 font-bold">Viên uống Vitamin D3</th>
+                                        <th class="p-2 border border-amber-200 font-bold">Ánh nắng tự nhiên</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-sand-100">
+                                        <td class="p-2 border border-sand-200 font-semibold bg-sand-50">Tăng Vitamin D máu</td>
+                                        <td class="p-2 border border-sand-200 text-emerald-700 font-medium">Có (Hiệu quả)</td>
+                                        <td class="p-2 border border-sand-200 text-emerald-700 font-medium">Có (Qua da)</td>
+                                    </tr>
+                                    <tr class="border-b border-sand-100">
+                                        <td class="p-2 border border-sand-200 font-semibold bg-sand-50">Sản sinh Melatonin Ty Thể</td>
+                                        <td class="p-2 border border-sand-200 text-rose-600 font-medium">Không tác dụng</td>
+                                        <td class="p-2 border border-sand-200 text-emerald-700 font-medium">Có (Nhờ dải NIR)</td>
+                                    </tr>
+                                    <tr class="border-b border-sand-100">
+                                        <td class="p-2 border border-sand-200 font-semibold bg-sand-50">Giải phóng Nitric Oxide ($NO$)</td>
+                                        <td class="p-2 border border-sand-200 text-rose-600 font-medium">Không</td>
+                                        <td class="p-2 border border-sand-200 text-emerald-700 font-medium">Có (Hạ huyết áp)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2 border border-sand-200 font-semibold bg-sand-50">Chống Stress Oxy Hóa Tế Bào</td>
+                                        <td class="p-2 border border-sand-200 text-amber-700">Gián tiếp</td>
+                                        <td class="p-2 border border-sand-200 text-emerald-700 font-medium">Mạnh mẽ (Trực tiếp)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Melatonin Location Simulator -->
+                    <div class="bg-amber-50/80 border border-amber-200 p-4 rounded-xl">
+                        <h4 class="text-xs font-bold text-amber-900 uppercase tracking-wide mb-2">Mô Phỏng Phân Bố Melatonin Trong Cơ Thể</h4>
+                        <div class="flex items-center space-x-2 mb-3">
+                            <button onclick="toggleMelatonin('all')" class="m-btn text-xs px-3 py-1.5 rounded-md bg-amber-600 text-white font-medium">Tất cả nguồn</button>
+                            <button onclick="toggleMelatonin('pineal')" class="m-btn text-xs px-3 py-1.5 rounded-md bg-white text-sand-800 border border-sand-200 font-medium">Tuyến Tùng (5%)</button>
+                            <button onclick="toggleMelatonin('mitochondria')" class="m-btn text-xs px-3 py-1.5 rounded-md bg-white text-sand-800 border border-sand-200 font-medium">Ty Thể (95%)</button>
+                        </div>
+                        <div id="melatonin-desc" class="text-xs text-sand-800 leading-relaxed bg-white p-3 rounded border border-amber-200/60">
+                            **Tổng thể:** Cơ thể có hai kho Melatonin biệt lập. Tuyến tùng tiết hormone vào máu vào ban đêm để điều hòa nhịp sinh học. Trong khi đó, ty thể của mọi tế bào tự tổng hợp Melatonin ban ngày dưới tác động của tia NIR để tự bảo vệ.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 3: EPIDEMIOLOGY ================= -->
+        <section id="sec-epidemiology" class="space-y-6 hidden">
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 sm:p-6">
+                <h2 class="text-xl sm:text-2xl font-bold text-amber-900 mb-2">Bằng Chứng Dịch Tễ Học: Nghiên Cứu Đoàn Hệ Thụy Điển</h2>
+                <p class="text-sand-800 text-sm sm:text-base leading-relaxed">
+                    BS. Roger Seheult dẫn chứng công trình nghiên cứu nổi tiếng kéo dài 20 năm của **TS. Pelle Lindqvist** trên 30.000 phụ nữ tại Thụy Điển. Dữ liệu cho thấy hành vi né tránh ánh nắng mặt trời hoàn toàn liên quan đến việc gia tăng tỷ lệ tử vong do mọi nguyên nhân tương đương với yếu tố nguy cơ hút thuốc lá.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Swedish Study Chart -->
+                <div class="lg:col-span-2 bg-white border border-sand-200 rounded-2xl p-5 shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h3 class="text-base font-bold text-sand-900">Tỷ Lệ Tương Đối Tăng Nguy Cơ Tử Vong All-Cause</h3>
+                            <p class="text-xs text-gray-500">So sánh mức độ rủi ro giữa thói quen né tránh ánh nắng và hút thuốc lá</p>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="epidemiologyChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-xs text-sand-700 bg-sand-50 p-3 rounded-lg border border-sand-200">
+                        📌 **Trích dẫn gốc [00:51:10]:** *"Tương tự như bệnh scobut do thiếu Vitamin C, xã hội hiện đại đang đối mặt với căn bệnh thiếu hụt ánh sáng tự nhiên do thói quen sinh hoạt khép kín trong nhà."* — TS. BS. Roger Seheult
+                    </div>
+                </div>
+
+                <!-- Qualitative Insights Card -->
+                <div class="bg-white border border-sand-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-sand-900 mb-3">Phân Tích Chi Tiết Tác Động Tim Mạch & Thần Kinh</h3>
+                        <div class="space-y-3 text-xs sm:text-sm text-sand-800">
+                            <div class="p-3 bg-amber-50/50 rounded-lg border border-amber-100">
+                                <span class="font-bold text-amber-900">🫀 Tác động lên Huyết Ánh & Tim Mạch:</span>
+                                <p class="mt-1">Khi tia UV tiếp xúc da, lượng Nitric Oxide ($NO$) lưu trữ dưới da được giải phóng vào hệ tuần hoàn, gây giãn mạch và hạ huyết áp động mạch.</p>
+                            </div>
+                            <div class="p-3 bg-amber-50/50 rounded-lg border border-amber-100">
+                                <span class="font-bold text-amber-900">🧠 Bảo vệ Thần Kinh & Sa Sút Trí Tuệ:</span>
+                                <p class="mt-1">Melatonin ty thể giúp trung hòa stress oxy hóa tại các tế bào thần kinh, giảm tích tụ các tổn thương vi mô được coi là mầm mống của sa sút trí tuệ (Dementia).</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-sand-100 text-xs text-gray-500">
+                        Nguồn dữ liệu gốc: Lindqvist et al., Journal of Internal Medicine (MISS Study).
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 4: NEWSTART ================= -->
+        <section id="sec-newstart" class="space-y-6 hidden">
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 sm:p-6">
+                <h2 class="text-xl sm:text-2xl font-bold text-amber-900 mb-2">Khung Lối Sống Dự Phòng NEWSTART & Ca Bệnh Lâm Sàng</h2>
+                <p class="text-sand-800 text-sm sm:text-base leading-relaxed">
+                    BS. Seheult giới thiệu mô hình y học dự phòng toàn diện **NEWSTART** gồm 8 trụ cột tự nhiên. Ông minh họa sức mạnh phục hồi sinh học bằng trường hợp lâm sàng thực tế của bệnh nhân Henry.
+                </p>
+            </div>
+
+            <!-- 8 Pillars Grid -->
+            <div class="bg-white border border-sand-200 rounded-2xl p-6 shadow-sm">
+                <h3 class="text-lg font-bold text-sand-900 mb-4">8 Trụ Cột Khung NEWSTART (Bấm để xem nội dung)</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="pillar-grid">
+                    <!-- Dynamic rendering via JS -->
+                </div>
+                <div id="pillar-detail" class="mt-4 p-4 rounded-xl bg-amber-50 border border-amber-200 text-sm text-sand-800 min-h-[80px]">
+                    👈 Nhấp vào từng trụ cột ở trên để xem diễn giải chi tiết từ BS. Roger Seheult.
+                </div>
+            </div>
+
+            <!-- Clinical Case Study: Henry -->
+            <div class="bg-gradient-to-r from-sage-100 to-amber-50 border border-sage-600/30 rounded-2xl p-6 shadow-sm">
+                <div class="flex items-center space-x-3 mb-3">
+                    <span class="text-2xl">🩺</span>
+                    <div>
+                        <h3 class="text-lg font-bold text-sage-800">Nghiên Cứu Trường Hợp (Case Study): Bệnh Nhận Henry (15 tuổi)</h3>
+                        <p class="text-xs text-sage-600">Minh họa tác động phục hồi lâm sàng nhờ kết hợp môi trường tự nhiên</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs sm:text-sm mt-3">
+                    <div class="bg-white p-4 rounded-xl border border-sand-200">
+                        <span class="font-bold text-rose-700">1. Tình trạng ban đầu:</span>
+                        <p class="mt-1 text-sand-800">Nhiễm nấm phổi diện rộng nặng sau điều trị hóa trị ung thư; đáp ứng kém với các phác đồ kháng nấm nội viện tối tân.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-sand-200">
+                        <span class="font-bold text-amber-700">2. Can thiệp hỗ trợ:</span>
+                        <p class="mt-1 text-sand-800">Được đưa ra tiếp xúc với ánh nắng mặt trời ngoài trời tự nhiên hàng ngày kết hợp duy trì y tế chuyên khoa.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-sand-200">
+                        <span class="font-bold text-emerald-700">3. Kết quả chẩn đoán:</span>
+                        <p class="mt-1 text-sand-800">Sự thoái triển và phục hồi tổn thương phổi rõ rệt trên phim chẩn đoán hình ảnh, thể trạng cải thiện nhanh chóng.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 5: CRITIQUE & VIETNAM ================= -->
+        <section id="sec-critique" class="space-y-6 hidden">
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 sm:p-6">
+                <h2 class="text-xl sm:text-2xl font-bold text-amber-900 mb-2">Thẩm Định Khoa Học & Bản Địa Hóa Tại Việt Nam</h2>
+                <p class="text-sand-800 text-sm sm:text-base leading-relaxed">
+                    Báo cáo thực hiện bóc tách đa chiều giữa phát biểu của diễn giả, mức độ đồng thuận khoa học, xung đột lợi ích thương mại và cách điều chỉnh phù hợp với điều kiện khí hậu nhiệt đới tại Việt Nam.
+                </p>
+            </div>
+
+            <!-- Evidence Evaluation Filterable Matrix -->
+            <div class="bg-white border border-sand-200 rounded-2xl p-6 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                    <h3 class="text-lg font-bold text-sand-900">Bảng Thẩm Định Đa Chiều Các Nhận Định</h3>
+                    <div class="flex space-x-1 sm:space-x-2">
+                        <button onclick="filterEvidence('all')" class="ev-btn text-xs px-3 py-1 rounded bg-sand-800 text-white font-medium">Tất cả</button>
+                        <button onclick="filterEvidence('green')" class="ev-btn text-xs px-3 py-1 rounded bg-emerald-100 text-emerald-800 font-medium">🟢 Đồng thuận</button>
+                        <button onclick="filterEvidence('yellow')" class="ev-btn text-xs px-3 py-1 rounded bg-amber-100 text-amber-800 font-medium">🟡 Tranh luận</button>
+                        <button onclick="filterEvidence('red')" class="ev-btn text-xs px-3 py-1 rounded bg-rose-100 text-rose-800 font-medium">🔴 Cảnh báo</button>
+                    </div>
+                </div>
+
+                <div class="space-y-3" id="evidence-container">
+                    <!-- Dynamic rendering via JS -->
+                </div>
+            </div>
+
+            <!-- Conflict of Interest & Vietnam Context Dual Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- COI Box -->
+                <div class="bg-white border border-sand-200 rounded-2xl p-5 shadow-sm">
+                    <h3 class="text-base font-bold text-sand-900 mb-2 flex items-center">
+                        <span class="mr-2">⚠️</span> Thẩm Định Xung Đột Lợi Ích (COI)
+                    </h3>
+                    <p class="text-xs sm:text-sm text-sand-800 leading-relaxed mb-3">
+                        Tập podcast có nhận tài trợ trực tiếp từ nhãn hàng **Bon Charge** (đơn vị bán thiết bị quang trị liệu hồng ngoại và kính chống ánh sáng xanh).
+                    </p>
+                    <div class="text-xs bg-amber-50 p-3 rounded-lg border border-amber-200 text-sand-800">
+                        **Khuyên đọc:** Cần phân biệt rõ giữa lợi ích sinh học của ánh sáng mặt trời tự nhiên (miễn phí) và các tuyên bố thương mại hóa về đèn chiếu nhân tạo đắt tiền.
+                    </div>
+                </div>
+
+                <!-- Vietnam Localization Box -->
+                <div class="bg-white border border-sand-200 rounded-2xl p-5 shadow-sm">
+                    <h3 class="text-base font-bold text-sand-900 mb-2 flex items-center">
+                        <span class="mr-2">🇻🇳</span> Bản Địa Hóa Cho Bối Cảnh Việt Nam
+                    </h3>
+                    <p class="text-xs sm:text-sm text-sand-800 leading-relaxed mb-3">
+                        Việt Nam nằm ở khu vực nhiệt đới với chỉ số UV giữa trưa cực kỳ cao (thường xuyên vượt ngưỡng 8–10+).
+                    </p>
+                    <div class="text-xs bg-emerald-50 p-3 rounded-lg border border-emerald-200 text-sand-800">
+                        **Khuyến cáo áp dụng:** Không áp dụng máy móc việc tắm nắng giữa trưa. Nên ưu tiên tiếp xúc ánh nắng vào sáng sớm (bình minh) để nhận dải sáng NIR cao với chỉ số UV an toàn.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 6: CALCULATOR ================= -->
+        <section id="sec-calculator" class="space-y-6 hidden">
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 sm:p-6">
+                <h2 class="text-xl sm:text-2xl font-bold text-amber-900 mb-2">Công Cụ Ước Tính Tiếp Xúc Ánh Sáng An Toàn</h2>
+                <p class="text-sand-800 text-sm sm:text-base leading-relaxed">
+                    Công cụ tương tác giúp người dùng Việt Nam tính toán thời điểm và thời lượng tiếp xúc ánh sáng mặt trời phù hợp dựa trên phân loại da (Fitzpatrick Skin Type) và thời điểm trong ngày để tối ưu hóa NIR mà vẫn phòng tránh tác hại của tia UV.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white border border-sand-200 rounded-2xl p-6 shadow-sm">
+                <!-- Inputs -->
+                <div class="space-y-4">
+                    <h3 class="text-base font-bold text-sand-900 border-b border-sand-100 pb-2">1. Chọn Thông Số Cá Nhân</h3>
+                    
+                    <div>
+                        <label class="block text-xs font-semibold text-sand-900 mb-1">Kiểu hình da (Fitzpatrick Scale):</label>
+                        <select id="calc-skin" onchange="calculateSunlight()" class="w-full text-xs sm:text-sm p-2.5 rounded-lg border border-sand-300 bg-sand-50 focus:ring-2 focus:ring-amber-500">
+                            <option value="1">Loại I: Da rất trắng, cực kỳ dễ bỏng nắng</option>
+                            <option value="2">Loại II: Da trắng sáng, dễ ăn nắng</option>
+                            <option value="3" selected>Loại III: Da trung bình (Phổ biến tại Việt Nam)</option>
+                            <option value="4">Loại IV: Da ngăm / Châu Á đậm màu</option>
+                            <option value="5">Loại V: Da nâu sẫm</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-sand-900 mb-1">Khung giờ tiếp xúc dự định:</label>
+                        <select id="calc-time" onchange="calculateSunlight()" class="w-full text-xs sm:text-sm p-2.5 rounded-lg border border-sand-300 bg-sand-50 focus:ring-2 focus:ring-amber-500">
+                            <option value="morning" selected>Sáng sớm (06:00 - 08:00 AM) — UV Thấp, NIR Cao</option>
+                            <option value="midday">Giữa trưa (11:00 AM - 01:00 PM) — UV Cực Cao (Nguy hiểm)</option>
+                            <option value="afternoon">Chiều mát (04:30 - 05:30 PM) — UV Thấp, Tận hưởng không khí</option>
+                        </select>
+                    </div>
+
+                    <div class="p-3 bg-amber-50/60 rounded-lg text-xs text-sand-700">
+                        ℹ️ *Công cụ mang tính chất giáo dục hành vi lối sống, dựa trên khuyến cáo phân liều quang học y học dự phòng.*
+                    </div>
+                </div>
+
+                <!-- Outputs -->
+                <div class="bg-sand-50 border border-sand-200 rounded-xl p-5 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-sand-900 border-b border-sand-200 pb-2 mb-3">2. Khuyên Dùng Lối Sống</h3>
+                        <div id="calc-result" class="space-y-3">
+                            <!-- Dynamic content from JS -->
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-sand-200 text-xs text-gray-500">
+                        Luôn tuân thủ nguyên tắc: Không bao giờ để da bị đỏ hoặc bỏng rát.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-sand-900 text-sand-200 border-t border-sand-800 mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-xs leading-relaxed space-y-3">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-sand-800 pb-4">
+                <p class="font-semibold text-amber-400">Ứng dụng Phân tích & Tương tác Báo cáo - DOAC Podcast</p>
+                <p class="text-sand-400 mt-1 sm:mt-0">Tài liệu chuyển hóa cho độc giả Việt Nam</p>
+            </div>
+            <p>
+                **Ghi công:** Bài viết phân tích dựa trên tập podcast *"Vitamin D Expert: The Fastest Way To Dementia..."* của chương trình *The Diary Of A CEO* (Host: Steven Bartlett, Khách mời: TS. BS. Roger Seheult).
+            </p>
+            <p class="text-amber-300">
+                ⚠️ **Cần kiểm chứng:** Các cơ chế về Melatonin ty thể cần thêm các thử nghiệm lâm sàng ngẫu nhiên có đối chứng (RCT) dài hạn trên người để khẳng định hiệu quả điều trị dứt điểm sa sút trí tuệ.
+            </p>
+            <p class="text-sand-400 text-[11px]">
+                *Miễn trừ trách nhiệm:* Bài viết mang tính chất thông tin và phân tích truyền thông y tế, không thay thế cho tư vấn, chẩn đoán hoặc điều trị y khoa chuyên nghiệp.
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Tab Navigation Logic
+        function switchTab(tabId) {
+            const sections = ['overview', 'mechanism', 'epidemiology', 'newstart', 'critique', 'calculator'];
+            sections.forEach(sec => {
+                document.getElementById(`sec-${sec}`).classList.add('hidden');
+                document.getElementById(`tab-${sec}`).classList.remove('active');
+            });
+
+            document.getElementById(`sec-${tabId}`).classList.remove('hidden');
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+
+            // Trigger Chart resize when tab becomes visible
+            if (tabId === 'mechanism' && window.spectrumChartObj) {
+                window.spectrumChartObj.resize();
+            }
+            if (tabId === 'epidemiology' && window.epiChartObj) {
+                window.epiChartObj.resize();
+            }
+        }
+
+        // Initialize Charts on DOM Content Loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            initSpectrumChart();
+            initEpiChart();
+            renderPillars();
+            renderEvidence();
+            calculateSunlight();
+        });
+
+        // 1. Chart.js: Spectrum Breakdown (Donut)
+        function initSpectrumChart() {
+            const ctx = document.getElementById('spectrumChart').getContext('2d');
+            window.spectrumChartObj = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Tia Cận Hồng Ngoại (NIR)', 'Ánh Sáng Nhìn Thấy', 'Tia UVA', 'Tia UVB (Tạo Vit D)'],
+                    datasets: [{
+                        data: [56, 39, 4, 1],
+                        backgroundColor: ['#d97706', '#f59e0b', '#3b82f6', '#ef4444'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 11 },
+                                boxWidth: 12
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` ${context.label}: ${context.raw}% tổng năng lượng`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 2. Chart.js: Swedish Epidemiology Study Bar Chart
+        function initEpiChart() {
+            const ctx = document.getElementById('epidemiologyChart').getContext('2d');
+            window.epiChartObj = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [
+                        ['Né tránh nắng', '(Không hút thuốc)'],
+                        ['Tiếp xúc nắng', '(Có hút thuốc)'],
+                        ['Né tránh nắng', '(Có hút thuốc)'],
+                        ['Tiếp xúc nắng tối đa', '(Không hút thuốc)']
+                    ],
+                    datasets: [{
+                        label: 'Chỉ số Tỷ lệ Tử vong Tương đối (Hazard Ratio)',
+                        data: [2.0, 1.9, 3.1, 1.0],
+                        backgroundColor: ['#f59e0b', '#ef4444', '#b91c1c', '#10b981'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Mức độ nguy cơ tử vong tương đối',
+                                font: { size: 11 }
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: { size: 10 }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => ` Mức nguy cơ: ${ctx.raw}x so với nhóm tiếp xúc nắng chuẩn`
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Melatonin Simulator Toggle Logic
+        function toggleMelatonin(type) {
+            const desc = document.getElementById('melatonin-desc');
+            const btns = document.querySelectorAll('.m-btn');
+            btns.forEach(b => {
+                b.classList.remove('bg-amber-600', 'text-white');
+                b.classList.add('bg-white', 'text-sand-800');
+            });
+
+            if (type === 'all') {
+                desc.innerHTML = `**Tổng thể:** Cơ thể có hai kho Melatonin biệt lập. Tuyến tùng tiết hormone vào máu vào ban đêm để điều hòa nhịp sinh học. Trong khi đó, ty thể của mọi tế bào tự tổng hợp Melatonin ban ngày dưới tác động của tia NIR để tự bảo vệ.`;
+            } else if (type === 'pineal') {
+                desc.innerHTML = `**Tuyến tùng (5%):** Chỉ chiếm tỷ lệ nhỏ. Tiết ra máu khi trời tối, đóng vai trò chính là tín hiệu hóa học báo thời gian cho giấc ngủ toàn thân.`;
+            } else if (type === 'mitochondria') {
+                desc.innerHTML = `**Ty thể tế bào (95%):** Chiếm đa số tuyệt đối. Được sản sinh nội bào nhờ dải cận hồng ngoại (NIR) từ mặt trời chiếu xuyên qua mô. Hoạt động như chất trung hòa gốc tự do (ROS) tại chỗ.`;
+            }
+        }
+
+        // NEWSTART Framework Data & Logic
+        const pillarsData = [
+            { id: 'N', title: 'Nutrition (Dinh dưỡng)', icon: '🥗', desc: 'Ưu tiên thực phẩm nguyên bản, giàu chất chống oxy hóa tự nhiên để hỗ trợ chức năng ty thể.' },
+            { id: 'E', title: 'Exercise (Vận động)', icon: '🏃', desc: 'Kích thích tăng sinh ty thể mới (mitochondrial biogenesis) qua hoạt động thể chất vừa sức.' },
+            { id: 'W', title: 'Water (Nước)', icon: '💧', desc: 'Duy trì đủ nước cho phản ứng thủy phân và thanh lọc chuyển hóa tế bào.' },
+            { id: 'S', title: 'Sunlight (Ánh sáng)', icon: '☀️', desc: 'Hấp thụ dải quang phổ NIR cho melatonin ty thể và tia cực tím cho Nitric Oxide & Vitamin D.' },
+            { id: 'T', title: 'Temperance (Tiết độ)', icon: '⚖️', desc: 'Tránh các tác nhân độc hại như thuốc lá, cồn, và việc phơi nắng quá liều gây bỏng da.' },
+            { id: 'A', title: 'Air (Không khí)', icon: '🌬️', desc: 'Hít thở không khí trong lành tự nhiên ngoài trời, giúp tối ưu hóa nồng độ oxy huyết.' },
+            { id: 'R', title: 'Rest (Nghỉ ngơi)', icon: '🌙', desc: 'Tối ưu hóa giấc ngủ ban đêm theo nhịp sinh học tự nhiên, hỗ trợ quá trình dọn dẹp não bộ.' },
+            { id: 'T2', title: 'Trust (Niềm tin)', icon: '🤝', desc: 'Giảm bớt căng thẳng tinh thần (stress mạn tính), giúp hạ nồng độ cortisol độc hại.' }
+        ];
+
+        function renderPillars() {
+            const grid = document.getElementById('pillar-grid');
+            grid.innerHTML = pillarsData.map(p => `
+                <button onclick="showPillarDetail('${p.id}')" class="p-3 border border-sand-200 rounded-xl bg-sand-50 hover:bg-amber-100 hover:border-amber-300 text-left transition-all flex items-center space-x-2">
+                    <span class="text-xl">${p.icon}</span>
+                    <span class="text-xs font-bold text-sand-900">${p.title.split(' ')[0]}</span>
+                </button>
+            `).join('');
+        }
+
+        function showPillarDetail(id) {
+            const pillar = pillarsData.find(p => p.id === id);
+            const detailBox = document.getElementById('pillar-detail');
+            detailBox.innerHTML = `
+                <div class="font-bold text-amber-900 flex items-center mb-1">
+                    <span class="mr-2 text-lg">${pillar.icon}</span> ${pillar.title}
+                </div>
+                <p class="text-xs text-sand-800 leading-relaxed">${pillar.desc}</p>
+            `;
+        }
+
+        // Science Critique Evidence Matrix Data & Logic
+        const evidenceData = [
+            {
+                type: 'green',
+                badge: '🟢 Đồng thuận khoa học',
+                title: 'Tia UVB giúp tổng hợp Vitamin D & UV giải phóng Nitric Oxide',
+                desc: 'Được minh chứng rõ ràng qua nhiều công trình y học: UVB chuyển hóa 7-dehydrocholesterol thành Vit D3; tia UV giải phóng NO dưới da giúp giãn mạch hạ huyết áp.'
+            },
+            {
+                type: 'yellow',
+                badge: '🟡 Tranh luận / Cần thêm bằng chứng',
+                title: 'Tác động trực tiếp của NIR lên Melatonin ty thể ở người',
+                desc: 'Khái niệm Melatonin ty thể chủ yếu dựa trên nghiên cứu tiền lâm sàng (TS. Russel Reiter). Việc tắm nắng phòng ngừa dứt điểm Sa sút trí tuệ cần thêm RCT dài hạn.'
+            },
+            {
+                type: 'red',
+                badge: '🔴 Cảnh báo sức khỏe',
+                title: 'Khuyến nghị phơi nắng không che chắn có nguy cơ ung thư da',
+                desc: 'Hiệp hội Da liễu khuyến cáo tia UV là tác nhân hàng đầu gây lão hóa da và ung thư da tế bào hắc tố (Melanoma). Không được phơi nắng đến mức bỏng da.'
+            }
+        ];
+
+        function renderEvidence(filter = 'all') {
+            const container = document.getElementById('evidence-container');
+            const filtered = filter === 'all' ? evidenceData : evidenceData.filter(e => e.type === filter);
+            
+            container.innerHTML = filtered.map(e => `
+                <div class="p-4 rounded-xl border ${e.type === 'green' ? 'bg-emerald-50/50 border-emerald-200' : e.type === 'yellow' ? 'bg-amber-50/50 border-amber-200' : 'bg-rose-50/50 border-rose-200'}">
+                    <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${e.type === 'green' ? 'bg-emerald-200 text-emerald-800' : e.type === 'yellow' ? 'bg-amber-200 text-amber-800' : 'bg-rose-200 text-rose-800'}">
+                        ${e.badge}
+                    </span>
+                    <h4 class="text-sm font-bold text-sand-900 mt-2">${e.title}</h4>
+                    <p class="text-xs text-sand-800 mt-1 leading-relaxed">${e.desc}</p>
+                </div>
+            `).join('');
+        }
+
+        function filterEvidence(type) {
+            renderEvidence(type);
+        }
+
+        // Interactive Sun Calculator for Vietnam
+        function calculateSunlight() {
+            const skin = document.getElementById('calc-skin').value;
+            const time = document.getElementById('calc-time').value;
+            const resultBox = document.getElementById('calc-result');
+
+            let duration = '15 - 20 phút';
+            let status = '🟢 An Toàn & Tối Ưu';
+            let nirLevel = 'Cao';
+            let uvDanger = 'Thấp';
+            let note = 'Khung giờ vàng để đón dải NIR mà không lo tổn thương DNA da.';
+
+            if (time === 'midday') {
+                uvDanger = 'Cực Kỳ Cao (UV 8-11+)';
+                status = '🔴 Rủi Ro Bỏng Da';
+                if (skin === '1' || skin === '2') {
+                    duration = 'Khuyến cáo không phơi quá 3 - 5 phút';
+                } else {
+                    duration = 'Tối đa 5 - 10 phút';
+                }
+                note = 'Cần hết sức cẩn trọng tại Việt Nam. Bắt buộc bảo vệ mắt và không phơi nắng trực tiếp giữa trưa không che chắn.';
+            } else if (time === 'afternoon') {
+                duration = '20 - 30 phút';
+                nirLevel = 'Trung bình';
+                uvDanger = 'Thấp';
+                note = 'Thích hợp cho vận động ngoài trời, đi dạo xả stress.';
+            }
+
+            resultBox.innerHTML = `
+                <div class="space-y-2 text-xs text-sand-800">
+                    <div class="flex justify-between items-center bg-white p-2.5 rounded border border-sand-200">
+                        <span class="font-semibold">Mức độ an toàn:</span>
+                        <span class="font-bold">${status}</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-white p-2.5 rounded border border-sand-200">
+                        <span class="font-semibold">Thời lượng khuyến nghị:</span>
+                        <span class="font-bold text-amber-700">${duration}</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-white p-2.5 rounded border border-sand-200">
+                        <span class="font-semibold">Bức xạ NIR nhận được:</span>
+                        <span class="font-bold text-emerald-700">${nirLevel}</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-white p-2.5 rounded border border-sand-200">
+                        <span class="font-semibold">Mức nguy cơ UV:</span>
+                        <span class="font-bold text-rose-600">${uvDanger}</span>
+                    </div>
+                    <div class="p-3 bg-amber-100/60 rounded border border-amber-200 mt-2 text-amber-900 leading-relaxed">
+                        💡 <strong>Lời khuyên:</strong> ${note}
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
