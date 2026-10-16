@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sức Khỏe Nam Giới & Y Học Phân Tích - Dr. Rena Malik</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+        .tab-active {
+            border-bottom: 3px solid #0d9488;
+            color: #0d9488;
+            font-weight: 700;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col justify-between">
+
+    <!-- Chosen Palette: Warm Medical Neutral -->
+    <!-- Application Structure Plan: 
+        1. Navigation & Header: Contextual overview of the podcast episode, guest credentials, core thesis, and primary dynamic navigation.
+        2. Key Metrics & Core Insights Dashboard: Interactive KPI cards highlighting essential bio-markers and statistical findings (21+ threshold, 1-2mm arterial gauge, 8h seated baseline).
+        3. Topic Exploration Hub: Tabbed deep-dives into 5 core podcast themes with dedicated dynamic Chart.js visualizations, medical explanations, and quoted evidence.
+        4. Interactive Evidence & MythBuster Matrix: Interactive filterable grid comparing scientific consensus vs viral trends (No Nut November, Semen Retention).
+        5. Interactive Desk & Pelvic Health Risk Assessor: Interactive tool allowing users to simulate seated work hours & lifestyle habits to gauge physical impacts.
+        6. Content & Editorial Strategy Hub: Interactive overview of proposed Vietnamese publication angles, outline formats, and key takeaways for journalists.
+        Rationale: Non-linear, domain-focused hierarchy designed for deep comprehension, critical evaluation of medical data, and media adaptation.
+    -->
+    <!-- Visualization & Content Choices:
+        - Arterial Comparison: Chart.js Horizontal Bar Chart -> Compares penile cavernous artery (1-2mm) vs coronary artery (3-4mm) -> Visualizes early warning window mechanism -> Canvas based (NO SVG).
+        - Prostate Cancer Relative Risk: Chart.js Bar Chart -> Displays relative risk decrease based on monthly ejaculate frequency -> Highlights the Harvard 21+/month study finding -> Canvas based (NO SVG).
+        - Sitting Hours vs Pelvic Stress Index: Chart.js Line Chart -> Correlates sedentary hours with hypertonic pelvic floor strain -> Canvas based (NO SVG).
+        - Myth vs Fact Matrix: Interactive HTML/CSS Cards with JS Filter state -> Organizes evidence categories (Scientific Consensus, Unproven, Warning) -> Canvas / Unicode styling (NO SVG/Mermaid).
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Top Announcement Bar -->
+    <header class="bg-slate-900 text-slate-200 text-xs py-2 px-4 text-center border-b border-slate-800">
+        <span class="bg-teal-800 text-teal-100 text-[10px] uppercase font-bold px-2 py-0.5 rounded mr-2">Tài liệu Phân tích Nội bộ</span>
+        Trích xuất dữ liệu từ The Diary Of A CEO • Diễn giả: Tiến sĩ, Bác sĩ Rena Malik, M.D.
+    </header>
+
+    <!-- Main Navigation Header -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-lg bg-teal-600 text-white flex items-center justify-center font-black text-xl shadow">
+                        M
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-slate-900 text-base sm:text-lg leading-tight">Y Học Sức Khỏe Tình Dục & Nam Khoa</h1>
+                        <p class="text-xs text-slate-500">Phân tích Chuyên sâu & Chuyển hóa Truyền thông</p>
+                    </div>
+                </div>
+                <!-- Nav Links -->
+                <div class="hidden md:flex space-x-6 items-center text-sm font-medium text-slate-600">
+                    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="tab-btn py-5 border-b-2 border-transparent hover:text-teal-600 transition">Tổng Quan Dashboard</button>
+                    <button onclick="switchTab('topics')" id="nav-topics" class="tab-btn py-5 border-b-2 border-transparent hover:text-teal-600 transition">Chủ Đề Y Khoa</button>
+                    <button onclick="switchTab('myths')" id="nav-myths" class="tab-btn py-5 border-b-2 border-transparent hover:text-teal-600 transition">Giải Mã Lầm Tưởng</button>
+                    <button onclick="switchTab('risk-check')" id="nav-risk-check" class="tab-btn py-5 border-b-2 border-transparent hover:text-teal-600 transition">Tự Đánh Giá Nguy Cơ</button>
+                    <button onclick="switchTab('editorial')" id="nav-editorial" class="tab-btn py-5 border-b-2 border-transparent hover:text-teal-600 transition">Đề Xuất Bài Báo</button>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <select onchange="switchTab(this.value)" class="bg-slate-100 text-slate-800 text-xs rounded border border-slate-300 p-2 font-medium">
+                        <option value="dashboard">📊 Tổng Quan Dashboard</option>
+                        <option value="topics">🔬 Chủ Đề Y Khoa</option>
+                        <option value="myths">⚖️ Giải Mã Lầm Tưởng</option>
+                        <option value="risk-check">🩺 Tự Đánh Giá Nguy Cơ</option>
+                        <option value="editorial">📝 Đề Xuất Bài Báo</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- ================= SECTION 1: DASHBOARD ================= -->
+        <section id="section-dashboard" class="space-y-8">
+            <!-- Section Intro -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-teal-600 bg-teal-50 px-2.5 py-1 rounded-full">Báo cáo Tổng hợp</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-2">Sức Khỏe Sàn Chậu & Hệ Mạch Cảnh Báo Sớm</h2>
+                    <p class="text-slate-600 text-sm mt-1 max-w-3xl">
+                        Tài liệu tổng hợp các phát hiện lâm sàng từ Bác sĩ Rena Malik (Niệu học & Phẫu thuật Tái tạo Sàn chậu). Bản phân tích này chuyển hóa các dữ liệu phức tạp thành chỉ số có thể tương tác, giúp hiểu rõ cơ chế sinh lý học và phản bác các tin đồn thiếu cơ sở.
+                    </p>
+                </div>
+                <div class="bg-slate-100 p-3 rounded-xl border border-slate-200 text-xs space-y-1 min-w-[220px]">
+                    <div class="flex justify-between"><span class="text-slate-500">Nguồn:</span> <span class="font-semibold text-slate-800">The Diary Of A CEO</span></div>
+                    <div class="flex justify-between"><span class="text-slate-500">Host:</span> <span class="font-semibold text-slate-800">Steven Bartlett</span></div>
+                    <div class="flex justify-between"><span class="text-slate-500">Thời lượng gốc:</span> <span class="font-semibold text-slate-800">112 phút</span></div>
+                </div>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-teal-400 transition">
+                    <div class="flex justify-between items-center text-xs text-slate-500 font-medium">
+                        <span>TẦN SUẤT BẢO VỆ</span>
+                        <span class="text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full font-bold">Harvard Study</span>
+                    </div>
+                    <div class="mt-2 flex items-baseline">
+                        <span class="text-3xl font-extrabold text-slate-900">≥ 21</span>
+                        <span class="text-sm font-semibold text-slate-600 ml-1.5">lần / tháng</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-2">Giúp giảm 20% nguy cơ ung thư tuyến tiền liệt thể tiến triển nhờ đào thải chất cặn bã.</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-amber-400 transition">
+                    <div class="flex justify-between items-center text-xs text-slate-500 font-medium">
+                        <span>ĐƯỜNG KÍNH ĐỘNG MẠCH</span>
+                        <span class="text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full font-bold">Cảnh Báo Sớm</span>
+                    </div>
+                    <div class="mt-2 flex items-baseline">
+                        <span class="text-3xl font-extrabold text-slate-900">1 – 2</span>
+                        <span class="text-sm font-semibold text-slate-600 ml-1.5">mm</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-2">Động mạch thể hang nhỏ hơn động mạch vành (3-4mm), bộc lộ tổn thương mạch máu trước 2-5 năm.</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-rose-400 transition">
+                    <div class="flex justify-between items-center text-xs text-slate-500 font-medium">
+                        <span>LỐI SỐNG TĨNH TẠI</span>
+                        <span class="text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full font-bold">Dân Văn Phòng</span>
+                    </div>
+                    <div class="mt-2 flex items-baseline">
+                        <span class="text-3xl font-extrabold text-slate-900">8 – 10</span>
+                        <span class="text-sm font-semibold text-slate-600 ml-1.5">tiếng / ngày</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-2">Gây co thắt cơ sàn chậu (hypertonic pelvic floor), chèn ép dây thần kinh thẹn cơ học.</p>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 transition">
+                    <div class="flex justify-between items-center text-xs text-slate-500 font-medium">
+                        <span>DỰ BÁO BIẾN CỐ</span>
+                        <span class="text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full font-bold">Tương Quan Y Học</span>
+                    </div>
+                    <div class="mt-2 flex items-baseline">
+                        <span class="text-3xl font-extrabold text-slate-900">15%</span>
+                        <span class="text-sm font-semibold text-slate-600 ml-1.5">nguy cơ</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-2">Tỷ lệ bệnh nhân rối loạn cương do mạch máu đối mặt biến cố tim mạch trong vòng 7 năm.</p>
+                </div>
+            </div>
+
+            <!-- Charts Overview Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Visual 1: Prostate Risk Chart -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="mb-4">
+                        <h3 class="text-base font-bold text-slate-900">Tương Quan Tần Suất Xuất Tinh & Ung Thư Tuyến Tiền Liệt</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Dựa trên nghiên cứu dịch tễ Harvard trên 32.000 nam giới suốt 20 năm.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="prostateChart"></canvas>
+                    </div>
+                    <div class="mt-4 p-3 bg-slate-50 rounded-xl text-xs text-slate-600 border border-slate-100">
+                        <strong>💡 Giả thuyết ứ đọng (Prostate Stagnation Hypothesis):</strong> Xuất tinh định kỳ giúp đào thải chất gây viêm và cặn bã tích tụ trong tuyến.
+                    </div>
+                </div>
+
+                <!-- Visual 2: Arterial Diameter Comparison -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="mb-4">
+                        <h3 class="text-base font-bold text-slate-900">So Sánh Kích Thước Động Mạch & Cửa Sổ Cảnh Báo</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Giải thích lý do rối loạn cương dương bộc lộ sớm hơn nhồi máu cơ tim.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="arteryChart"></canvas>
+                    </div>
+                    <div class="mt-4 p-3 bg-slate-50 rounded-xl text-xs text-slate-600 border border-slate-100">
+                        <strong>📌 Mối liên hệ sinh học:</strong> Mảng xơ vữa hẹp động mạch nhỏ (1-2mm) gây ra triệu chứng trước khi nghẽn động mạch tim (3-4mm).
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 2: TOPIC EXPLORER ================= -->
+        <section id="section-topics" class="space-y-6 hidden">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <h2 class="text-2xl font-bold text-slate-900">Khám Phá Chi Tiết 5 Chủ Đề Y Khoa Trọng Tâm</h2>
+                <p class="text-slate-600 text-sm mt-1">
+                    Mỗi chủ đề bên dưới phản ánh một góc nhìn chuyên sâu được Bác sĩ Rena Malik phân tích trong podcast, bao gồm cơ chế giải phẫu, dẫn chứng thực nghiệm và góc tiếp cận báo chí.
+                </p>
+
+                <!-- Sub-tabs for topics -->
+                <div class="flex space-x-2 border-b border-slate-200 mt-6 overflow-x-auto custom-scrollbar pb-2">
+                    <button onclick="showTopicDetail(1)" id="topic-tab-1" class="px-4 py-2 text-xs font-bold rounded-lg bg-teal-600 text-white whitespace-nowrap">1. Tần Suất & Ung Thư TTL</button>
+                    <button onclick="showTopicDetail(2)" id="topic-tab-2" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg whitespace-nowrap">2. Ngồi Nhiều & Cơ Sàn Chậu</button>
+                    <button onclick="showTopicDetail(3)" id="topic-tab-3" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg whitespace-nowrap">3. Cửa Sổ Cảnh Báo Tim Mạch</button>
+                    <button onclick="showTopicDetail(4)" id="topic-tab-4" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg whitespace-nowrap">4. Phản Bác Semen Retention</button>
+                    <button onclick="showTopicDetail(5)" id="topic-tab-5" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg whitespace-nowrap">5. Vi Nhựa & Bức Xạ Nhiệt</button>
+                </div>
+            </div>
+
+            <!-- Topic Content Area -->
+            <div id="topic-content-container" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <!-- Content will be rendered dynamically via JavaScript -->
+            </div>
+        </section>
+
+        <!-- ================= SECTION 3: MYTH VS FACT ================= -->
+        <section id="section-myths" class="space-y-6 hidden">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900">Ma Trận Thẩm Định Khoa Học & Phản Bác Tin Đồn</h2>
+                        <p class="text-slate-600 text-sm mt-1">Phân định rõ ràng giữa bằng chứng y học lâm sàng và các trào lưu thiếu cơ sở trên mạng xã hội.</p>
+                    </div>
+                    <!-- Filter Buttons -->
+                    <div class="flex space-x-2">
+                        <button onclick="filterMyths('all')" id="filter-all" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-white">Tất cả</button>
+                        <button onclick="filterMyths('consensus')" id="filter-consensus" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200">🟢 Đồng Thuận</button>
+                        <button onclick="filterMyths('debate')" id="filter-debate" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200">🟡 Cần Tranh Luận</button>
+                        <button onclick="filterMyths('refuted')" id="filter-refuted" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200">🔴 Bác Bỏ / Cảnh Báo</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cards Grid -->
+            <div id="myths-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+
+        <!-- ================= SECTION 4: RISK CHECK SIMULATOR ================= -->
+        <section id="section-risk-check" class="space-y-6 hidden">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <h2 class="text-2xl font-bold text-slate-900">Trình Giả Lập & Tự Đánh Giá Nguy Cơ Cơ Học Sàn Chậu</h2>
+                <p class="text-slate-600 text-sm mt-1">
+                    Công cụ giúp người làm việc văn phòng mô phỏng mức độ ảnh hưởng của thói quen ngồi làm việc và sinh hoạt lên sức khỏe mạch máu và sàn chậu.
+                </p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">
+                    <!-- Form Controls -->
+                    <div class="space-y-5 bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <h3 class="font-bold text-slate-900 text-sm uppercase tracking-wider text-teal-700">1. Thông tin thói quen</h3>
+                        
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Thời gian ngồi làm việc liên tục / ngày:</label>
+                            <input type="range" id="input-sitting" min="2" max="14" value="8" class="w-full accent-teal-600" oninput="updateRiskCalc()">
+                            <div class="flex justify-between text-xs text-slate-500 font-bold mt-1">
+                                <span>2 tiếng</span>
+                                <span id="val-sitting" class="text-teal-700 font-bold text-sm">8 tiếng</span>
+                                <span>14 tiếng</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Thói quen để điện thoại trong túi quần:</label>
+                            <select id="input-phone" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-medium" onchange="updateRiskCalc()">
+                                <option value="0">Thường xuyên để trong túi quần trước</option>
+                                <option value="1">Thỉnh thoảng / Thường để trên bàn</option>
+                                <option value="2">Không bao giờ để trong túi quần</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Đặt Laptop trực tiếp lên đùi khi làm việc:</label>
+                            <select id="input-laptop" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-medium" onchange="updateRiskCalc()">
+                                <option value="high">Rất thường xuyên (>2 tiếng/ngày)</option>
+                                <option value="med">Thỉnh thoảng</option>
+                                <option value="low">Không bao giờ (luôn dùng bàn)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Tần suất tập luyện giãn cơ sàn chậu / thể thao:</label>
+                            <select id="input-exercise" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-medium" onchange="updateRiskCalc()">
+                                <option value="none">Rất ít / Không tập</option>
+                                <option value="moderate">2-3 buổi/tuần</option>
+                                <option value="high">Thường xuyên (>4 buổi/tuần)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Calculated Output Results -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="bg-slate-900 text-white p-6 rounded-xl relative overflow-hidden shadow-md">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <span class="text-xs font-semibold uppercase tracking-wider text-teal-400">Chỉ số căng thẳng sàn chậu & mạch máu</span>
+                                    <h4 id="risk-score-text" class="text-3xl font-extrabold mt-1 text-amber-400">Mức Độ Trung Bình</h4>
+                                </div>
+                                <div id="risk-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                                    Cần Chú Ý
+                                </div>
+                            </div>
+                            
+                            <!-- Progress Bar -->
+                            <div class="w-full bg-slate-800 h-3 rounded-full mt-6 overflow-hidden">
+                                <div id="risk-progress-bar" class="bg-amber-400 h-full w-[55%] transition-all duration-500"></div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4 mt-6 pt-4 border-t border-slate-800 text-xs">
+                                <div>
+                                    <span class="text-slate-400 block">Trương lực cơ sàn chậu:</span>
+                                    <strong id="pelvic-tone-desc" class="text-slate-200">Nguy cơ co ngắn bất thường trung bình</strong>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block">Tác động nhiệt bìu & sinh tinh:</span>
+                                    <strong id="thermal-impact-desc" class="text-slate-200">Có nguy cơ từ bức xạ nhiệt cục bộ</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recommendations list -->
+                        <div class="bg-white p-5 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-900 text-sm mb-3">Khuyến Nghị Điều Chỉnh Theo Y Học Lâm Sàng:</h4>
+                            <ul id="recommendation-list" class="space-y-2 text-xs text-slate-700">
+                                <!-- Populated dynamically -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 5: EDITORIAL STRATEGY ================= -->
+        <section id="section-editorial" class="space-y-6 hidden">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <h2 class="text-2xl font-bold text-slate-900">Đề Xuất Khung Bài Báo Truyền Thông (Bản Địa Hóa)</h2>
+                <p class="text-slate-600 text-sm mt-1">
+                    Chiến lược chuyển hóa dữ liệu podcast thành 4 bài viết chuẩn mực, hấp dẫn cho độc giả Việt Nam, tuân thủ nguyên tắc không giật tít phóng đại.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Article 1 -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3 relative hover:shadow-md transition">
+                    <span class="bg-teal-100 text-teal-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Bài 1 • Phân tích đa chiều</span>
+                    <h3 class="font-bold text-slate-900 text-base">Con Số "21 Lần Một Tháng" Và Sự Thật Khoa Học Về Ung Thư Tuyến Tiền Liệt</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        <strong>Angle:</strong> Mổ xẻ con số 21 lần/tháng dưới góc nhìn dịch tễ học Harvard: Cơ chế giả thuyết ứ đọng và sự khác biệt giữa mối tương quan (correlation) vs quan hệ nhân quả (causation).
+                    </p>
+                    <div class="bg-slate-50 p-3 rounded-lg text-xs space-y-1 text-slate-500">
+                        <div>• <strong>Định dạng:</strong> Đối chiếu nghiên cứu y khoa & Phản biện xã hội</div>
+                        <div>• <strong>Đối tượng:</strong> Nam giới trưởng thành, quan tâm y học dự phòng</div>
+                        <div>• <strong>Cảnh báo biên tập:</strong> Tránh cổ xúy lạm dụng phim khiêu dâm kỹ thuật số</div>
+                    </div>
+                </div>
+
+                <!-- Article 2 -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3 relative hover:shadow-md transition">
+                    <span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Bài 2 • Sức khỏe văn phòng</span>
+                    <h3 class="font-bold text-slate-900 text-base">Dấu Hiệu Cảnh Báo Từ Sàn Chậu: Tác Hại Của Thói Quen Ngồi 8 Tiếng</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        <strong>Angle:</strong> Báo động tình trạng tăng trương lực cơ sàn chậu ở dân văn phòng. Ngồi tĩnh tại co ngắn cơ cơ học, chèn ép thần kinh thẹn gây rối loạn cương thứ phát.
+                    </p>
+                    <div class="bg-slate-50 p-3 rounded-lg text-xs space-y-1 text-slate-500">
+                        <div>• <strong>Định dạng:</strong> Báo động sức khỏe & Hướng dẫn nhận biết sinh lý</div>
+                        <div>• <strong>Đối tượng:</strong> Dân văn phòng, người làm việc ngồi nhiều</div>
+                        <div>• <strong>Giải pháp:</strong> Các bài tập giãn cơ sàn chậu thay vì bài tập Kegel sai cách</div>
+                    </div>
+                </div>
+
+                <!-- Article 3 -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3 relative hover:shadow-md transition">
+                    <span class="bg-rose-100 text-rose-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Bài 3 • Giải mã lầm tưởng</span>
+                    <h3 class="font-bold text-slate-900 text-base">Giải Mã Phong Trào "No Nut November": Khoa Học Nói Gì Về Testosterone?</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        <strong>Angle:</strong> Phản bác các trào lưu kiêng khem gượng ép (Semen Retention). Bác sĩ Malik khẳng định không có dữ liệu lâm sàng chất lượng cao chứng minh việc nhịn xuất tinh giúp tăng testosterone nền.
+                    </p>
+                    <div class="bg-slate-50 p-3 rounded-lg text-xs space-y-1 text-slate-500">
+                        <div>• <strong>Định dạng:</strong> "Đâu là bằng chứng?" / Đính chính tin đồn</div>
+                        <div>• <strong>Đối tượng:</strong> Giới trẻ, cộng đồng theo dõi các trào lưu mạng xã hội</div>
+                        <div>• <strong>Thông điệp:</strong> Tôn trọng nhịp sinh học tự nhiên của cơ thể</div>
+                    </div>
+                </div>
+
+                <!-- Article 4 -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3 relative hover:shadow-md transition">
+                    <span class="bg-blue-100 text-blue-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Bài 4 • Y học dự phòng</span>
+                    <h3 class="font-bold text-slate-900 text-base">Động Mạch 1mm Và Trái Tim: Rối Loạn Cương Nhận Biết Sớm Tim Mạch</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        <strong>Angle:</strong> Giải thích sinh lý học vì sao mạch máu thể hang (1-2mm) là "cửa sổ" dự báo sớm tổn thương động mạch vành (3-4mm) từ 2 đến 5 năm trước khi biến cố xảy ra.
+                    </p>
+                    <div class="bg-slate-50 p-3 rounded-lg text-xs space-y-1 text-slate-500">
+                        <div>• <strong>Định dạng:</strong> Phân tích chuyên sâu & Y học dự phòng</div>
+                        <div>• <strong>Đối tượng:</strong> Nam giới trung niên, người có nguy cơ tim mạch</div>
+                        <div>• <strong>Trích dẫn AUA:</strong> Đã được Hiệp hội Niệu khoa Hoa Kỳ công nhận</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500 space-y-2">
+            <p class="font-medium text-slate-700">Tài liệu phân tích chuyên môn dựa trên tập podcast "The Better-Sex Doctor" - The Diary Of A CEO</p>
+            <p>Khách mời: Dr. Rena Malik, M.D. • Nội dung phục vụ mục đích tham khảo giáo dục & nghiên cứu truyền thông.</p>
+            <p class="text-[10px] text-slate-400">⚡ Miễn trừ trách nhiệm: Ứng dụng này không thay thế cho tư vấn, chẩn đoán hoặc điều trị y tế chuyên nghiệp.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Data Structures
+        const topicsData = {
+            1: {
+                title: "Tần Suất Xuất Tinh & Nguy Cơ Ung Thư Tuyến Tiền Liệt",
+                timestamp: "[00:50:34 – 01:09:38]",
+                speaker: "Dr. Rena Malik",
+                keyThesis: "Nghiên cứu dịch tễ học của Harvard (32.000 nam giới trong 20 năm) chỉ ra nhóm xuất tinh ≥ 21 lần/tháng giảm 20% nguy cơ chẩn đoán ung thư tuyến tiền liệt thể tiến triển so với nhóm 4-7 lần/tháng.",
+                quote: "Những người đàn ông duy trì tần suất xuất tinh từ 21 lần trở lên mỗi tháng... có tỷ lệ chẩn đoán ung thư tuyến tiền liệt thể tiến triển giảm khoảng 20%.",
+                mechanism: "Giả thuyết ứ đọng tuyến tiền liệt (prostate stagnation hypothesis): Xuất tinh định kỳ giúp đào thải các cặn bã sinh học, các chất gây viêm và độc tố tích tụ trong dịch tuyến.",
+                editorialAngle: "Đâu là sự thật khoa học đằng sau con số '21 lần một tháng'?",
+                vietnamContext: "Tại Việt Nam, tâm lý e ngại thảo luận chủ đề này có thể khiến cộng đồng hiểu sai con số thành áp lực chỉ tiêu hoặc lạm dụng khiêu dâm. Cần truyền thông đúng bản chất nghiên cứu tương quan."
+            },
+            2: {
+                title: "Tăng Trương Lực Cơ Sàn Chậu Do Thói Quen Ngồi Nhiều",
+                timestamp: "[00:09:07 – 00:19:23]",
+                speaker: "Dr. Rena Malik",
+                keyThesis: "Lối sống tĩnh tại ngồi 8-10 tiếng/ngày khiến các cơ sàn chậu bị co ngắn bất thường (hypertonic pelvic floor), dẫn đến chèn ép bó mạch - thần kinh thẹn cơ học gây rối loạn cương thứ phát.",
+                quote: "Sự chèn ép này làm suy giảm đáng kể lưu lượng máu chảy vào các xoang tĩnh mạch thuộc thể hang... gây ra chứng rối loạn cương dương thứ phát do cơ học.",
+                mechanism: "Khác với nguyên nhân do giảm Testosterone hay tâm lý, đây là tổn thương cơ học vật lý do tư thế ngồi kéo dài. Tập bài tập Kegel sai cách trong trường hợp này thậm chí làm tình trạng co thắt tệ hơn.",
+                editorialAngle: "Cảnh báo dân văn phòng: Tác hại không ngờ của thói quen ngồi 8 tiếng đến sức khỏe nam giới.",
+                vietnamContext: "Rất phù hợp với tỷ lệ dân văn phòng tại các thành phố lớn như Hà Nội, TP.HCM. Khuyên dùng các bài tập thư giãn sàn chậu (pelvic floor release) thay vì bài tập co thắt."
+            },
+            3: {
+                title: "Rối Loạn Cương - Cửa Sổ Cảnh Báo Sớm Bệnh Tim Mạch",
+                timestamp: "[00:09:07 – 00:19:23]",
+                speaker: "Dr. Rena Malik",
+                keyThesis: "Mạch máu thể hang có đường kính rất nhỏ (1-2mm) so với động mạch vành tim (3-4mm). Do đó, sự suy giảm chức năng nội mạc sẽ triệu chứng hóa ở cơ quan sinh dục trước khi xảy ra biến cố tim mạch từ 2-5 năm.",
+                quote: "Đường kính của các nhánh động mạch cung cấp máu cho thể hang chỉ dao động trong khoảng 1–2 mm, nhỏ hơn đáng kể so với động mạch vành tim.",
+                mechanism: "Khoảng 15% nam giới bị rối loạn cương do nguyên nhân mạch máu sẽ gặp biến cố tim mạch (như nhồi máu cơ tim) trong vòng 7 năm nếu không thăm khám dự phòng.",
+                editorialAngle: "Sức khỏe sinh sản là 'cửa sổ' phản ánh hệ tim mạch toàn thân.",
+                vietnamContext: "Hiệp hội Niệu khoa Hoa Kỳ (AUA) đã công nhận mối liên hệ này. Cần khuyến khích nam giới coi triệu chứng này là chỉ số sức khỏe tổng quát thay vì tâm lý xấu hổ."
+            },
+            4: {
+                title: "Phản Bác Trào Lưu Kiêng Khem (Semen Retention / No Nut November)",
+                timestamp: "[00:50:34 – 01:09:38]",
+                speaker: "Dr. Rena Malik",
+                keyThesis: "Không có bằng chứng lâm sàng chất lượng cao chứng minh kiêng xuất tinh giúp tăng Testosterone nền hay nâng cao thể trạng vượt trội.",
+                quote: "Không có dữ liệu lâm sàng chất lượng cao chứng minh thủ dâm làm hạ testosterone nền.",
+                mechanism: "Việc nhịn xuất tinh gượng ép đi ngược lại nhịp sinh học tự nhiên, gây gia tăng áp lực tâm lý và co thắt cơ sàn chậu không cần thiết.",
+                editorialAngle: "Sự thật đằng sau phong trào 'No Nut November' và những lầm tưởng về testosterone.",
+                vietnamContext: "Giới trẻ Việt Nam dễ bị ảnh hưởng bởi các xu hướng lan truyền trên Reddit/TikTok. Cần bài viết phân tích khoa học để giải tỏa lo âu."
+            },
+            5: {
+                title: "Tác Động Của Vi Nhựa, Nhiệt Độ & Thiết Bị Công Nghệ",
+                timestamp: "[00:34:49 – 00:50:34]",
+                speaker: "Dr. Rena Malik",
+                keyThesis: "Sự suy giảm chất lượng tinh trùng toàn cầu có sự đóng góp của hóa chất gây rối loạn nội tiết, vi nhựa và bức xạ nhiệt từ các thiết bị điện tử.",
+                quote: "Sự gia tăng nhiệt độ cục bộ do bức xạ nhiệt từ điện thoại di động... tác động tiêu cực đến quá trình sinh tinh.",
+                mechanism: "Thói quen để điện thoại túi quần trước hoặc để laptop trực tiếp lên đùi làm tăng nhiệt độ vùng bìu vượt mức tối ưu cho quá trình sinh tinh (thường thấp hơn nhiệt độ cơ thể 1-2°C).",
+                editorialAngle: "Thói quen để điện thoại túi quần và nguy cơ suy giảm sinh sản nam giới.",
+                vietnamContext: "Rất dễ áp dụng và thúc đẩy thay đổi hành vi ngay lập tức cho độc giả Việt Nam thông qua các mẹo sinh hoạt nhỏ."
+            }
+        };
+
+        const mythsData = [
+            {
+                id: 1,
+                category: "refuted",
+                myth: "Kiêng xuất tinh (Semen Retention) giúp tăng vọt Testosterone nền và sức mạnh.",
+                fact: "Không có dữ liệu lâm sàng chất lượng cao hỗ trợ. Tăng nhẹ testosterone chỉ xuất hiện tạm thời trong khoảng ngày thứ 7 rồi trở về mức bình thường.",
+                statusText: "🔴 Trái với bằng chứng hiện có",
+                badgeBg: "bg-rose-100 text-rose-800"
+            },
+            {
+                id: 2,
+                category: "consensus",
+                myth: "Rối loạn cương dương có thể là dấu hiệu sớm của bệnh tim mạch.",
+                fact: "Chính xác. Động mạch thể hang (1-2mm) hẹp do xơ vữa trước động mạch vành (3-4mm), cảnh báo sớm biến cố tim mạch trước vài năm.",
+                statusText: "🟢 Đồng thuận khoa học (AUA)",
+                badgeBg: "bg-emerald-100 text-emerald-800"
+            },
+            {
+                id: 3,
+                category: "debate",
+                myth: "Bắt buộc phải xuất tinh đúng 21 lần/tháng để không bị ung thư tuyến tiền liệt.",
+                fact: "Nghiên cứu Harvard ghi nhận mối tương quan giảm 20% nguy cơ ở nhóm ≥21 lần/tháng, nhưng đây là dữ liệu dịch tễ học tương quan, không phải quan hệ nhân quả bắt buộc.",
+                statusText: "🟡 Dữ liệu tương quan (Cần hiểu đúng)",
+                badgeBg: "bg-amber-100 text-amber-800"
+            },
+            {
+                id: 4,
+                category: "consensus",
+                myth: "Ngồi văn phòng 8 tiếng/ngày có thể gây rối loạn cương do nguyên nhân cơ học.",
+                fact: "Chính xác. Ngồi lâu làm co ngắn cơ sàn chậu (hypertonic), chèn ép dây thần kinh thẹn và mạch máu mà không liên quan tới tâm lý hay hormone.",
+                statusText: "🟢 Đồng thuận khoa học",
+                badgeBg: "bg-emerald-100 text-emerald-800"
+            },
+            {
+                id: 5,
+                category: "consensus",
+                myth: "Đặt laptop lên đùi hoặc để điện thoại túi quần làm suy giảm chất lượng tinh trùng.",
+                fact: "Chính xác. Tăng nhiệt độ cục bộ vùng bìu và bức xạ làm ảnh hưởng tiêu cực đến quá trình sinh tinh (m vốn cần nhiệt độ thấp hơn cơ thể 1-2°C).",
+                statusText: "🟢 Đồng thuận khoa học",
+                badgeBg: "bg-emerald-100 text-emerald-800"
+            },
+            {
+                id: 6,
+                category: "refuted",
+                myth: "Thời gian quan hệ trung bình chuẩn mực phải kéo dài 30-45 phút.",
+                fact: "Bác sĩ Malik chỉ ra đây là sản phẩm phóng đại của phim khiêu dâm. Thời gian thâm nhập thực tế trung bình về mặt sinh lý chỉ kéo dài dưới 10 phút.",
+                statusText: "🔴 Lầm tưởng từ phim ảnh",
+                badgeBg: "bg-rose-100 text-rose-800"
+            }
+        ];
+
+        // Chart Initialization Functions
+        let prostateChartInstance = null;
+        let arteryChartInstance = null;
+
+        function initCharts() {
+            // Chart 1: Prostate Risk Chart
+            const ctx1 = document.getElementById('prostateChart').getContext('2d');
+            prostateChartInstance = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: ['4-7 lần/tháng (Cơ sở)', '8-12 lần/tháng', '13-20 lần/tháng', '≥21 lần/tháng (Tối ưu)'],
+                    datasets: [{
+                        label: 'Mức độ nguy cơ tương đối Ung thư TTL tiến triển (%)',
+                        data: [100, 90, 82, 80],
+                        backgroundColor: [
+                            '#cbd5e1',
+                            '#94a3b8',
+                            '#2dd4bf',
+                            '#0d9488'
+                        ],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Nguy cơ tương đối: ${context.raw}% (Giảm ${100 - context.raw}%)`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 50,
+                            max: 110,
+                            ticks: {
+                                callback: function(value) { return value + '%'; }
+                            },
+                            title: { display: true, text: 'Tỷ lệ nguy cơ tương đối' }
+                        }
+                    }
+                }
+            });
+
+            // Chart 2: Artery Gauge Comparison Chart
+            const ctx2 = document.getElementById('arteryChart').getContext('2d');
+            arteryChartInstance = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: ['ĐM Thể Hang (Dương vật)', 'ĐM Vành (Tim)', 'ĐM Cảnh (Cổ)'],
+                    datasets: [{
+                        label: 'Đường kính mạch máu (mm)',
+                        data: [1.5, 3.5, 6.0],
+                        backgroundColor: [
+                            '#f43f5e',
+                            '#fb923c',
+                            '#38bdf8'
+                        ],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Đường kính trung bình: ${context.raw} mm`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            min: 0,
+                            max: 8,
+                            title: { display: true, text: 'Kích thước đường kính (mm)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Tab Navigation Logic
+        function switchTab(tabId) {
+            const sections = ['dashboard', 'topics', 'myths', 'risk-check', 'editorial'];
+            sections.forEach(s => {
+                const el = document.getElementById(`section-${s}`);
+                if (el) el.classList.add('hidden');
+                
+                const navBtn = document.getElementById(`nav-${s}`);
+                if (navBtn) navBtn.classList.remove('tab-active');
+            });
+
+            const targetSection = document.getElementById(`section-${tabId}`);
+            if (targetSection) targetSection.classList.remove('hidden');
+
+            const targetNav = document.getElementById(`nav-${tabId}`);
+            if (targetNav) targetNav.classList.add('tab-active');
+
+            if (tabId === 'topics') {
+                showTopicDetail(1);
+            }
+        }
+
+        // Topic Detail Renderer
+        function showTopicDetail(topicId) {
+            for (let i = 1; i <= 5; i++) {
+                const btn = document.getElementById(`topic-tab-${i}`);
+                if (btn) {
+                    if (i === topicId) {
+                        btn.className = "px-4 py-2 text-xs font-bold rounded-lg bg-teal-600 text-white whitespace-nowrap";
+                    } else {
+                        btn.className = "px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg whitespace-nowrap";
+                    }
+                }
+            }
+
+            const data = topicsData[topicId];
+            const container = document.getElementById('topic-content-container');
+            
+            container.innerHTML = `
+                <div class="space-y-5">
+                    <div class="flex flex-wrap justify-between items-start gap-2 border-b border-slate-100 pb-4">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-teal-600">Chủ đề ${topicId} • Timestamp ${data.timestamp}</span>
+                            <h3 class="text-xl font-bold text-slate-900 mt-1">${data.title}</h3>
+                        </div>
+                        <span class="bg-slate-100 text-slate-700 text-xs px-3 py-1 rounded-full font-medium">Diễn giả: ${data.speaker}</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="md:col-span-2 space-y-4 text-sm text-slate-700 leading-relaxed">
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider text-slate-500 mb-1">Luận Điểm Chính:</h4>
+                                <p class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">${data.keyThesis}</p>
+                            </div>
+
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider text-slate-500 mb-1">Cơ Chế Y Học / Giải Phẫu Học:</h4>
+                                <p class="text-slate-600 text-xs">${data.mechanism}</p>
+                            </div>
+
+                            <div class="bg-teal-50 border-l-4 border-teal-600 p-4 rounded-r-xl">
+                                <h4 class="font-bold text-teal-900 text-xs uppercase tracking-wider mb-1">Trích Dẫn Nguyên Văn (${data.timestamp}):</h4>
+                                <p class="italic text-teal-950 font-medium">"${data.quote}"</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4 text-xs">
+                            <div>
+                                <h4 class="font-bold text-slate-900 mb-1 uppercase tracking-wider text-[11px] text-teal-700">Angle Đề Xuất Viết Bài:</h4>
+                                <p class="text-slate-700 font-semibold">${data.editorialAngle}</p>
+                            </div>
+                            <hr class="border-slate-200">
+                            <div>
+                                <h4 class="font-bold text-slate-900 mb-1 uppercase tracking-wider text-[11px] text-amber-700">Bản Địa Hóa Bối Cảnh Việt Nam:</h4>
+                                <p class="text-slate-600 leading-normal">${data.vietnamContext}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Myth Matrix Renderer
+        function renderMyths(items) {
+            const grid = document.getElementById('myths-grid');
+            grid.innerHTML = '';
+
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3 flex flex-col justify-between hover:border-slate-300 transition";
+                card.innerHTML = `
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-start gap-2">
+                            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full ${item.badgeBg}">${item.statusText}</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm">" ${item.myth} "</h4>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-lg text-xs text-slate-700 border border-slate-100">
+                        <strong class="text-slate-900">Thực tế y khoa:</strong> ${item.fact}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterMyths(category) {
+            const btnIds = ['all', 'consensus', 'debate', 'refuted'];
+            btnIds.forEach(id => {
+                const b = document.getElementById(`filter-${id}`);
+                if (b) {
+                    if (id === category) {
+                        b.className = "px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-white";
+                    } else {
+                        b.className = "px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200";
+                    }
+                }
+            });
+
+            if (category === 'all') {
+                renderMyths(mythsData);
+            } else {
+                const filtered = mythsData.filter(m => m.category === category);
+                renderMyths(filtered);
+            }
+        }
+
+        // Risk Calculator Logic
+        function updateRiskCalc() {
+            const sittingHours = parseInt(document.getElementById('input-sitting').value);
+            const phoneHabit = parseInt(document.getElementById('input-phone').value);
+            const laptopHabit = document.getElementById('input-laptop').value;
+            const exerciseHabit = document.getElementById('input-exercise').value;
+
+            document.getElementById('val-sitting').innerText = `${sittingHours} tiếng`;
+
+            // Score Calculation Logic
+            let score = 20; // base score
+            score += (sittingHours - 2) * 6; // sitting contribution
+
+            if (phoneHabit === 0) score += 15;
+            if (laptopHabit === 'high') score += 20;
+            if (laptopHabit === 'med') score += 10;
+
+            if (exerciseHabit === 'high') score -= 20;
+            if (exerciseHabit === 'moderate') score -= 10;
+
+            score = Math.max(10, Math.min(95, score));
+
+            // UI Elements Update
+            const progressBar = document.getElementById('risk-progress-bar');
+            const scoreText = document.getElementById('risk-score-text');
+            const badge = document.getElementById('risk-badge');
+            const pelvicDesc = document.getElementById('pelvic-tone-desc');
+            const thermalDesc = document.getElementById('thermal-impact-desc');
+            const recList = document.getElementById('recommendation-list');
+
+            progressBar.style.width = `${score}%`;
+
+            let recs = [];
+
+            if (score < 40) {
+                scoreText.innerText = "Mức Độ Thấp / Tốt";
+                scoreText.className = "text-3xl font-extrabold mt-1 text-emerald-400";
+                badge.innerText = "An Toàn";
+                badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+                pelvicDesc.innerText = "Trương lực cơ sàn chậu ở trạng thái thư giãn tốt.";
+                thermalDesc.innerText = "Ảnh hưởng nhiệt bìu không đáng kể.";
+                recs.push("• Duy trì thói quen đứng dậy đi lại sau mỗi 45-60 phút làm việc.");
+                recs.push("• Tiếp tục hạn chế tối đa việc để laptop trực tiếp lên đùi.");
+            } else if (score < 70) {
+                scoreText.innerText = "Mức Độ Trung Bình";
+                scoreText.className = "text-3xl font-extrabold mt-1 text-amber-400";
+                badge.innerText = "Cần Chú Ý";
+                badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30";
+                pelvicDesc.innerText = "Có nguy cơ co ngắn cơ sàn chậu do ngồi tĩnh tại.";
+                thermalDesc.innerText = "Có tác động nhiệt tích tụ vùng bìu.";
+                recs.push("• Thực hiện các bài tập giãn cơ sàn chậu (Pelvic Stretch/Deep Squat Hold) hàng ngày.");
+                recs.push("• Chuyển điện thoại sang túi áo hoặc để trên mặt bàn thay vì túi quần trước.");
+                recs.push("• Tránh tập Kegel dồn dập khi chưa có chỉ định (có thể gây tăng căng thẳng cơ).");
+            } else {
+                scoreText.innerText = "Mức Độ Cao / Cảnh Báo";
+                scoreText.className = "text-3xl font-extrabold mt-1 text-rose-400";
+                badge.innerText = "Nguy Cơ Cao";
+                badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30";
+                pelvicDesc.innerText = "Nguy cơ cao chèn ép bó mạch - thần kinh thẹn cơ học.";
+                thermalDesc.innerText = "Bức xạ nhiệt tác động trực tiếp đến khả năng sinh tinh.";
+                recs.push("• Bắt buộc dùng bàn đứng hoặc sử dụng báo thức đứng dậy đi lại mỗi 30-45 phút.");
+                recs.push("• Tuyện đối dùng đế tản nhiệt, không đặt laptop trực tiếp lên đùi.");
+                recs.push("• Thăm khám chuyên khoa Niệu học / Phục hồi chức năng sàn chậu nếu có dấu hiệu tê tấy vùng chậu.");
+            }
+
+            recList.innerHTML = recs.map(r => `<li>${r}</li>`).join('');
+        }
+
+        // Initialize App on DOM Load
+        document.addEventListener('DOMContentLoaded', () => {
+            initCharts();
+            renderMyths(mythsData);
+            updateRiskCalc();
+            switchTab('dashboard');
+        });
+    </script>
+</body>
+</html>

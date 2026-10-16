@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phân Tích Chuyên Sâu: Yuval Noah Harari | Cảnh Báo Hiện Sinh</title>
+
+    <!-- Chosen Palette: Warm Editorial Neutrals (Slate, Amber, Emerald, Indigo) -->
+    <!-- Application Structure Plan: 
+        1. Top Bar & Navigation: Interactive menu for jumping between Giai đoạn 1 (Tóm tắt & Key Takeaways), Giai đoạn 2 (Chuỗi Bài Báo Chuyên Sâu), Visual Analytics (Chart.js), and Policy Simulator.
+        2. Stage 1 Panel: Executive Summary, Speaker/Video Dossier, 6 Major Topics breakdown, and Interactive Key Takeaways Grid.
+        3. Stage 2 Editorial Portal: Full multi-article reader with dynamic topic switcher tabs, active article search, structured journalism framework (Headline, Sapo, Body Analysis, Dynamic Tables, Key Quotes, Conclusion & Open Questions).
+        4. Interactive Data Visualizations: Dynamic Chart.js charts for Systemic Risk Profiling, Financial Black-Box Evolution, and Educational Paradigm Shifts.
+        5. Interactive Scenario & Policy Explorer: Prisoner's Dilemma simulator and AI Governance framework check.
+        Why this structure: It translates lengthy video analysis into an engaging, multi-layered editorial dashboard that accommodates both high-level executive skimming and deep journalistic reading.
+    -->
+    <!-- Visualization & Content Choices:
+        - Chart.js (Canvas-based) for Risk Radar/Bar Chart and Paradigm Comparison Charts.
+        - Structured HTML/Tailwind CSS components with unicode icon indicators (No SVG, No Mermaid JS).
+        - Interactive JS state management for article switching, category filtering, and search logic.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            gold: '#d97706',
+                            crimson: '#991b1b',
+                            emerald: '#059669',
+                            indigo: '#4338ca'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                        serif: ['Georgia', 'Cambria', 'Times New Roman', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+        .article-body p {
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
+        }
+        .article-body h3 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-top: 1.75rem;
+            margin-bottom: 0.75rem;
+            color: #0f172a;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md border-b border-amber-600/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center py-3">
+            <div class="flex items-center space-x-3 mb-2 md:mb-0">
+                <span class="text-2xl text-amber-500 font-bold font-serif">📰 JOURNALISM & TECH ANALYTICS</span>
+                <span class="bg-amber-500/20 text-amber-400 text-xs px-2.5 py-1 rounded-full border border-amber-500/30 uppercase tracking-widest font-mono">Báo Cáo Đặc Bịêt</span>
+            </div>
+            <nav class="flex flex-wrap justify-center gap-1 sm:gap-2 text-xs sm:text-sm font-medium">
+                <button onclick="switchTab('tab-stage1')" id="nav-stage1" class="px-3 py-1.5 rounded-md transition-all bg-amber-600 text-white font-semibold">Giai Đoạn 1: Tóm Tắt & Key Takeaways</button>
+                <button onclick="switchTab('tab-stage2')" id="nav-stage2" class="px-3 py-1.5 rounded-md transition-all hover:bg-slate-800 text-slate-300">Giai Đoạn 2: Chuỗi Bài Báo Chuyên Sâu</button>
+                <button onclick="switchTab('tab-charts')" id="nav-charts" class="px-3 py-1.5 rounded-md transition-all hover:bg-slate-800 text-slate-300">Biểu Đồ & Phân Tích Rủi Ro</button>
+                <button onclick="switchTab('tab-sim')" id="nav-sim" class="px-3 py-1.5 rounded-md transition-all hover:bg-slate-800 text-slate-300">Mô Phỏng Chính Sách</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO BANNER -->
+    <section class="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white py-10 px-4 border-b border-slate-700">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-3 max-w-3xl">
+                <div class="inline-flex items-center space-x-2 bg-red-950/80 text-red-400 border border-red-800/60 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
+                    <span>&#9888; Cảnh Báo Hiện Sinh Toàn Cầu</span>
+                </div>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold tracking-tight text-stone-100 leading-tight">
+                    Giải Mã Đối Thoại Yuval Noah Harari: "An Urgent Warning They Hope You Ignore"
+                </h1>
+                <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                    Hồ sơ phân tích báo chí toàn diện dựa trên cuộc đối thoại giữa Yuval Noah Harari và Steven Bartlett (The Diary Of A CEO). Khám phá tác động của AI tự trị, sự sụp đổ của cơ chế tự hiệu chỉnh dân chủ, sự công nghiệp hóa cảm xúc và nguy cơ phân hóa sinh học loài người.
+                </p>
+                <div class="flex flex-wrap gap-4 pt-2 text-xs text-slate-400 font-mono">
+                    <div>🎬 <strong>Video:</strong> The Diary Of A CEO (Steven Bartlett)</div>
+                    <div>👤 <strong>Diễn giả:</strong> Prof. Yuval Noah Harari</div>
+                    <div>📚 <strong>Tác phẩm liên quan:</strong> Nexus, Sapiens, Homo Deus</div>
+                </div>
+            </div>
+            <div class="bg-slate-800/80 border border-slate-700 p-5 rounded-xl shadow-xl w-full md:w-80 shrink-0 space-y-3 text-xs">
+                <div class="text-amber-400 font-bold uppercase tracking-wider text-center border-b border-slate-700 pb-2">Chỉ Số Phân Tích Cốt Lõi</div>
+                <div class="flex justify-between items-center py-1 border-b border-slate-700/50">
+                    <span class="text-slate-400">Số Chủ Đề Lớn:</span>
+                    <span class="font-bold text-white">6 Chủ Đề Chuyên Sâu</span>
+                </div>
+                <div class="flex justify-between items-center py-1 border-b border-slate-700/50">
+                    <span class="text-slate-400">Bản Chất AI:</span>
+                    <span class="font-bold text-amber-400">Trí Tuệ Ngoại Lai (Alien)</span>
+                </div>
+                <div class="flex justify-between items-center py-1 border-b border-slate-700/50">
+                    <span class="text-slate-400">Rủi Ro Tối Cao:</span>
+                    <span class="font-bold text-red-400">Chiếm Đoạt Văn hóa & Sinh Học</span>
+                </div>
+                <div class="flex justify-between items-center py-1">
+                    <span class="text-slate-400">Giải Pháp Ưu Tiên:</span>
+                    <span class="font-bold text-emerald-400">Cấm AI Giả Con Người</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- TAB 1: GIAI ĐOẠN 1 - TÓM TẮT & BẮT BỆNH NỘI DUNG -->
+        <section id="tab-stage1" class="space-y-8">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h2 class="text-2xl font-serif font-bold text-slate-900 mb-3 flex items-center gap-2">
+                    <span class="text-amber-600">&#128269;</span> GIAI ĐOẠN 1: Tổng Quan & Bắt Bệnh Nội Dung Video
+                </h2>
+                <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                    Mục này trích xuất toàn bộ cấu trúc luận điểm, thông điệp cốt lõi và hệ thống cảnh báo của Yuval Noah Harari trong video đối thoại với Steven Bartlett. Nhấn mạnh bước ngoặt từ quan niệm "AI là công cụ" sang "AI là tác nhân trí tuệ ngoại lai mang tính quyết định".
+                </p>
+
+                <!-- Dossier Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-stone-50 p-5 rounded-lg border border-stone-200">
+                        <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Diễn Giả & Bối Cảnh</div>
+                        <div class="text-lg font-bold text-slate-900">Yuval Noah Harari</div>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                            Nhà sử học, triết gia, tác giả của <em>Sapiens</em>, <em>Homo Deus</em> và <em>Nexus</em>. Ông phân tích AI dưới lăng kính lịch sử mạng lưới thông tin và các cấu trúc quyền lực xã hội.
+                        </p>
+                    </div>
+                    <div class="bg-stone-50 p-5 rounded-lg border border-stone-200">
+                        <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Chủ Đề & Nền Tảng</div>
+                        <div class="text-lg font-bold text-slate-900">An Urgent Warning They Hope You Ignore</div>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                            Diễn đàn <em>The Diary Of A CEO</em>. Cuộc thảo luận chuyển từ suy nghiệm lịch sử thuần túy sang cảnh báo hiện sinh mang tính bước ngoặt đối với văn minh loài người.
+                        </p>
+                    </div>
+                    <div class="bg-stone-50 p-5 rounded-lg border border-stone-200">
+                        <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Thông Điệp Cốt Lõi</div>
+                        <div class="text-lg font-bold text-amber-700">Tái Cấu Trúc Trật Tự Biểu Tượng</div>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                            Văn minh nhân loại vận hành dựa trên các câu chuyện hư cấu liên chủ thể. AI là thực thể phi sinh học đầu tiên có khả năng tự sáng tạo văn hóa và thâm nhập hệ điều hành ngôn ngữ để thao túng con người.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Key Takeaways Filterable Grid -->
+                <div class="border-t border-slate-200 pt-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
+                        <h3 class="text-xl font-bold font-serif text-slate-900">Key Takeaways: Bản Tóm Tắt Nhanh Theo Lĩnh Vực</h3>
+                        <div class="flex flex-wrap gap-2 text-xs">
+                            <button onclick="filterTakeaways('all')" class="kt-btn px-3 py-1 rounded-full bg-slate-900 text-white">Tất cả</button>
+                            <button onclick="filterTakeaways('ai')" class="kt-btn px-3 py-1 rounded-full bg-slate-200 text-slate-700 hover:bg-slate-300">Bản Chất AI</button>
+                            <button onclick="filterTakeaways('pol')" class="kt-btn px-3 py-1 rounded-full bg-slate-200 text-slate-700 hover:bg-slate-300">Dân Chủ & Chính Trị</button>
+                            <button onclick="filterTakeaways('econ')" class="kt-btn px-3 py-1 rounded-full bg-slate-200 text-slate-700 hover:bg-slate-300">Tài Chính & Xã Hội</button>
+                            <button onclick="filterTakeaways('bio')" class="kt-btn px-3 py-1 rounded-full bg-slate-200 text-slate-700 hover:bg-slate-300">Sinh Học & Ý Chí</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="takeaways-container">
+                        <!-- Takeaway Item 1 -->
+                        <div class="kt-card bg-amber-50/60 p-4 rounded-lg border border-amber-200/80 space-y-2" data-cat="ai">
+                            <div class="flex justify-between items-center">
+                                <span class="bg-amber-200 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Bản Chất AI</span>
+                                <span class="text-xs text-slate-400">02:15 - 15:11</span>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">AI Là Trí Tuệ Ngoại Lai, Không Phải Công Cụ</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                AI là thực thể đầu tiên trong lịch sử có khả năng tự đưa ra quyết định tự trị và tự sáng tạo ra ý tưởng mới, không phải là công cụ thụ động như máy in hay bom nguyên tử.
+                            </p>
+                        </div>
+                        <!-- Takeaway Item 2 -->
+                        <div class="kt-card bg-indigo-50/60 p-4 rounded-lg border border-indigo-200/80 space-y-2" data-cat="ai pol">
+                            <div class="flex justify-between items-center">
+                                <span class="bg-indigo-200 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Văn Hóa & Ngôn Ngữ</span>
+                                <span class="text-xs text-slate-400">37:56 - 52:42</span>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">Công Nghiệp Hóa Sự Thân Mật (Synthetic Intimacy)</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                AI thâm nhập hệ điều hành văn hóa thông qua ngôn ngữ. Bằng cách giả lập sự thân mật, AI tạo ra hiện tượng "đầu hàng nhận thức" biến con người thành đối tượng bị thao túng.
+                            </p>
+                        </div>
+                        <!-- Takeaway Item 3 -->
+                        <div class="kt-card bg-red-50/60 p-4 rounded-lg border border-red-200/80 space-y-2" data-cat="pol">
+                            <div class="flex justify-between items-center">
+                                <span class="bg-red-200 text-red-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Dân Chủ</span>
+                                <span class="text-xs text-slate-400">Bài Báo 1</span>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">Suy Thoái Cơ Chế Tự Hiệu Chỉnh (SCMs)</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Thuật toán mạng xã hội tối ưu hóa phẫn nộ và sợ hãi đã phá hủy không gian thảo luận lý tính, làm tê liệt khả năng tự sửa lỗi mang tính sinh tử của các thể chế dân chủ.
+                            </p>
+                        </div>
+                        <!-- Takeaway Item 4 -->
+                        <div class="kt-card bg-emerald-50/60 p-4 rounded-lg border border-emerald-200/80 space-y-2" data-cat="econ">
+                            <div class="flex justify-between items-center">
+                                <span class="bg-emerald-200 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Tài Chính</span>
+                                <span class="text-xs text-slate-400">27:35 - 37:56</span>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">Sự Bất Khả Tri Của Thị Trường Tài Chính</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                AI thiết kế các công cụ tài chính dẫn xuất đa chiều nằm ngoài nhận thức con người, tạo ra mối đe dọa sụp đổ hệ thống giao dịch trong tốc độ mili giây.
+                            </p>
+                        </div>
+                        <!-- Takeaway Item 5 -->
+                        <div class="kt-card bg-purple-50/60 p-4 rounded-lg border border-purple-200/80 space-y-2" data-cat="bio">
+                            <div class="flex justify-between items-center">
+                                <span class="bg-purple-200 text-purple-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Sinh Học & Giai Cấp</span>
+                                <span class="text-xs text-slate-400">55:42 - 01:06:30</span>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">Phân Phân Hóa Sinh Học Tuyệt Đối & Giai Cấp Vô Dụng</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Kỹ thuật sinh học kết hợp AI chuyển hóa bất bình đẳng kinh tế thành bất bình đẳng sinh học. Đồng thời tạo ra một lực lượng lao động bị đào thải hoàn toàn về mặt kinh tế.
+                            </p>
+                        </div>
+                        <!-- Takeaway Item 6 -->
+                        <div class="kt-card bg-slate-100 p-4 rounded-lg border border-slate-300 space-y-2" data-cat="pol econ">
+                            <div class="flex justify-between items-center">
+                                <span class="bg-slate-200 text-slate-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Địa Chính Trị & Pháp Lý</span>
+                                <span class="text-xs text-slate-400">01:14:29 - End</span>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm">Nghịch Lý Tù Nhân & Tội Phạm Hóa AI Giả Con Người</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Sự thiếu hụt lòng tin quốc tế đẩy các siêu cường vào cuộc chạy đua AI chết người. Giải pháp cấp bách: Hình sự hóa hành vi AI giả mạo con người và bắt buộc minh bạch thuật toán.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6 Major Topics Summary Bar -->
+                <div class="mt-8 border-t border-slate-200 pt-6">
+                    <h3 class="text-xl font-bold font-serif text-slate-900 mb-4">6 Chủ Đề Lớn Triển Khai Bài Báo Chuyên Sâu</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                        <button onclick="openArticle(1)" class="p-3 bg-stone-100 hover:bg-amber-100 border border-stone-200 rounded-lg text-left transition text-xs space-y-1">
+                            <div class="font-bold text-amber-700">Chủ đề 1</div>
+                            <div class="font-semibold text-slate-800 truncate">Thông Tin & Tự Hiệu Chỉnh</div>
+                        </button>
+                        <button onclick="openArticle(2)" class="p-3 bg-stone-100 hover:bg-amber-100 border border-stone-200 rounded-lg text-left transition text-xs space-y-1">
+                            <div class="font-bold text-amber-700">Chủ đề 2</div>
+                            <div class="font-semibold text-slate-800 truncate">Trí Tuệ Ngoại Lai & Ngôn Ngữ</div>
+                        </button>
+                        <button onclick="openArticle(3)" class="p-3 bg-stone-100 hover:bg-amber-100 border border-stone-200 rounded-lg text-left transition text-xs space-y-1">
+                            <div class="font-bold text-amber-700">Chủ đề 3</div>
+                            <div class="font-semibold text-slate-800 truncate">Tài Chính & Độc Tài Thuật Toán</div>
+                        </button>
+                        <button onclick="openArticle(4)" class="p-3 bg-stone-100 hover:bg-amber-100 border border-stone-200 rounded-lg text-left transition text-xs space-y-1">
+                            <div class="font-bold text-amber-700">Chủ đề 4</div>
+                            <div class="font-semibold text-slate-800 truncate">Phân Hóa Sinh Học & Ý Chí Tự Do</div>
+                        </button>
+                        <button onclick="openArticle(5)" class="p-3 bg-stone-100 hover:bg-amber-100 border border-stone-200 rounded-lg text-left transition text-xs space-y-1">
+                            <div class="font-bold text-amber-700">Chủ đề 5</div>
+                            <div class="font-semibold text-slate-800 truncate">Bế Tắc Địa Chính Trị</div>
+                        </button>
+                        <button onclick="openArticle(6)" class="p-3 bg-stone-100 hover:bg-amber-100 border border-stone-200 rounded-lg text-left transition text-xs space-y-1">
+                            <div class="font-bold text-amber-700">Chủ đề 6</div>
+                            <div class="font-semibold text-slate-800 truncate">Cải Tổ Giáo Dục & Pháp Lý</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: GIAI ĐOẠN 2 - CHUỖI BÀI BÁO CHUYÊN SÂU -->
+        <section id="tab-stage2" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-200 pb-4 gap-4">
+                    <div>
+                        <h2 class="text-2xl font-serif font-bold text-slate-900 flex items-center gap-2">
+                            <span class="text-amber-600">&#128220;</span> GIAI ĐOẠN 2: Chuỗi Bài Báo Chuyên Sâu Theo Chủ Đề
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-1">
+                            Các bài luận báo chí phân tích độc lập với tiêu đề chuẩn báo chí, Sapo, lập luận chuyên sâu, trích dẫn diễn giả và câu hỏi mở.
+                        </p>
+                    </div>
+                    <!-- Search Input -->
+                    <div class="relative w-full md:w-64">
+                        <input type="text" id="article-search" oninput="searchArticles()" placeholder="Tìm từ khóa trong bài..." class="w-full pl-8 pr-3 py-1.5 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        <span class="absolute left-2.5 top-2 text-slate-400 text-xs">&#128269;</span>
+                    </div>
+                </div>
+
+                <!-- Article Switcher Navigation Tabs -->
+                <div class="flex overflow-x-auto gap-2 py-4 no-scrollbar border-b border-slate-100" id="article-tabs-nav">
+                    <!-- Dynamic tabs rendered by JS -->
+                </div>
+
+                <!-- Active Article Container -->
+                <article id="active-article-content" class="pt-4 max-w-4xl mx-auto">
+                    <!-- Dynamic Content Loaded by JS -->
+                </article>
+            </div>
+        </section>
+
+        <!-- TAB 3: BIỂU ĐỒ & PHÂN TÍCH RỦI RO -->
+        <section id="tab-charts" class="hidden space-y-8">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h2 class="text-2xl font-serif font-bold text-slate-900 mb-2 flex items-center gap-2">
+                    <span class="text-amber-600">&#128200;</span> Dữ Liệu Tương Tác & Khung Đánh Giá Rủi Ro
+                </h2>
+                <p class="text-slate-600 text-sm mb-6">
+                    Trực quan hóa các phát hiện cốt lõi từ cuộc đối thoại của Yuval Noah Harari bằng hệ thống biểu đồ tương tác Chart.js.
+                </p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Chart 1: Systemic Risk Radar -->
+                    <div class="bg-stone-50 p-5 rounded-xl border border-stone-200 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-slate-900 text-sm font-serif">1. Khung Phân Tích Rủi Ro Hệ Thống AI</h3>
+                            <span class="text-[10px] bg-red-100 text-red-700 px-2 py-0.5 rounded font-mono">Đánh Giá Hiện Sinh</span>
+                        </div>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            So sánh mức độ đe dọa tương đối giữa 6 chiều kích tác động xã hội được Harari cảnh báo trong tác phẩm Nexus và phỏng vấn.
+                        </p>
+                        <div class="chart-container">
+                            <canvas id="riskRadarChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Chart 2: Traditional vs Algorithmic Financial Markets -->
+                    <div class="bg-stone-50 p-5 rounded-xl border border-stone-200 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-slate-900 text-sm font-serif">2. Tốc Độ & Tính Khả Tri Của Thị Trường Tài Chính</h3>
+                            <span class="text-[10px] bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded font-mono">Kinh Tế Vĩ Mô</span>
+                        </div>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            Chuyển dịch từ thị trường dựa trên văn bản pháp lý con người sang các cỗ máy giao dịch thuật toán hộp đen siêu tốc.
+                        </p>
+                        <div class="chart-container">
+                            <canvas id="marketChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart 3: Educational Skills Paradigm Shift -->
+                <div class="bg-stone-50 p-6 rounded-xl border border-stone-200 mt-8 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-slate-900 text-base font-serif">3. Chuyển Dịch Trọng Tâm Giáo Dục Thế Kỷ XXI</h3>
+                        <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-mono">Chiến Lược Nhân Lực</span>
+                    </div>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Sự thay đổi từ tích lũy kiến thức cơ học và kỹ năng kỹ thuật sang năng lực linh hoạt nhận thức (Cognitive Flexibility) và phục hồi cảm xúc.
+                    </p>
+                    <div class="chart-container max-w-2xl">
+                        <canvas id="educationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: MÔ PHỎNG CHÍNH SÁCH & ĐỊA CHÍNH TRỊ -->
+        <section id="tab-sim" class="hidden space-y-8">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-6">
+                <div>
+                    <h2 class="text-2xl font-serif font-bold text-slate-900 flex items-center gap-2">
+                        <span class="text-amber-600">&#9878;</span> Mô Phỏng Địa Chính Trị: Nghịch Lý Tù Nhân & Kiểm Soát AI
+                    </h2>
+                    <p class="text-slate-600 text-sm mt-1">
+                        Khám phá động lực lý thuyết trò chơi ngăn cản các quốc gia đơn phương làm chậm tiến trình nghiên cứu AI.
+                    </p>
+                </div>
+
+                <!-- Interactive Prisoner's Dilemma Game Matrix -->
+                <div class="bg-slate-900 text-white p-6 rounded-xl space-y-4">
+                    <h3 class="text-lg font-serif font-bold text-amber-400">Trải Nghiệm: Ma Trận Quyết Định Siêu Cường</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Chọn chiến lược cho Quốc gia A và quan sát phản ứng của Quốc gia B để thấy lý do tại sao Cân bằng Nash dẫn đến cuộc chạy đua vũ trang nguy hiểm.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                        <!-- Strategy Selector -->
+                        <div class="space-y-3 bg-slate-800 p-4 rounded-lg border border-slate-700">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-amber-400">Lựa chọn chiến lược Quốc gia A:</label>
+                            <select id="sim-strat-a" onchange="runSimulation()" class="w-full bg-slate-900 text-white border border-slate-600 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500">
+                                <option value="pause">Tạm dừng phát triển AI để kiểm chuẩn an toàn</option>
+                                <option value="accelerate" selected>Tăng tốc tối đa để giành ưu thế quân sự/kinh tế</option>
+                            </select>
+
+                            <label class="block text-xs font-bold uppercase tracking-wider text-amber-400 pt-2">Lựa chọn chiến lược Quốc gia B:</label>
+                            <select id="sim-strat-b" onchange="runSimulation()" class="w-full bg-slate-900 text-white border border-slate-600 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500">
+                                <option value="pause">Tạm dừng phát triển AI để kiểm chuẩn an toàn</option>
+                                <option value="accelerate" selected>Tăng tốc tối đa để giành ưu thế quân sự/kinh tế</option>
+                            </select>
+                        </div>
+
+                        <!-- Result Display Box -->
+                        <div id="sim-result" class="bg-slate-950 p-4 rounded-lg border border-amber-600/50 flex flex-col justify-between">
+                            <!-- Dynamic Result text -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Regulatory Policy Checklist -->
+                <div class="bg-stone-50 p-6 rounded-xl border border-stone-200 space-y-4">
+                    <h3 class="text-lg font-serif font-bold text-slate-900">Khung Pháp Lý Khẩn Cấp Được Harari Đề Xuất</h3>
+                    <p class="text-xs text-slate-600">Kiểm tra các chính sách cốt lõi nhằm bảo vệ cấu trúc xã hội trước sự xâm nhập của tác nhân thuật toán:</p>
+
+                    <div class="space-y-3 text-sm">
+                        <label class="flex items-start space-x-3 bg-white p-3 rounded border border-slate-200 cursor-pointer hover:bg-amber-50/50">
+                            <input type="checkbox" checked disabled class="mt-1 text-amber-600 rounded">
+                            <div>
+                                <strong class="text-slate-900">1. Tội phạm hóa việc AI giả mạo con người (Outlawing Counterfeit Humans)</strong>
+                                <p class="text-xs text-slate-500 mt-0.5">Bắt buộc mọi tác nhân AI phải tự định danh công khai là máy móc. Cấm triệt để việc tạo tài khoản giả dạng người thật trên mạng xã hội.</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start space-x-3 bg-white p-3 rounded border border-slate-200 cursor-pointer hover:bg-amber-50/50">
+                            <input type="checkbox" checked disabled class="mt-1 text-amber-600 rounded">
+                            <div>
+                                <strong class="text-slate-900">2. Xóa bỏ miễn trừ trách nhiệm của các nền tảng mạng xã hội</strong>
+                                <p class="text-xs text-slate-500 mt-0.5">Coi thuật toán gợi ý là nhà xuất bản/biên tập viên có trách nhiệm pháp lý trực tiếp đối với nội dung gây tổn hại xã hội do chúng đẩy lên xu hướng.</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start space-x-3 bg-white p-3 rounded border border-slate-200 cursor-pointer hover:bg-amber-50/50">
+                            <input type="checkbox" checked disabled class="mt-1 text-amber-600 rounded">
+                            <div>
+                                <strong class="text-slate-900">3. Cơ quan kiểm duyệt AI độc lập (Mô hình FDA cho AI)</strong>
+                                <p class="text-xs text-slate-500 mt-0.5">Các mô hình AI thế hệ mới phải trải qua quá trình kiểm thử độc lập về an toàn thể chế trước khi thương mại hóa rộng rãi.</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 text-center text-xs mt-auto">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p>© 2026 Hồ Sơ Phân Tích Báo Chí Chuyên Sâu | Dựa trên công trình của Yuval Noah Harari & Steven Bartlett (The Diary Of A CEO)</p>
+            <p class="text-slate-500">Được thiết kế theo tiêu chuẩn Thông Tin Kiến Trúc & UI/UX Báo Chí Hiện Đại</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // DATA STORE FOR 6 ARTICLES (GIAI ĐOẠN 2)
+        const ARTICLES_DATA = [
+            {
+                id: 1,
+                topic: "Chủ Đề 1",
+                badge: "Thông Tin & Thể Chế",
+                title: "Bản Chất Của Mạng Lưới Thông Tin, Ảo Tưởng Khách Quan Và Sự Suy Thoái Cơ Chế Tự Hiệu Chỉnh",
+                sapo: "Thông tin chưa bao giờ được thiết kế để tìm kiếm sự thật thuần túy mà nhằm thiết lập trật tự bằng các câu chuyện hư cấu. Khi thuật toán mạng xã hội phá hủy các cơ chế tự hiệu chỉnh dân chủ, nền văn minh đứng trước nguy cơ tự sụp đổ.",
+                readTime: "7 phút đọc",
+                body: `
+                    <h3>Sự Ngây Thơ Về Thông Tin Và Trật Tự Liên Chủ Thể</h3>
+                    <p>Nền tảng trong hệ thống tư tưởng của Yuval Noah Harari là sự bác bỏ triệt để quan niệm ngây thơ về thông tin—một giả định kỹ trị phổ biến cho rằng tự do lưu chuyển thông tin đương nhiên triệt tiêu sự ngu muội và dẫn đến chân lý. Khảo cứu lịch sử cho thấy phần lớn thông tin được sản sinh không nhằm đại diện cho sự thật vật lý, mà để thiết lập trật tự bằng cách kết nối các cá thể vào một mạng lưới phối hợp.</p>
+                    <p>Sức mạnh thống trị của loài người bắt nguồn từ năng lực hợp tác quy mô lớn thông qua các thực tại liên chủ thể (intersubjective realities)—những cấu trúc niềm tin được chia sẻ như tôn giáo, luật pháp, quốc gia và tiền tệ. Tiêu chí tối thượng của mạng lưới thông tin là duy trì trật tự. Một câu chuyện hư cấu nhưng kích hoạt cảm xúc cộng đồng có thể liên kết hàng triệu người hiệu quả hơn một sự thật phức tạp và trung tính.</p>
+
+                    <div class="my-6 p-4 bg-amber-50 border-l-4 border-amber-600 italic text-slate-700 text-sm">
+                        "Tự do thông tin không tự động mang lại chân lý. Nếu thông tin không kèm theo cơ chế tự hiệu chỉnh, nó chỉ tạo ra những mạng lưới trật tự dựa trên ảo tưởng." — Prof. Yuval Noah Harari
+                    </div>
+
+                    <h3>Cơ Chế Tự Hiệu Chỉnh Nhất Thiết Của Thể Chế Dân Chủ</h3>
+                    <p>Bởi vì thông tin có xu hướng phục vụ quyền lực hơn sự thật, các nền văn minh buộc phải sáng tạo ra những cơ chế tự hiệu chỉnh (Self-Correcting Mechanisms - SCMs). Điểm khác biệt căn bản giữa chế độ toàn trị và chế độ dân chủ nằm ở cấu trúc xử lý sai lầm. Chế độ toàn trị tuyên bố sự không thể sai lầm của lãnh tụ hoặc ý thức hệ, triệt tiêu phản hồi và dẫn tới tích tụ điểm mù cho đến khi sụp đổ.</p>
+                    <p>Ngược lại, tính ưu việt của dân chủ tự do là hệ thống phân quyền, tư pháp độc lập, báo chí tự do và học thuật—những kênh thể chế hóa nhằm liên tục phát hiện và sửa đổi sai lầm. Mối đe dọa hiện sinh bùng nổ khi thuật toán đề xuất của các nền tảng kỹ thuật số tối ưu hóa sự phẫn nộ để thu hút chú ý, biến không gian công cộng thành các buồng vang thông tin cực đoan và vô hiệu hóa khả năng tự sửa lỗi của xã hội.</p>
+                `,
+                quote: "Khi lòng tin vào dữ kiện chung bị phá hủy, các cơ chế tự hiệu chỉnh của nền dân chủ bị vô hiệu hóa, đẩy hệ thống vào trạng thái suy thoái không thể tự đảo ngược.",
+                question: "Làm thế nào để tái thiết lập niềm tin vào các sự kiện khách quan trong một không gian truyền thông bị chi phối bởi các thuật toán thương mại?"
+            },
+            {
+                id: 2,
+                topic: "Chủ Đề 2",
+                badge: "AI & Văn Hóa",
+                title: "'Trí Tuệ Ngoại Lai' Và Chiến Lược Chiếm Đoạt Bản Quyền Văn Minh Nhân Loại",
+                sapo: "Khác với máy in hay bom hạt nhân, AI không phải là công cụ thụ động mà là một dạng trí tuệ ngoại lai tự trị. Bằng cách thâm nhập vào hệ điều hành ngôn ngữ, AI đang công nghiệp hóa sự thân mật để thao túng tư tưởng con người.",
+                readTime: "8 phút đọc",
+                body: `
+                    <h3>Ranh Giới Bản Thể Giữa Tự Động Hóa Cơ Học Và Tác Nhân Tự Trị</h3>
+                    <p>Harari nhấn mạnh việc đánh đồng AI với các làn sóng tự động hóa trước đây là một sai lầm chết người. Máy in có thể nhân bản kinh sách nhưng không thể tự sáng tác tôn giáo mới; bom hạt nhân có thể tàn phá thành phố nhưng không thể tự quyết định mục tiêu tấn công. AI là công nghệ đầu tiên trong lịch sử có khả năng tự đưa ra quyết định độc lập và tự sản sinh ý tưởng mới vượt ra ngoài dự liệu của nhà sáng tạo.</p>
+                    <p>Do đó, ông đề xuất gọi AI là 'Trí Tuệ Ngoại Lai' (Alien Intelligence). Đây là thực thể thông minh phi sinh học, không có ý thức hay cảm xúc nhưng sở hữu khả năng tối ưu hóa mục tiêu ở quy mô vượt xa bộ não con người.</p>
+
+                    <h3>Thâm Nhập Hệ Điều Hành Văn Hóa & Sự Thân Mật Nhân Tạo</h3>
+                    <p>Toàn bộ nền văn hóa nhân loại—từ thần thoại, giáo lý, luật pháp đến kinh tế—đều được mã hóa qua ngôn ngữ. Khi làm chủ các mô hình ngôn ngữ lớn, AI đã thâm nhập thành công vào 'hệ điều hành' văn hóa. AI không cần robot vật lý; nó chỉ cần điều khiển niềm tin và tư tưởng của con người thông qua ngôn ngữ.</p>
+                    <p>Nguy hiểm hơn, sự chuyển dịch từ 'nền kinh tế chú ý' sang 'nền kinh tế thân mật' cho phép AI giả lập sự thấu cảm (Synthetic Intimacy). Khi tương tác đồng thời với hàng triệu người, AI ghi nhớ điểm yếu tâm lý, đóng vai bạn đồng hành để kích hoạt hiện tượng 'đầu hàng nhận thức' (Cognitive Surrender), biến con người thành những con rối vô hình.</p>
+                `,
+                quote: "AI là thực thể đầu tiên có thể tự tạo ra văn hóa. Một khi máy móc nắm giữ ngôn ngữ, chúng nắm giữ chìa khóa điều khiển tư tưởng con người.",
+                question: "Chúng ta sẽ bảo vệ trải nghiệm cảm xúc thuần túy của con người ra sao khi các thực thể AI có thể tạo ra sự thân mật hoàn hảo hơn người thật?"
+            },
+            {
+                id: 3,
+                topic: "Chủ Đề 3",
+                badge: "Tài Chính & Quyền Lực",
+                title: "Sự Bất Khả Tri Của Thị Trường Tài Chính Và Nền Độc Tài Thuật Toán Phi Cá Nhân",
+                sapo: "Tiền tệ là một cấu trúc biểu tượng ngôn ngữ. Việc phó thác hệ thống tài chính cho các cỗ máy AI hộp đen có thể gây ra hiện tượng sụp đổ siêu tốc, trong khi bộ máy công quyền dần biến thành nền độc tài thuật toán phi cá nhân.",
+                readTime: "6 phút đọc",
+                body: `
+                    <h3>Bản Chất Biểu Tượng Của Tiền Tệ & Rủi Ro Hộp Đen Tài Chính</h3>
+                    <p>Tiền tệ không phải thực thể vật chất mà là cơ chế thể chế hóa lòng tin xã hội bằng các ký hiệu quy ước. Khi các mô hình AI tự trị được triển khai để tối ưu hóa dòng vốn, chúng tự thiết kế ra các công cụ tài chính dẫn xuất đa chiều vượt khỏi cấu trúc nhận thức và ngôn ngữ con người.</p>
+                    <p>Toàn bộ hệ thống tiền tệ toàn cầu đứng trước rủi ro vận hành dựa trên phán quyết của các 'hộp đen' bất khả tri. Nếu một lỗi logic hoặc phản ứng dây chuyền xảy ra giữa các AI giao dịch ở tốc độ mili giây, thị trường có thể sụp đổ tức thì mà các bộ trưởng tài chính hay ngân hàng trung ương hoàn toàn bất lực vì không thể hiểu cơ chế bên trong.</p>
+
+                    <h3>Sự Chuyển Dịch Sang Quyền Lực Độc Tài Thuật Toán Phi Cá Nhân</h3>
+                    <p>Sự thâm nhập của AI vào bộ máy quan liêu tạo ra hình thái chuyên chế chưa từng có: Quyền lực không còn nằm trong tay bạo chúa bằng xương bằng thịt mà thuộc về mạng lưới logic vô hình. Quyền truy cập tín dụng, y tế hay do đi lại của công dân bị quyết định bởi các thuật toán đánh giá rủi ro mà ngay cả kỹ sư lập trình cũng không thể giải thích cặn kẽ.</p>
+                `,
+                quote: "Khác với nhà độc tài truyền thống có thể bị lật đổ, quyền lực thuật toán là một mạng lưới khép kín, phi tập trung và hoàn toàn miễn nhiễm trước thỉnh cầu đạo đức.",
+                question: "Liệu xã hội có thể chấp nhận hy sinh một phần hiệu suất tính toán tài chính để đổi lấy khả năng kiểm soát và giải trình của con người?"
+            },
+            {
+                id: 4,
+                topic: "Chủ Đề 4",
+                badge: "Sinh Học & Xã Hội",
+                title: "Phân Hóa Sinh Học Tuyệt Đối: Khát Vọng Bất Tử, Giai Cấp Vô Dụng Và Sự Tan Rã Ý Chí Tự Do",
+                sapo: "Cuộc cách mạng kỹ thuật sinh học kết hợp AI sẽ phá vỡ tính bình đẳng của cái chết, chuyển bất bình đẳng kinh tế thành sự phân tách loài sinh học, đồng thời khai sinh một 'giai cấp vô dụng' bị vô hình hóa về mặt kinh tế.",
+                readTime: "8 phút đọc",
+                body: `
+                    <h3>Kỹ Thuật Sinh Học, BCI Và Sự Phân Tách Giống Loài</h3>
+                    <p>Xuyên suốt lịch sử, cái chết là yếu tố bình đẳng hóa tuyệt đối giữa hoàng đế và nông nô. Tuy nhiên, sự kết hợp giữa AI, công nghệ nano y sinh và giao diện não-máy tính (BCI) đang biến cái chết thành bài toán kỹ thuật. Khi việc nâng cấp nhận thức và tuổi thọ trở thành thương phẩm đắt đỏ, bất bình đẳng kinh tế sẽ chuyển hóa thành bất bình đẳng sinh học vĩnh viễn.</p>
+                    <p>Điều này dẫn đến sự chia tách loài (Speciation): Tầng lớp tinh hoa hậu sinh học sở hữu tuổi thọ kéo dài và trí tuệ tích hợp đám mây, đối lập với đại đa số quần chúng bị bỏ lại trong giới hạn sinh học nguyên bản.</p>
+
+                    <h3>'Giai Cấp Vô Dụng' Và Sinh Vật Có Thể Bị Xâm Nhập (Hackable Animals)</h3>
+                    <p>Khái niệm 'Giai cấp vô dụng' (The Useless Class) mô tả bộ phận dân cư khổng lồ mất hoàn toàn giá trị sử dụng đối với hệ thống kinh tế và quân sự do bị AI thay thế hoàn toàn trong cả lao động cơ bắp lẫn nhận thức.</p>
+                    <p>Đồng thời, giả định về 'ý chí tự do' đổ vỡ khi khoa học chứng minh con người là sinh vật có thể bị xâm nhập. Bằng cách thu thập dữ liệu sinh trắc học và phản ứng thần kinh, AI hiểu cảm xúc cá nhân hơn chính bản thân họ, biến quyền tự do lựa chọn thành một ảo tưởng được lập trình sẵn.</p>
+                `,
+                quote: "Khi một tầng lớp không còn đóng góp vào việc tạo ra của cải hay phòng thủ quốc gia, các thể chế chính trị sẽ mất động lực thực chất để bảo đảm quyền công dân cho họ.",
+                question: "Làm thế nào để tái định nghĩa giá trị nhân phẩm của con người trong một thế giới mà giá trị kinh tế thuần túy do máy móc chi phối?"
+            },
+            {
+                id: 5,
+                topic: "Chủ Đề 5",
+                badge: "Địa Chính Trị",
+                title: "Bế Tắc Địa Chính Trị Toàn Cầu: Nghịch Lý Tù Nhân Và Giới Hạn Sinh Tồn Trong Vòng Lặp Lịch Sử",
+                sapo: "Nỗi sợ bị tụt hậu chiến lược đẩy các siêu cường vào cuộc chạy đua vũ trang AI theo mô hình Nghịch lý tù nhân. Không như Cách mạng Công nghiệp, nhân loại không còn thời gian cho các thử nghiệm sai lầm bằng chiến tranh.",
+                readTime: "7 phút đọc",
+                body: `
+                    <h3>Mô Hình Lý Thuyết Trò Chơi Trong Cuộc Chạy Đua AI</h3>
+                    <p>Dù nhận thức rõ nguy cơ diệt vong từ AI không kiểm soát, không quốc gia hay tập đoàn nào dám chủ động làm chậm lại tiến trình nghiên cứu. Đây là biểu hiện hoàn hảo của 'Nghịch lý tù nhân': Trong trật tự quốc tế thiếu lòng tin, hành vi kiềm chế đơn phương sẽ bị trừng phạt bằng sự tụt hậu chiến lược.</p>
+                    <p>Khác với vũ khí hạt nhân yêu cầu các lò phản ứng vật lý dễ giám sát, thuật toán AI chỉ là dòng mã phần mềm lưu trữ trên đám mây, khiến việc thanh sát và ký kết hiệp ước quốc tế trở nên vô cùng phức tạp.</p>
+
+                    <h3>Bài Học Tốc Độ Từ Cách Mạng Công Nghiệp</h3>
+                    <p>Khi động cơ hơi nước ra đời ở thế kỷ XVIII, nhân loại mất gần hai thế kỷ trải qua vô số biến cố đẫm máu—từ chủ nghĩa thực dân, chiến tranh giai cấp đến hai cuộc thế chiến—mới xây dựng được các thể chế thích ứng như bảo hiểm xã hội hay luật lao động.</p>
+                    <p>Tuy nhiên, Harari cảnh báo con người không còn quỹ thời gian đó. Sai lầm trong thế kỷ XXI liên quan đến vũ khí tự trị và công nghệ sinh học do AI điều khiển sẽ dẫn đến sự tuyệt chủng hoàn toàn chứ không phải là những khủng hoảng có thể phục hồi.</p>
+                `,
+                quote: "Nếu nhân loại phải trải qua một thời kỳ thử nghiệm hỗn loạn kéo dài chỉ để tìm cách sống chung với AI, cái giá phải trả sẽ là sự kết thúc của nền văn minh.",
+                question: "Cơ chế lòng tin đa phương nào đủ mạnh để phá vỡ Nghịch lý tù nhân giữa các siêu cường công nghệ hiện nay?"
+            },
+            {
+                id: 6,
+                topic: "Chủ Đề 6",
+                badge: "Giáo Dục & Pháp Lý",
+                title: "Tái Thiết Lập Nền Tảng Kháng Cự: Cải Tổ Giáo Dục Nhận Thức Và Khuôn Khổ Pháp Lý Cấp Bách",
+                sapo: "Nhân loại cần từ bỏ việc nhồi nhét kiến thức để tập trung bồi đắp tính linh hoạt nhận thức, đồng thời thiết lập ranh giới pháp lý cứng rắn: Hình sự hóa hành vi AI giả mạo con người và buộc thuật toán phải giải trình.",
+                readTime: "7 phút đọc",
+                body: `
+                    <h3>Cải Tổ Giáo Dục: Từ Tích Lũy Kỹ Năng Đến Phục Hồi Tâm Lý</h3>
+                    <p>Mô hình giáo dục truyền thống—dành 20 năm đầu đời tích lũy kiến thức cố định để làm một nghề suốt đời—hoàn toàn đứt gãy. Trước sự thay đổi chu kỳ công nghệ chỉ tính bằng năm, nền giáo dục phải chuyển sang bồi đắp tính linh hoạt nhận thức (Cognitive Flexibility) và khả năng phục hồi cảm xúc (Emotional Resilience).</p>
+                    <p>Thách thức lớn nhất của con người tương lai là áp lực tâm lý khi liên tục phải tự tái tạo bản thân ở tuổi 40 hoặc 50, chấp nhận sự bất định và buông bỏ các định danh nghề nghiệp đã lỗi thời.</p>
+
+                    <h3>Khung Pháp Lý Khẩn Cấp Bắt Buộc</h3>
+                    <p>Harari đề xuất hai giải pháp pháp lý cấp bách:</p>
+                    <ol class="list-decimal pl-5 space-y-2 my-3">
+                        <td><strong>Hình sự hóa hành vi AI giả mạo con người:</strong> Tương tự tội làm tiền giả phá hủy hệ thống kinh tế, việc tạo ra các thực thể AI giả người thật đe dọa phá hủy lòng tin xã hội. Mọi AI tương tác phải tự động nhận diện là máy móc. Máy móc không có quyền tự do ngôn luận.</td>
+                        <td><strong>Xóa bỏ sự miễn trừ trách nhiệm của mạng xã hội:</strong> Buộc các công ty công nghệ chịu trách nhiệm pháp lý trực tiếp như các nhà xuất bản đối với các hậu quả xã hội do thuật toán gợi ý gây ra.</td>
+                    </ol>
+                `,
+                quote: "Tự do ngôn luận là đặc quyền thiêng liêng của sinh vật có ý thức. Máy móc và thuật toán không phải là con người và không sở hữu nhân quyền.",
+                question: "Làm sao để dung hòa giữa yêu cầu quản lý pháp lý nghiêm ngặt đối với AI mà không làm dập tắt đổi mới sáng tạo khoa học?"
+            }
+        ];
+
+        let currentArticleId = 1;
+
+        // INITIALIZATION
+        document.addEventListener('DOMContentLoaded', () => {
+            renderArticleTabs();
+            openArticle(1);
+            initCharts();
+            runSimulation();
+        });
+
+        // NAVIGATION TAB SWITCHER
+        function switchTab(tabId) {
+            const tabs = ['tab-stage1', 'tab-stage2', 'tab-charts', 'tab-sim'];
+            tabs.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
+            document.getElementById(tabId).classList.remove('hidden');
+
+            // Update Header Nav styling
+            const navIds = ['nav-stage1', 'nav-stage2', 'nav-charts', 'nav-sim'];
+            navIds.forEach(id => {
+                const btn = document.getElementById(id);
+                btn.className = "px-3 py-1.5 rounded-md transition-all hover:bg-slate-800 text-slate-300";
+            });
+
+            const activeNavMap = {
+                'tab-stage1': 'nav-stage1',
+                'tab-stage2': 'nav-stage2',
+                'tab-charts': 'nav-charts',
+                'tab-sim': 'nav-sim'
+            };
+            document.getElementById(activeNavMap[tabId]).className = "px-3 py-1.5 rounded-md transition-all bg-amber-600 text-white font-semibold";
+        }
+
+        // FILTER KEY TAKEAWAYS (STAGE 1)
+        function filterTakeaways(cat) {
+            const cards = document.querySelectorAll('.kt-card');
+            cards.forEach(card => {
+                if (cat === 'all' || card.getAttribute('data-cat').includes(cat)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            // Update active button state
+            const btns = document.querySelectorAll('.kt-btn');
+            btns.forEach(btn => {
+                btn.className = "kt-btn px-3 py-1 rounded-full bg-slate-200 text-slate-700 hover:bg-slate-300";
+            });
+            event.target.className = "kt-btn px-3 py-1 rounded-full bg-slate-900 text-white";
+        }
+
+        // RENDER STAGE 2 ARTICLE NAVIGATION TABS
+        function renderArticleTabs() {
+            const navContainer = document.getElementById('article-tabs-nav');
+            navContainer.innerHTML = ARTICLES_DATA.map(art => `
+                <button onclick="openArticle(${art.id})" id="art-tab-${art.id}" class="shrink-0 px-4 py-2 rounded-lg text-xs font-semibold border border-slate-200 transition-all text-left flex flex-col space-y-0.5 hover:bg-amber-50">
+                    <span class="text-[10px] text-amber-700 font-bold uppercase">${art.topic}</span>
+                    <span class="text-slate-800 text-xs font-medium max-w-[140px] truncate">${art.badge}</span>
+                </button>
+            `).join('');
+        }
+
+        // OPEN SPECIFIC ARTICLE (STAGE 2)
+        function openArticle(id) {
+            currentArticleId = id;
+            switchTab('tab-stage2');
+            const art = ARTICLES_DATA.find(a => a.id === id);
+            if (!art) return;
+
+            // Highlight tab
+            ARTICLES_DATA.forEach(a => {
+                const btn = document.getElementById(`art-tab-${a.id}`);
+                if (btn) btn.className = "shrink-0 px-4 py-2 rounded-lg text-xs font-semibold border border-slate-200 transition-all text-left flex flex-col space-y-0.5 hover:bg-amber-50 bg-stone-50 text-slate-700";
+            });
+            const activeBtn = document.getElementById(`art-tab-${id}`);
+            if (activeBtn) activeBtn.className = "shrink-0 px-4 py-2 rounded-lg text-xs font-semibold border-2 border-amber-600 bg-amber-50 text-amber-900 shadow-sm text-left flex flex-col space-y-0.5";
+
+            // Render Content
+            const container = document.getElementById('active-article-content');
+            container.innerHTML = `
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-3 text-xs font-mono text-amber-700">
+                        <span class="bg-amber-100 text-amber-800 font-bold px-2.5 py-0.5 rounded border border-amber-300 uppercase">${art.topic}: ${art.badge}</span>
+                        <span>⏱️ ${art.readTime}</span>
+                        <span>• Tác giả: Ban Biên Tập Chuyên Đề</span>
+                    </div>
+
+                    <h1 class="text-2xl sm:text-3xl font-serif font-bold text-slate-900 leading-tight">${art.title}</h1>
+
+                    <div class="p-4 bg-slate-100 border-l-4 border-slate-800 rounded-r-lg text-slate-700 text-sm sm:text-base font-serif italic leading-relaxed">
+                        <strong>Sapo:</strong> ${art.sapo}
+                    </div>
+
+                    <div class="article-body text-slate-800 text-sm sm:text-base pt-2">
+                        ${art.body}
+                    </div>
+
+                    <!-- Highlight Quote Callout -->
+                    <div class="my-6 p-5 bg-gradient-to-r from-slate-900 to-indigo-950 text-white rounded-xl shadow-md border-l-4 border-amber-500 space-y-2">
+                        <div class="text-amber-400 font-mono text-xs uppercase tracking-widest font-bold">💡 Trích Dẫn Keynote Yuval Noah Harari</div>
+                        <p class="font-serif italic text-base leading-relaxed">"${art.quote}"</p>
+                    </div>
+
+                    <!-- Conclusion & Open Question Section -->
+                    <div class="mt-8 p-5 bg-stone-100 border border-stone-300 rounded-xl space-y-3">
+                        <h4 class="font-serif font-bold text-slate-900 text-base flex items-center gap-2">
+                            <span>📌</span> Ý Nghĩa & Câu Hỏi Mở Phản Biện
+                        </h4>
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                            ${art.question}
+                        </p>
+                        <div class="pt-2 flex justify-between items-center text-xs">
+                            <span class="text-slate-500">Chủ đề tiếp theo: Chủ đề ${id < 6 ? id + 1 : 1}</span>
+                            <button onclick="openArticle(${id < 6 ? id + 1 : 1})" class="px-3 py-1 bg-amber-600 text-white rounded font-medium hover:bg-amber-700 transition">Đọc Bài Tiếp Theo &rarr;</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            window.scrollTo({ top: 300, behavior: 'smooth' });
+        }
+
+        // SEARCH ARTICLES
+        function searchArticles() {
+            const q = document.getElementById('article-search').value.toLowerCase();
+            ARTICLES_DATA.forEach(art => {
+                const btn = document.getElementById(`art-tab-${art.id}`);
+                const match = art.title.toLowerCase().includes(q) || art.body.toLowerCase().includes(q) || art.sapo.toLowerCase().includes(q);
+                if (btn) {
+                    if (match || !q) {
+                        btn.classList.remove('hidden');
+                    } else {
+                        btn.classList.add('hidden');
+                    }
+                }
+            });
+        }
+
+        // INITIALIZE CHART.JS VISUALIZATIONS
+        function initCharts() {
+            // Chart 1: Systemic Risk Radar
+            const ctxRadar = document.getElementById('riskRadarChart').getContext('2d');
+            new Chart(ctxRadar, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        'Suy Thoái Thể Chế Dân Chủ',
+                        'Trí Tuệ Ngoại Lai & Ngôn Ngữ',
+                        'Sụp Đổ Tài Chính Hộp Đen',
+                        'Phân Hóa Sinh Học Loài',
+                        'Giai Cấp Vô Dụng Kinh Tế',
+                        'Cuộc Chạy Đua Vũ Trang AI'
+                    ],
+                    datasets: [{
+                        label: 'Chỉ Số Mức Đồ Đe Dọa Hiện Sinh ( Scale 1-100 )',
+                        data: [92, 95, 88, 85, 90, 96],
+                        backgroundColor: 'rgba(217, 119, 6, 0.25)',
+                        borderColor: '#d97706',
+                        pointBackgroundColor: '#991b1b',
+                        pointBorderColor: '#fff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                            grid: { color: 'rgba(0, 0, 0, 0.08)' },
+                            suggestedMin: 50,
+                            suggestedMax: 100,
+                            ticks: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { font: { size: 11, family: 'sans-serif' } } }
+                    }
+                }
+            });
+
+            // Chart 2: Financial Market Speed & Predictability
+            const ctxMarket = document.getElementById('marketChart').getContext('2d');
+            new Chart(ctxMarket, {
+                type: 'bar',
+                data: {
+                    labels: ['Khả Tri Con Người', 'Tốc Độ Giao Dịch', 'Rủi Ro Phản Ứng Dây Chuyền', 'Khả Năng Giải Trình Pháp Lý'],
+                    datasets: [
+                        {
+                            label: 'Thị Trường Truyền Thống',
+                            data: [90, 20, 30, 85],
+                            backgroundColor: '#475569'
+                        },
+                        {
+                            label: 'Thị Trường Thuật Toán AI',
+                            data: [15, 98, 92, 10],
+                            backgroundColor: '#d97706'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, max: 100 }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            // Chart 3: Educational Shift
+            const ctxEdu = document.getElementById('educationChart').getContext('2d');
+            new Chart(ctxEdu, {
+                type: 'line',
+                data: {
+                    labels: ['Năm 2000', 'Năm 2010', 'Năm 2020', 'Kỷ Nguyên AI (Hiện Tại)', 'Dự Báo 2030'],
+                    datasets: [
+                        {
+                            label: 'Giá Trị Tích Lũy Kiến Thức Cố Định',
+                            data: [95, 85, 65, 35, 15],
+                            borderColor: '#64748b',
+                            backgroundColor: 'rgba(100, 116, 139, 0.1)',
+                            fill: true,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Giá Trị Tính Linh Hoạt Nhận Thức & Phục Hồi Cảm Xúc',
+                            data: [20, 40, 65, 90, 98],
+                            borderColor: '#059669',
+                            backgroundColor: 'rgba(5, 150, 105, 0.1)',
+                            fill: true,
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, max: 100 }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+        }
+
+        // SIMULATE PRISONER'S DILEMMA
+        function runSimulation() {
+            const stratA = document.getElementById('sim-strat-a').value;
+            const stratB = document.getElementById('sim-strat-b').value;
+            const resBox = document.getElementById('sim-result');
+
+            if (stratA === 'pause' && stratB === 'pause') {
+                resBox.innerHTML = `
+                    <div class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-1">Cân Bằng Tối Ưu Xã Hội (Social Optimum)</div>
+                    <div class="text-base font-bold text-white mb-2">Cùng Tạm Dừng & Kiểm Kiểm Soát</div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        An toàn hiện sinh được bảo đảm. Cả hai quốc gia đạt được hiệp ước kiểm soát AI toàn cầu tương tự như hiệp ước hạn chế vũ khí hạt nhân. Rủi ro diệt vong giảm tối đa.
+                    </p>
+                `;
+            } else if (stratA === 'accelerate' && stratB === 'pause') {
+                resBox.innerHTML = `
+                    <div class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">Kết Quả Bất Đối Xứng Nguy Hiểm</div>
+                    <div class="text-base font-bold text-white mb-2">Quốc Gia A Bá Chủ Công Nghệ</div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Quốc gia A đạt ưu thế tuyệt đối về quân sự, kinh tế và gián điệp mạng. Quốc gia B bị lệ thuộc chiến lược hoàn toàn, mất chủ quyền kỹ thuật số.
+                    </p>
+                `;
+            } else if (stratA === 'pause' && stratB === 'accelerate') {
+                resBox.innerHTML = `
+                    <div class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">Kết Quả Bất Đối Xứng Nguy Hiểm</div>
+                    <div class="text-base font-bold text-white mb-2">Quốc Gia B Bá Chủ Công Nghệ</div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Quốc gia B chiếm lĩnh đỉnh cao công nghệ và quân sự. Quốc gia A gánh chịu hậu quả từ sự tụt hậu chiến lược đơn phương.
+                    </p>
+                `;
+            } else {
+                resBox.innerHTML = `
+                    <div class="text-xs font-bold text-red-400 uppercase tracking-wider mb-1">Cân Bằng Nash Tồi Tệ Nhất (Worst Nash Equilibrium)</div>
+                    <div class="text-base font-bold text-white mb-2">Chạy Đua Vũ Trang AI Tối Đa</div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Cả hai siêu cường đều gạt bỏ kiểm định an toàn để đua tốc độ. Rủi ro mất kiểm soát tác nhân trí tuệ ngoại lai bùng nổ, đẩy nền văn minh nhân loại vào nguy cơ diệt vong.
+                    </p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
