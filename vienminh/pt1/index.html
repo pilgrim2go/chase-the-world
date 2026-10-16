@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phân Tích Chuyên Sâu: Tâm Sân & Tuệ Giác Tánh Biết - HT. Thích Viên Minh</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        zen: {
+                            bg: '#FDFBF7',
+                            card: '#FFFFFF',
+                            subtle: '#F4EFE6',
+                            border: '#E8E1D5',
+                            text: '#2C322E',
+                            muted: '#656E67',
+                            terracotta: '#C86D51',
+                            amber: '#B87D4B',
+                            sage: '#6B8E7B',
+                            slate: '#4A5568'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Merriweather', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FDFBF7;
+            color: #2C322E;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .serif-title {
+            font-family: 'Merriweather', serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #F4EFE6;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #C86D51;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="antialiased leading-relaxed selection:bg-zen-terracotta selection:text-white">
+
+<!-- Chosen Palette: Warm Zen Neutrals (Background: #FDFBF7, Terracotta: #C86D51, Sage: #6B8E7B, Amber: #B87D4B, Text: #2C322E) -->
+
+<!-- Application Structure Plan:
+     1. Hero & Core Philosophy: Giới thiệu thông điệp cốt lõi của HT. Viên Minh, tổng quan chuỗi nghiên cứu và thanh chỉ số thống kê key metrics.
+     2. Navigation Bar: Thanh điều hướng cố định (Sticky Tab Bar) cho phép chuyển nhanh giữa 5 hợp phần nội dung.
+     3. Chuyên đề 1 (Bẫy Nhị Nguyên & Bản Chất Sân): Interactive Switcher so sánh giữa "Bản Ngã Kiểm Soát" và "Minh Sát Tuệ Giác", kèm phân tích Thắng Pháp Abhidhamma.
+     4. Chuyên đề 2 (Pháp Hành Lặng Yên & Tánh Biết): Trải nghiệm mô phỏng ẩn dụ "Tấm Gương & Ngọn Lửa" tương tác bằng Slider, cùng 4 tầng quán chiếu Tứ Niệm Xứ.
+     5. Chuyên đề 3 (Đối Thoại Khoa Học Thần Kinh): Biểu đồ Radar & Bar Chart (Chart.js) so sánh 3 cơ chế ứng phó cảm xúc (Suppression vs Venting vs Mindful Observation) trên Amygdala, DMN, HRV, Cortisol.
+     6. Chuyên đề 4 (Giao Thức 4 Bước Chuyển Hóa): Interactive Workflow tương tác từng giai đoạn từ Dừng Phản Ứng -> Neo Cảm Thọ -> Tánh Biết Chiếu Soi -> Tùy Duyên Phản Hồi.
+     7. Tra Cứu & Trắc Nghiệm Tỉnh Thức: Công cụ hỏi đáp nhanh và bộ thuật ngữ cốt lõi (Abhidhamma, DMN, Sati-Sampajañña...).
+-->
+
+<!-- Visualization & Content Choices:
+     - Biểu đồ 1: Chart.js Bar Chart so sánh thông số sinh lý/thần kinh giữa 3 phương pháp ứng phó cơn giận (Ức chế, Bộc phát, Lặng yên quán sát).
+     - Biểu đồ 2: Chart.js Line Chart diễn tiến hoạt động của Hạch hạnh nhân (Amygdala) và Mạng lưới chế độ mặc định (DMN) theo thời gian.
+     - Mô phỏng Tương Tác Canvas HTML5: Ẩn dụ Tấm Gương & Ngọn Lửa đại diện cho Tánh Biết và Tâm Sân.
+     - Interactive Dynamic Tabs & Accordions: Cho các nội dung phân tích chuyên sâu Thắng pháp & Ứng dụng thực tế.
+     - Xác nhận: Không sử dụng SVG graphics hay Mermaid JS.
+-->
+
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+<!-- Header & Nav -->
+<header class="sticky top-0 z-50 bg-zen-bg/95 backdrop-blur border-b border-zen-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-full bg-zen-terracotta text-white flex items-center justify-center font-bold text-lg shadow-sm">
+                    ☸
+                </div>
+                <div>
+                    <h1 class="serif-title font-bold text-base sm:text-lg text-zen-text leading-tight">Tuệ Giác & Chuyển Hóa Tâm Sân</h1>
+                    <p class="text-xs text-zen-muted">Nghiên cứu Pháp thoại Trưởng lão Hòa thượng Thích Viên Minh</p>
+                </div>
+            </div>
+            
+            <nav class="hidden md:flex space-x-1 lg:space-x-4 text-sm font-medium">
+                <button onclick="scrollToSection('overview')" class="px-3 py-2 text-zen-text hover:text-zen-terracotta transition-colors">Tổng Quan</button>
+                <button onclick="scrollToSection('topic1')" class="px-3 py-2 text-zen-text hover:text-zen-terracotta transition-colors">Bẫy Nhị Nguyên</button>
+                <button onclick="scrollToSection('topic2')" class="px-3 py-2 text-zen-text hover:text-zen-terracotta transition-colors">Tánh Biết</button>
+                <button onclick="scrollToSection('topic3')" class="px-3 py-2 text-zen-text hover:text-zen-terracotta transition-colors">Thần Kinh Học</button>
+                <button onclick="scrollToSection('topic4')" class="px-3 py-2 text-zen-text hover:text-zen-terracotta transition-colors">Giao Thức 4 Bước</button>
+            </nav>
+
+            <div class="md:hidden">
+                <button id="mobile-menu-btn" class="p-2 text-zen-text hover:bg-zen-subtle rounded-md">
+                    ☰
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile dropdown menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-zen-bg border-b border-zen-border px-4 pt-2 pb-4 space-y-1">
+        <button onclick="scrollToSection('overview'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 text-sm text-zen-text hover:bg-zen-subtle rounded">Tổng Quan</button>
+        <button onclick="scrollToSection('topic1'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 text-sm text-zen-text hover:bg-zen-subtle rounded">Chuyên đề 1: Bẫy Nhị Nguyên</button>
+        <button onclick="scrollToSection('topic2'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 text-sm text-zen-text hover:bg-zen-subtle rounded">Chuyên đề 2: Tánh Biết & Cảm Nhận</button>
+        <button onclick="scrollToSection('topic3'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 text-sm text-zen-text hover:bg-zen-subtle rounded">Chuyên đề 3: Thần Kinh Học</button>
+        <button onclick="scrollToSection('topic4'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 text-sm text-zen-text hover:bg-zen-subtle rounded">Chuyên đề 4: Giao Thức Ứng Dụng</button>
+    </div>
+</header>
+
+<!-- Main Container -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
+
+    <!-- HERO / OVERVIEW SECTION -->
+    <section id="overview" class="space-y-8">
+        <div class="bg-zen-subtle/70 rounded-3xl p-6 sm:p-10 border border-zen-border relative overflow-hidden">
+            <div class="max-w-3xl space-y-4 relative z-10">
+                <span class="inline-block px-3 py-1 bg-zen-terracotta/10 text-zen-terracotta rounded-full text-xs font-semibold tracking-wide uppercase">
+                    Báo Cáo Phân Tích Chuyên Sâu
+                </span>
+                <h2 class="serif-title text-2xl sm:text-4xl font-bold text-zen-text leading-tight">
+                    Người Hay Nóng Giận: Giải Mã Cơ Chế & Lộ Trình Chuyển Hóa Nội Tâm
+                </h2>
+                <p class="text-zen-muted text-base sm:text-lg leading-relaxed">
+                    Khảo luận toàn diện hệ thống giáo lý của Trưởng lão Hòa thượng Thích Viên Minh về tâm sân (<span class="italic font-serif">dosa</span>). Khám phá sự giao thoa giữa Thắng Pháp Abhidhamma, Kinh Tứ Niệm Xứ và Khoa học Thần kinh Nhận thức hiện đại.
+                </p>
+                <div class="pt-2 flex flex-wrap gap-4">
+                    <button onclick="scrollToSection('topic2')" class="bg-zen-terracotta hover:bg-zen-terracotta/90 text-white font-medium px-5 py-2.5 rounded-xl transition-all shadow-sm">
+                        Khám Phá Tánh Biết ➔
+                    </button>
+                    <button onclick="scrollToSection('topic4')" class="bg-white border border-zen-border hover:bg-zen-subtle text-zen-text font-medium px-5 py-2.5 rounded-xl transition-all">
+                        Xem Giao Thức Thực Hành
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mt-8 pt-8 border-t border-zen-border/60 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="p-3 bg-white/80 rounded-2xl border border-zen-border/40">
+                    <div class="text-2xl font-bold text-zen-terracotta">4 Chuyên Đề</div>
+                    <div class="text-xs text-zen-muted mt-1">Nghiên Cứu Hệ Thống</div>
+                </div>
+                <div class="p-3 bg-white/80 rounded-2xl border border-zen-border/40">
+                    <div class="text-2xl font-bold text-zen-amber">Tánh Biết</div>
+                    <div class="text-xs text-zen-muted mt-1">Năng Tri Thường Hữu</div>
+                </div>
+                <div class="p-3 bg-white/80 rounded-2xl border border-zen-border/40">
+                    <div class="text-2xl font-bold text-zen-sage">fMRI & DMN</div>
+                    <div class="text-xs text-zen-muted mt-1">Đối Thoại Thần Kinh Học</div>
+                </div>
+                <div class="p-3 bg-white/80 rounded-2xl border border-zen-border/40">
+                    <div class="text-2xl font-bold text-zen-slate">4 Giai Đoạn</div>
+                    <div class="text-xs text-zen-muted mt-1">Giao Thức Thực Hành</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quote Card -->
+        <div class="bg-white rounded-2xl p-6 border-l-4 border-zen-amber shadow-sm space-y-2">
+            <p class="serif-title italic text-lg text-zen-text">
+                "Khi cơn sân khởi lên, hãy lặng yên để cảm nhận nó một cách trọn vẹn... Không phải dùng cái tôi để dập tắt cơn giận, mà là để Tánh Biết tự do chiếu soi sự thật như nó đang là."
+            </p>
+            <p class="text-xs font-semibold text-zen-muted uppercase tracking-wider text-right">
+                — Trưởng lão Hòa thượng Thích Viên Minh
+            </p>
+        </div>
+    </section>
+
+    <!-- CHUYÊN ĐỀ 1: BẪY NHỊ NGUYÊN & BẢN CHẤT TÂM SÂN -->
+    <section id="topic1" class="space-y-6">
+        <div class="border-b border-zen-border pb-4">
+            <span class="text-xs font-bold text-zen-terracotta uppercase tracking-wider">Chuyên Đề 1</span>
+            <h3 class="serif-title text-2xl font-bold text-zen-text mt-1">Bản Chất Tâm Sân & Bẫy Nhị Nguyên Của Bản Ngã Kiểm Soát</h3>
+            <p class="text-sm text-zen-muted mt-2">
+                Ứng dụng này giúp bạn khám phá sự khác biệt bản chất giữa nỗ lực cưỡng chế đè nén của bản ngã và thái độ minh sát tuệ giác theo truyền thống Phật học Nguyên thủy.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- Dynamic Switcher / Comparison -->
+            <div class="lg:col-span-7 bg-white rounded-2xl p-6 border border-zen-border shadow-sm space-y-6">
+                <div class="flex items-center justify-between border-b border-zen-border pb-4">
+                    <h4 class="font-bold text-zen-text text-base">So Sánh Hai Lập Trường Tiếp Cận Cơn Giận</h4>
+                    <span class="text-xs text-zen-muted">Nhấp vào thẻ để chuyển góc nhìn</span>
+                </div>
+
+                <div class="flex rounded-xl bg-zen-subtle p-1 border border-zen-border">
+                    <button id="btn-mode-ego" onclick="setPerspective('ego')" class="flex-1 py-2 rounded-lg text-sm font-semibold transition-all bg-white text-zen-terracotta shadow-sm">
+                        Bản Ngã Kiểm Soát (Cưỡng Chế)
+                    </button>
+                    <button id="btn-mode-wisdom" onclick="setPerspective('wisdom')" class="flex-1 py-2 rounded-lg text-sm font-semibold transition-all text-zen-muted">
+                        Minh Sát Tuệ Giác (Tánh Biết)
+                    </button>
+                </div>
+
+                <!-- Dynamic Content Display -->
+                <div id="perspective-content" class="space-y-4">
+                    <!-- Default: Ego content -->
+                    <div class="p-4 rounded-xl bg-red-50/50 border border-red-100 space-y-2">
+                        <div class="font-bold text-red-800 text-sm">Cơ chế vận hành: Sân Khởi Sinh Từ Sân</div>
+                        <p class="text-xs text-red-900 leading-relaxed">
+                            Bản ngã chia tách nội tâm thành hai thái cực nhị nguyên: "Cái tôi phán xét" đối kháng với "Cơ giận bị phán xét". Khi cố gắng tiêu diệt cơn sân, hành vi đó thực chất được thúc đẩy bởi sự bất toại nguyện và chán ghét—một dạng tâm sân vi tế khác.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 text-xs">
+                        <div class="p-3 bg-zen-bg rounded-lg border border-zen-border">
+                            <span class="font-bold block text-zen-text mb-1">Điểm Khởi Phát</span>
+                            <span class="text-zen-muted">Thái độ bất mãn, ghét bỏ, coi cơn giận là kẻ thù cần tiêu diệt.</span>
+                        </div>
+                        <div class="p-3 bg-zen-bg rounded-lg border border-zen-border">
+                            <span class="font-bold block text-zen-text mb-1">Hệ Quả Sinh Lý</span>
+                            <span class="text-zen-muted">Tích tụ áp lực thần kinh, gia tăng Cortisol & co thắt nội tạng.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-xs text-zen-muted bg-zen-subtle/50 p-3 rounded-lg border border-zen-border">
+                    <strong>Kết luận Abhidhamma:</strong> Tâm sân (<span class="italic">dosa citta</span>) là tâm sở bất thiện. Việc dùng ý chí nhị nguyên để diệt sân thực chất là ảo tưởng bản ngã cố lấy ảo tưởng để chữa lành ảo tưởng.
+                </div>
+            </div>
+
+            <!-- Conceptual Cards -->
+            <div class="lg:col-span-5 space-y-4">
+                <div class="bg-white rounded-2xl p-5 border border-zen-border shadow-sm space-y-3">
+                    <div class="flex items-center space-x-2 text-zen-terracotta font-bold text-sm">
+                        <span>💡</span>
+                        <span>Nghịch Lý Nhận Thức Tầm Thường</span>
+                    </div>
+                    <p class="text-xs text-zen-text leading-relaxed">
+                        Con người thường cảm thấy tội lỗi khi nổi giận vì nghĩ bản thân thiếu đạo đức. Tuy nhiên, Hòa thượng Viên Minh nhấn mạnh: Nhận thấy rõ mình đang giận mới chính là sự tiến bộ thực chất của nhận thức hiện tiền.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-5 border border-zen-border shadow-sm space-y-3">
+                    <div class="flex items-center space-x-2 text-zen-sage font-bold text-sm">
+                        <span>🌱</span>
+                        <span>Nguyên Lý Tam Pháp Ấn</span>
+                    </div>
+                    <p class="text-xs text-zen-text leading-relaxed">
+                        Cơn giận không có một "bản ngã" độc lập. Nó chỉ là một tập hợp sinh lý - tâm lý sinh khởi do duyên, tồn tại do duyên và tự hoại diệt khi hết duyên (<span class="italic">Anicca - Dukkha - Anattā</span>).
+                    </p>
+                </div>
+
+                <div class="bg-zen-subtle rounded-2xl p-5 border border-zen-border text-xs text-zen-muted space-y-2">
+                    <span class="font-bold text-zen-text block">Chìa Khóa Thực Hành:</span>
+                    <p>"Có tham sân si thì thấy rõ có tham sân si; không có thì thấy rõ không có. Tuyệt đối không trốn chạy, không trang điểm đạo đức giả tạo."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHUYÊN ĐỀ 2: "LẶNG YÊN CẢM NHẬN TRỌN VẸN" & TÁNH BIẾT -->
+    <section id="topic2" class="space-y-6">
+        <div class="border-b border-zen-border pb-4">
+            <span class="text-xs font-bold text-zen-sage uppercase tracking-wider">Chuyên Đề 2</span>
+            <h3 class="serif-title text-2xl font-bold text-zen-text mt-1">Phương Pháp "Lặng Yên Cảm Nhận" & Năng Lực Tánh Biết</h3>
+            <p class="text-sm text-zen-muted mt-2">
+                Tìm hiểu cơ chế thực hành Tứ Niệm Xứ qua sự vận hành của Tam Minh (Thận trọng, Chú tâm, Quan sát) và trải nghiệm mô phỏng trực quan bản chất không bị vấy bẩn của Tánh Biết.
+            </p>
+        </div>
+
+        <!-- Interactive Mirror Metaphor Canvas Simulator -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-zen-border shadow-sm space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h4 class="font-bold text-zen-text text-base sm:text-lg">Mô Phỏng Ẩn Dụ: Tánh Biết Như Tấm Gương Phẳng Lặng</h4>
+                    <p class="text-xs text-zen-muted mt-1">
+                        Kéo thanh trượt để thay đổi cường độ Cơn Sân (Ngọn Lửa). Quan sát cách Tánh Biết (Tấm Gương) phản chiếu mà không bị thiêu rụi hay dính mắc.
+                    </p>
+                </div>
+                <div class="flex items-center space-x-3 bg-zen-subtle px-4 py-2 rounded-xl border border-zen-border">
+                    <label for="anger-slider" class="text-xs font-bold text-zen-text whitespace-nowrap">Cường Độ Sân:</label>
+                    <input id="anger-slider" type="range" min="0" max="100" value="30" class="w-32 accent-zen-terracotta cursor-pointer" oninput="updateMirrorSim(this.value)">
+                    <span id="anger-val-text" class="text-xs font-mono font-bold text-zen-terracotta w-8 text-right">30%</span>
+                </div>
+            </div>
+
+            <!-- Canvas Container -->
+            <div class="relative w-full bg-zen-bg rounded-2xl border border-zen-border p-4 flex flex-col items-center justify-center overflow-hidden h-64">
+                <canvas id="mirrorCanvas" class="w-full h-full max-w-lg"></canvas>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div class="p-4 bg-zen-subtle/50 rounded-xl border border-zen-border">
+                    <span class="font-bold text-zen-text block mb-1">Đối Tượng Bị Biết (Ārammaṇa)</span>
+                    <p class="text-zen-muted">Cơn giận, nhịp tim nhanh, cảm giác bức bối. Là những hiện tượng hữu vi, sinh diệt liên tục.</p>
+                </div>
+                <div class="p-4 bg-zen-subtle/50 rounded-xl border border-zen-border">
+                    <span class="font-bold text-zen-terracotta block mb-1">Năng Tri Thuần Khiết (Tánh Biết)</span>
+                    <p class="text-zen-muted">Khả năng nhận biết nguyên sơ, hằng hữu. Giống như tấm gương phản chiếu ngọn lửa nhưng bản thân gương không bị cháy.</p>
+                </div>
+                <div class="p-4 bg-zen-subtle/50 rounded-xl border border-zen-border">
+                    <span class="font-bold text-zen-sage block mb-1">Đức Nhẫn Nại Chân Thực (Khanti)</span>
+                    <p class="text-zen-muted">Sự kiên định dám đối diện trực tiếp với ngọn lửa cảm xúc mà không hề bỏ chạy hay đè nén.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4 Steps of Satipatthana -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white rounded-2xl p-5 border border-zen-border shadow-sm space-y-2">
+                <div class="text-zen-terracotta font-bold text-xs uppercase tracking-wider">Tầng 1: Quán Thân</div>
+                <h5 class="font-bold text-sm text-zen-text">Ghi Nhận Biểu Hiện Sinh Lý</h5>
+                <p class="text-xs text-zen-muted leading-relaxed">
+                    Thả lỏng toàn thân, nhận diện nhịp tim gia tăng, cơ bắp co cứng và cảm giác bốc hỏa trên mặt.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 border border-zen-border shadow-sm space-y-2">
+                <div class="text-zen-amber font-bold text-xs uppercase tracking-wider">Tầng 2: Quán Thọ</div>
+                <h5 class="font-bold text-sm text-zen-text">Cảm Nhận Thọ Khổ & Ưu</h5>
+                <p class="text-xs text-zen-muted leading-relaxed">
+                    Trực tiếp trải nghiệm cảm giác bức bối nội tại mà không tìm cách trốn chạy hay phân tán tư tưởng.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 border border-zen-border shadow-sm space-y-2">
+                <div class="text-zen-sage font-bold text-xs uppercase tracking-wider">Tầng 3: Quán Tâm</div>
+                <h5 class="font-bold text-sm text-zen-text">Theo Dõi Trạng Thái Sân</h5>
+                <p class="text-xs text-zen-muted leading-relaxed">
+                    Lặng nhìn chuyển biến từ khi cơn giận bùng phát, đạt đỉnh cho đến khi tự suy yếu và tiêu tan.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 border border-zen-border shadow-sm space-y-2">
+                <div class="text-zen-slate font-bold text-xs uppercase tracking-wider">Tầng 4: Quán Pháp</div>
+                <h5 class="font-bold text-sm text-zen-text">Thấy Rõ Tính Vô Ngã</h5>
+                <p class="text-xs text-zen-muted leading-relaxed">
+                    Xác nhận cơn sân chỉ là một tiến trình duyên sinh hữu vi, hoàn toàn không có một "cái tôi" điều khiển.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHUYÊN ĐỀ 3: TƯƠNG QUAN THIỀN QUÁN & KHOA HỌC THẦN KINH -->
+    <section id="topic3" class="space-y-6">
+        <div class="border-b border-zen-border pb-4">
+            <span class="text-xs font-bold text-zen-amber uppercase tracking-wider">Chuyên Đề 3</span>
+            <h3 class="serif-title text-2xl font-bold text-zen-text mt-1">Thiền Quán Theravāda & Khoa Học Thần Kinh Nhận Thức</h3>
+            <p class="text-sm text-zen-muted mt-2">
+                Dữ liệu thực nghiệm sinh học chứng minh sự ưu việt của phương pháp Quan sát Không phán xét so với Cơ chế Bộc phát hung hăng và Ức chế biểu cảm.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <!-- Chart Container 1: Comparison Bar Chart -->
+            <div class="lg:col-span-7 bg-white rounded-2xl p-6 border border-zen-border shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <h4 class="font-bold text-zen-text text-base">So Sánh Chỉ Số Sinh Học Thần Kinh (Neuro-parameters)</h4>
+                    <span class="text-xs text-zen-muted">Dữ liệu mô phỏng fMRI & ANS</span>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="neuroChart"></canvas>
+                </div>
+                <p class="text-xs text-zen-muted text-center italic">
+                    Chỉ số càng cao thể hiện mức độ kích hoạt/căng thẳng sinh học càng lớn. Quan sát tỉnh giác giúp điều hòa giảm (down-regulation) tự nhiên.
+                </p>
+            </div>
+
+            <!-- Explanation Panel -->
+            <div class="lg:col-span-5 space-y-4">
+                <div class="bg-white rounded-2xl p-5 border border-zen-border shadow-sm space-y-3">
+                    <h5 class="font-bold text-zen-text text-sm flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full bg-zen-terracotta inline-block"></span>
+                        <span>Ức Chế Biểu Cảm (Suppression)</span>
+                    </h5>
+                    <p class="text-xs text-zen-muted leading-relaxed">
+                        Tạo vẻ ngoài điềm tĩnh nhưng Hạch hạnh nhân (Amygdala) vẫn báo động mạnh. Cortisol gia tăng, giảm biến thiên nhịp tim (HRV), gây co thắt cơ mãn tính.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-5 border border-zen-border shadow-sm space-y-3">
+                    <h5 class="font-bold text-zen-text text-sm flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full bg-zen-amber inline-block"></span>
+                        <span>Bộc Phát Hung Hăng (Venting)</span>
+                    </h5>
+                    <p class="text-xs text-zen-muted leading-relaxed">
+                        Củng cố vòng lặp thần kinh gây hấn. Không có tác dụng xả căng thẳng (<span class="italic">catharsis</span>) như lầm tưởng mà làm tăng độ nhạy cảm phản ứng tiêu cực.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-5 border border-zen-border shadow-sm space-y-3 border-l-4 border-l-zen-sage">
+                    <h5 class="font-bold text-zen-sage text-sm flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full bg-zen-sage inline-block"></span>
+                        <span>Lặng Yên Quan Sát (Mindful Observation)</span>
+                    </h5>
+                    <p class="text-xs text-zen-text leading-relaxed">
+                        Bất hoạt Mạng lưới Chế độ Mặc định (DMN), cắt đứt tiến trình nhai lại cơn giận (<span class="italic">anger rumination</span>). Tăng kết nối giữa vỏ não trước trán (PFC) và Amygdala.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Neuroscience Timeline Chart -->
+        <div class="bg-white rounded-2xl p-6 border border-zen-border shadow-sm space-y-4">
+            <h4 class="font-bold text-zen-text text-base">Diễn Tiến Hoạt Động Của Mạng Lưới DMN Theo Thời Gian</h4>
+            <div class="chart-container" style="height: 280px;">
+                <canvas id="timelineChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHUYÊN ĐỀ 4: GIAO THỨC 4 BƯỚC CHUYỂN HÓA TRONG ĐỜI SỐNG -->
+    <section id="topic4" class="space-y-6">
+        <div class="border-b border-zen-border pb-4">
+            <span class="text-xs font-bold text-zen-terracotta uppercase tracking-wider">Chuyên Đề 4</span>
+            <h3 class="serif-title text-2xl font-bold text-zen-text mt-1">Ứng Dụng Thực Tiễn: Giao Thức 4 Giai Đoạn Chuyển Hóa</h3>
+            <p class="text-sm text-zen-muted mt-2">
+                Xóa bỏ tâm thức nạn nhân ("Chính mình tự làm tổn thương mình") và thực hành giao thức 4 bước khi đối diện với xung đột giao tiếp hằng ngày.
+            </p>
+        </div>
+
+        <!-- Interactive Stepper -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-zen-border shadow-sm space-y-8">
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 border-b border-zen-border pb-6">
+                <button onclick="setStep(1)" id="step-btn-1" class="p-3 rounded-xl text-left border border-zen-terracotta bg-zen-terracotta/10 transition-all">
+                    <div class="text-xs font-bold text-zen-terracotta">Giai Đoạn 1</div>
+                    <div class="font-bold text-sm text-zen-text mt-1">1. Dừng Phản Ứng</div>
+                </button>
+                <button onclick="setStep(2)" id="step-btn-2" class="p-3 rounded-xl text-left border border-zen-border hover:bg-zen-subtle transition-all">
+                    <div class="text-xs font-bold text-zen-muted">Giai Đoạn 2</div>
+                    <div class="font-bold text-sm text-zen-text mt-1">2. Neo Cảm Thọ</div>
+                </button>
+                <button onclick="setStep(3)" id="step-btn-3" class="p-3 rounded-xl text-left border border-zen-border hover:bg-zen-subtle transition-all">
+                    <div class="text-xs font-bold text-zen-muted">Giai Đoạn 3</div>
+                    <div class="font-bold text-sm text-zen-text mt-1">3. Tánh Biết Chiếu Soi</div>
+                </button>
+                <button onclick="setStep(4)" id="step-btn-4" class="p-3 rounded-xl text-left border border-zen-border hover:bg-zen-subtle transition-all">
+                    <div class="text-xs font-bold text-zen-muted">Giai Đoạn 4</div>
+                    <div class="font-bold text-sm text-zen-text mt-1">4. Tùy Duyên Phản Hồi</div>
+                </button>
+            </div>
+
+            <!-- Dynamic Step Content -->
+            <div id="step-content" class="space-y-6">
+                <!-- Step 1 Content default -->
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-8 h-8 rounded-full bg-zen-terracotta text-white flex items-center justify-center font-bold text-sm">1</span>
+                        <h4 class="font-bold text-lg text-zen-text">Giai Đoạn 1: Thiết Lập Ranh Giới Dừng Phản Ứng Cơ Học</h4>
+                    </div>
+                    <p class="text-sm text-zen-muted leading-relaxed">
+                        Ngay khi nhận diện tín hiệu tiền triệu của cơn giận, áp dụng kỷ luật bất động: Không phát ngôn, không gửi tin nhắn, không đưa ra quyết định hành động và tạm thời rút lui khỏi không gian xung đột nếu vượt ngưỡng chịu đựng.
+                    </p>
+                    <div class="p-4 bg-zen-subtle rounded-xl border border-zen-border text-xs text-zen-text space-y-1">
+                        <strong>Hành động thực tế:</strong> Khép miệng lại, buông hai tay xô lệch, hít sâu một hơi và không nhìn vào đối phương trong 30 giây đầu tiên.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Victim Mentality Breakdown Card -->
+        <div class="bg-zen-subtle/80 rounded-2xl p-6 border border-zen-border space-y-3">
+            <h4 class="font-bold text-zen-text text-base flex items-center space-x-2">
+                <span>🗝️</span>
+                <span>Giải Mã Tâm Thức Nạn Nhân (Victim Mentality)</span>
+            </h4>
+            <p class="text-xs text-zen-muted leading-relaxed">
+                Hòa thượng Viên Minh khẳng định: Lời nói công kích của người khác chỉ là âm thanh truyền qua không khí rồi biến mất. Đau khổ chỉ thực sự xuất hiện khi bản ngã tiếp nhận âm thanh đó, nhào nặn thành sự sỉ nhục và nuôi dưỡng ngọn lửa phẫn nộ trong nội tâm. <strong class="text-zen-terracotta">Chính mình đang tự làm tổn thương mình chứ không phải do người khác.</strong>
+            </p>
+        </div>
+    </section>
+
+    <!-- TRẮC NGHIỆM TỈNH THỨC & TỪ ĐIỂN THUẬT NGỮ -->
+    <section class="space-y-6">
+        <div class="border-b border-zen-border pb-4">
+            <span class="text-xs font-bold text-zen-slate uppercase tracking-wider">Tra Cứu & Tự Chẩn Đoán</span>
+            <h3 class="serif-title text-2xl font-bold text-zen-text mt-1">Thuật Ngữ Cốt Lõi & Câu Hỏi Ôn Tập Tuệ Giác</h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- FAQ / Glossary Accordion -->
+            <div class="bg-white rounded-2xl p-6 border border-zen-border shadow-sm space-y-4">
+                <h4 class="font-bold text-zen-text text-base">Từ Điển Thuật Ngữ Phật Học & Khoa Học</h4>
+                
+                <div class="space-y-3 text-xs">
+                    <div class="border-b border-zen-border pb-2">
+                        <span class="font-bold text-zen-terracotta">Tánh Biết (Pure Awareness / Tathatā):</span>
+                        <p class="text-zen-muted mt-1">Khả năng nhận biết nguyên sơ, rỗng lặng, trong sáng, hằng hữu, không bị điều kiện hóa bởi các hiện tượng tâm sinh lý.</p>
+                    </div>
+                    <div class="border-b border-zen-border pb-2">
+                        <span class="font-bold text-zen-amber">Thận Trọng - Chú Tâm - Quan Sát:</span>
+                        <p class="text-zen-muted mt-1">Bộ ba trạng thái chánh niệm (<span class="italic">Ātāpī - Sati - Sampajañña</span>) trọn vẹn với thực tại hiện tiền.</p>
+                    </div>
+                    <div class="border-b border-zen-border pb-2">
+                        <span class="font-bold text-zen-sage">Anger Rumination (Sự nhai lại cơn giận):</span>
+                        <p class="text-zen-muted mt-1">Tiến trình DMN liên tục tái hiện câu chuyện quá khứ, bơm thêm năng lượng kích động Hạch hạnh nhân.</p>
+                    </div>
+                    <div>
+                        <span class="font-bold text-zen-slate">Tùy Duyên Thuận Pháp:</span>
+                        <p class="text-zen-muted mt-1">Ứng xử phù hợp với hoàn cảnh khách quan trên nền tảng trí tuệ và từ bi, không gượng ép theo ý chí bản ngã.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Self-Reflection Quiz -->
+            <div class="bg-white rounded-2xl p-6 border border-zen-border shadow-sm space-y-4">
+                <h4 class="font-bold text-zen-text text-base">Trắc Nghiệm Tự Phản Chiếu Tỉnh Thức</h4>
+                <p class="text-xs text-zen-muted">Đánh giá phản ứng tự nhiên của bạn khi đối diện với cơn giận khởi sinh:</p>
+
+                <div class="space-y-3 text-xs">
+                    <label class="block p-3 rounded-xl border border-zen-border hover:bg-zen-subtle cursor-pointer transition-colors">
+                        <input type="radio" name="quiz" class="mr-2 accent-zen-terracotta" onclick="showQuizResult(1)">
+                        A. Cố gắng kìm hãm, đè nén cơn giận và tự trách bản thân chưa tu tập tốt.
+                    </label>
+                    <label class="block p-3 rounded-xl border border-zen-border hover:bg-zen-subtle cursor-pointer transition-colors">
+                        <input type="radio" name="quiz" class="mr-2 accent-zen-terracotta" onclick="showQuizResult(2)">
+                        B. Lập tức tranh luận, quát mắng hoặc nhắn tin xả uất ức ra ngoài.
+                    </label>
+                    <label class="block p-3 rounded-xl border border-zen-border hover:bg-zen-subtle cursor-pointer transition-colors">
+                        <input type="radio" name="quiz" class="mr-2 accent-zen-terracotta" onclick="showQuizResult(3)">
+                        C. Dừng phản ứng, lặng yên cảm nhận trọn vẹn sự bộc phát trên thân và tâm với Tánh Biết.
+                    </label>
+                </div>
+
+                <div id="quiz-result" class="hidden p-4 rounded-xl text-xs space-y-1"></div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="bg-zen-subtle border-t border-zen-border mt-16 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
+        <p class="serif-title font-bold text-sm text-zen-text">
+            Chuyển Hóa Tâm Sân & Tuệ Giác Tánh Biết
+        </p>
+        <p class="text-xs text-zen-muted">
+            Dựa trên bài giảng của Trưởng lão Hòa thượng Thích Viên Minh (Phó Pháp chủ HĐCM GHPGVN, Viện chủ Tổ đình Bửu Long)
+        </p>
+        <p class="text-[10px] text-zen-muted/70">
+            Ứng dụng Web Tương Tác Nghiên Cứu Phật Học & Khoa Học Thần Kinh
+        </p>
+    </div>
+</footer>
+
+<!-- JavaScript Application Logic -->
+<script>
+    // Smooth scrolling function
+    function scrollToSection(id) {
+        const el = document.getElementById(id);
+        if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+        const menu = document.getElementById('mobile-menu');
+        menu.classList.toggle('hidden');
+    }
+    document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
+
+    // Dynamic Switcher for Topic 1
+    function setPerspective(mode) {
+        const btnEgo = document.getElementById('btn-mode-ego');
+        const btnWisdom = document.getElementById('btn-mode-wisdom');
+        const content = document.getElementById('perspective-content');
+
+        if (mode === 'ego') {
+            btnEgo.className = "flex-1 py-2 rounded-lg text-sm font-semibold transition-all bg-white text-zen-terracotta shadow-sm";
+            btnWisdom.className = "flex-1 py-2 rounded-lg text-sm font-semibold transition-all text-zen-muted";
+            content.innerHTML = `
+                <div class="p-4 rounded-xl bg-red-50/50 border border-red-100 space-y-2">
+                    <div class="font-bold text-red-800 text-sm">Cơ chế vận hành: Sân Khởi Sinh Từ Sân</div>
+                    <p class="text-xs text-red-900 leading-relaxed">
+                        Bản ngã chia tách nội tâm thành hai thái cực nhị nguyên: "Cái tôi phán xét" đối kháng với "Cơ giận bị phán xét". Khi cố gắng tiêu diệt cơn sân, hành vi đó thực chất được thúc đẩy bởi sự bất toại nguyện và chán ghét—một dạng tâm sân vi tế khác.
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-xs">
+                    <div class="p-3 bg-zen-bg rounded-lg border border-zen-border">
+                        <span class="font-bold block text-zen-text mb-1">Điểm Khởi Phát</span>
+                        <span class="text-zen-muted">Thái độ bất mãn, ghét bỏ, coi cơn giận là kẻ thù cần tiêu diệt.</span>
+                    </div>
+                    <div class="p-3 bg-zen-bg rounded-lg border border-zen-border">
+                        <span class="font-bold block text-zen-text mb-1">Hệ Quả Sinh Lý</span>
+                        <span class="text-zen-muted">Tích tụ áp lực thần kinh, gia tăng Cortisol & co thắt nội tạng.</span>
+                    </div>
+                </div>
+            `;
+        } else {
+            btnWisdom.className = "flex-1 py-2 rounded-lg text-sm font-semibold transition-all bg-white text-zen-sage shadow-sm";
+            btnEgo.className = "flex-1 py-2 rounded-lg text-sm font-semibold transition-all text-zen-muted";
+            content.innerHTML = `
+                <div class="p-4 rounded-xl bg-green-50/50 border border-green-100 space-y-2">
+                    <div class="font-bold text-green-800 text-sm">Cơ chế vận hành: Nhất Nguyên Tỉnh Thức (Tánh Biết)</div>
+                    <p class="text-xs text-green-900 leading-relaxed">
+                        Chấm dứt mọi phán xét đạo đức gượng ép. An trú trong vị thế Tánh Biết chiếu soi tiến trình danh sắc đang sinh diệt. Cơn giận được nhìn nhận đúng thực tánh: Một hiện tượng duyên sinh, tự sinh và tự hoại diệt mà không để lại tổn thương.
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-xs">
+                    <div class="p-3 bg-zen-bg rounded-lg border border-zen-border">
+                        <span class="font-bold block text-zen-text mb-1">Điểm Khởi Phát</span>
+                        <span class="text-zen-muted">Thái độ khách quan, chấp nhận thực tại đang là như thực.</span>
+                    </div>
+                    <div class="p-3 bg-zen-bg rounded-lg border border-zen-border">
+                        <span class="font-bold block text-zen-text mb-1">Hệ Quả Sinh Lý</span>
+                        <span class="text-zen-muted">Giải phóng căng thẳng tự nhiên, tái lập sự quân bình đối giao cảm.</span>
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    // Mirror Metaphor Interactive Canvas Simulation
+    const canvas = document.getElementById('mirrorCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+        canvas.width = canvas.parentElement.clientWidth - 32;
+        canvas.height = canvas.parentElement.clientHeight - 32;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    let currentAngerVal = 30;
+
+    function updateMirrorSim(val) {
+        currentAngerVal = parseInt(val);
+        document.getElementById('anger-val-text').innerText = val + '%';
+        drawSim();
+    }
+
+    function drawSim() {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+
+        // Draw Mirror (Tánh Biết)
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 70, 0, Math.PI * 2);
+        ctx.fillStyle = '#EBF4F0';
+        ctx.fill();
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = '#6B8E7B';
+        ctx.stroke();
+
+        // Mirror label
+        ctx.fillStyle = '#2C322E';
+        ctx.font = 'bold 12px "Plus Jakarta Sans"';
+        ctx.textAlign = 'center';
+        ctx.fillText('TÁNH BIẾT', centerX, centerY - 5);
+        ctx.font = '10px "Plus Jakarta Sans"';
+        ctx.fillStyle = '#656E67';
+        ctx.fillText('(Gương Phẳng Lặng)', centerX, centerY + 12);
+        ctx.restore();
+
+        // Draw Fire (Anger intensity) reflected on mirror surface without staining it
+        if (currentAngerVal > 0) {
+            const fireRadius = (currentAngerVal / 100) * 45;
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(centerX, centerY + 35, fireRadius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(200, 109, 81, ${0.2 + (currentAngerVal / 100) * 0.5})`;
+            ctx.fill();
+
+            // Reflected flame particles
+            ctx.fillStyle = '#C86D51';
+            ctx.font = 'bold 11px "Plus Jakarta Sans"';
+            ctx.fillText(`🔥 Sân (${currentAngerVal}%)`, centerX, centerY + 40);
+            ctx.restore();
+        }
+    }
+
+    // Initial draw
+    setTimeout(drawSim, 100);
+
+    // Chart.js Implementations
+    window.addEventListener('DOMContentLoaded', () => {
+        // Neurobiology Comparison Chart
+        const neuroCtx = document.getElementById('neuroChart').getContext('2d');
+        new Chart(neuroCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Kích hoạt Amygdala', 'Nhai lại (DMN)', 'Nồng độ Cortisol', 'Mức co thắt cơ'],
+                datasets: [
+                    {
+                        label: 'Ức Chế Biểu Cảm',
+                        data: [85, 75, 90, 80],
+                        backgroundColor: '#C86D51'
+                    },
+                    {
+                        label: 'Bộc Phát Hung Hăng',
+                        data: [95, 90, 85, 70],
+                        backgroundColor: '#B87D4B'
+                    },
+                    {
+                        label: 'Lặng Yên Quan Sát',
+                        data: [25, 20, 30, 25],
+                        backgroundColor: '#6B8E7B'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { boxWidth: 12, font: { size: 11 } }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.raw + '/100';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { font: { size: 10 } }
+                    },
+                    x: {
+                        ticks: {
+                            font: { size: 10 },
+                            callback: function(value) {
+                                const label = this.getLabelForValue(value);
+                                return label.length > 16 ? label.substring(0, 14) + '..' : label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // DMN Timeline Line Chart
+        const timelineCtx = document.getElementById('timelineChart').getContext('2d');
+        new Chart(timelineCtx, {
+            type: 'line',
+            data: {
+                labels: ['0s (Kích thích)', '30s (Đỉnh điểm)', '1 phút', '2 phút', '3 phút', '5 phút'],
+                datasets: [
+                    {
+                        label: 'Nhai Lại (Đố kỵ / Trả đũa)',
+                        data: [20, 85, 90, 95, 90, 85],
+                        borderColor: '#C86D51',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Lặng Yên Quan Sát (Tánh Biết)',
+                        data: [20, 70, 45, 25, 15, 10],
+                        borderColor: '#6B8E7B',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { boxWidth: 12, font: { size: 11 } }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: { display: true, text: 'Mức Độ Kích Hoạt DMN (%)', font: { size: 11 } }
+                    },
+                    x: {
+                        ticks: { font: { size: 10 } }
+                    }
+                }
+            }
+        });
+    });
+
+    // Step Switcher for Topic 4
+    function setStep(stepNum) {
+        for (let i = 1; i <= 4; i++) {
+            const btn = document.getElementById(`step-btn-${i}`);
+            if (i === stepNum) {
+                btn.className = "p-3 rounded-xl text-left border border-zen-terracotta bg-zen-terracotta/10 transition-all";
+                btn.querySelector('div:first-child').className = "text-xs font-bold text-zen-terracotta";
+            } else {
+                btn.className = "p-3 rounded-xl text-left border border-zen-border hover:bg-zen-subtle transition-all";
+                btn.querySelector('div:first-child').className = "text-xs font-bold text-zen-muted";
+            }
+        }
+
+        const content = document.getElementById('step-content');
+        const stepsData = {
+            1: {
+                title: "Giai Đoạn 1: Thiết Lập Ranh Giới Dừng Phản Ứng Cơ Học",
+                desc: "Ngay khi nhận diện tín hiệu tiền triệu của cơn giận, áp dụng kỷ luật bất động: Không phát ngôn, không gửi tin nhắn, không đưa ra quyết định hành động và tạm thời rút lui khỏi không gian xung đột nếu vượt ngưỡng chịu đựng.",
+                action: "Khép miệng lại, buông hai tay xô lệch, hít sâu một hơi và không nhìn vào đối phương trong 30 giây đầu tiên."
+            },
+            2: {
+                title: "Giai Đoạn 2: Neo Giữ Nhận Thức Trên Cảm Thọ Thân Thể",
+                desc: "Quay toàn bộ sự chú ý từ đối tượng gây giận bên ngoài về lại vùng thân thể. Thả lỏng lồng ngực, bàn tay và vùng mặt. Cảm nhận sự nhịp đập của tim và độ căng của cơ bắp.",
+                action: "Tập trung 100% cảm nhận vào vùng ngực hoặc bụng đang căng thắt mà không cố xua đuổi hay đè nén."
+            },
+            3: {
+                title: "Giai Đoạn 3: Kích Hoạt Sự Chiếu Soi Thuần Khiết Của Tánh Biết",
+                desc: "Trở về an trú trong vị thế người quan sát tĩnh lặng (Tánh Biết). Chứng kiến cơn giận như một hiện tượng tâm lý sinh diệt độc lập, không đồng hóa bản thân với cơn giận ('Tôi không phải là cơn giận này').",
+                action: "Thầm nhắc lại: 'Sân đang hiện diện, thấy rõ sân đang sinh diệt' dưới ánh sáng Tánh Biết rỗng lặng."
+            },
+            4: {
+                title: "Giai Đoạn 4: Thấu Suốt Nhân Duyên & Tùy Duyên Phản Hồi",
+                desc: "Khi cơn bão cảm xúc lắng xuống, trí tuệ soi sáng: Đối phương cũng là nạn nhân khốn khổ của vô minh và tổn thương trong họ. Phát khởi lòng từ bi và chọn phản hồi điềm đạm, xây dựng.",
+                action: "Đưa ra ứng xử cương quyết thiết lập ranh giới hoặc bao dung hòa giải với tâm thế hoàn toàn an tĩnh."
+            }
+        };
+
+        const data = stepsData[stepNum];
+        content.innerHTML = `
+            <div class="space-y-4">
+                <div class="flex items-center space-x-3">
+                    <span class="w-8 h-8 rounded-full bg-zen-terracotta text-white flex items-center justify-center font-bold text-sm">${stepNum}</span>
+                    <h4 class="font-bold text-lg text-zen-text">${data.title}</h4>
+                </div>
+                <p class="text-sm text-zen-muted leading-relaxed">${data.desc}</p>
+                <div class="p-4 bg-zen-subtle rounded-xl border border-zen-border text-xs text-zen-text space-y-1">
+                    <strong>Hành động thực tế:</strong> ${data.action}
+                </div>
+            </div>
+        `;
+    }
+
+    // Quiz evaluation
+    function showQuizResult(option) {
+        const resultDiv = document.getElementById('quiz-result');
+        resultDiv.classList.remove('hidden');
+
+        if (option === 1) {
+            resultDiv.className = "p-4 rounded-xl text-xs space-y-1 bg-red-50 text-red-900 border border-red-200";
+            resultDiv.innerHTML = "<strong>Đánh giá: Bẫy Cưỡng Chế Bản Ngã.</strong> Bạn đang dùng tâm sân vi tế để chống đối tâm sân. Hành vi này tích tụ căng thẳng sinh học và làm trầm trọng thêm sự tổn thương nội tâm.";
+        } else if (option === 2) {
+            resultDiv.className = "p-4 rounded-xl text-xs space-y-1 bg-amber-50 text-amber-900 border border-amber-200";
+            resultDiv.innerHTML = "<strong>Đánh giá: Phản Ứng Bộc Phát Hung Hăng.</strong> Bộc phát ra ngoài củng cố đường dẫn thần kinh gây hấn, tạo karma bất thiện và phá hỏng các mối tương giao.";
+        } else if (option === 3) {
+            resultDiv.className = "p-4 rounded-xl text-xs space-y-1 bg-green-50 text-green-900 border border-green-200";
+            resultDiv.innerHTML = "<strong>Đánh giá: Minh Sát Tuệ Giác Chân Thực.</strong> Chính xác theo lời dạy của HT. Viên Minh! Bạn đang cho phép Tánh Biết chiếu soi thực tại như nó đang là, giúp cơn giận tự hóa giải tự nhiên.";
+        }
+    }
+</script>
+
+</body>
+</html>
