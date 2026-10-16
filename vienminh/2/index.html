@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Không Phán Xét - Không Can Thiệp - Từ Bi | HT Thích Viên Minh</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        zen: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        },
+                        amberZen: {
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        roseZen: {
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased leading-relaxed selection:bg-emerald-100 selection:text-emerald-800">
+
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-emerald-900 via-teal-800 to-emerald-900 text-white py-12 px-4 shadow-lg border-b border-emerald-700">
+        <div class="max-w-6xl mx-auto text-center">
+            <span class="inline-block px-4 py-1.5 rounded-full bg-emerald-800/80 text-emerald-200 text-xs font-semibold tracking-wider uppercase mb-4 border border-emerald-600">
+                Phật Pháp Vấn Đáp • HT Thích Viên Minh
+            </span>
+            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4 leading-tight text-emerald-50">
+                Không Phán Xét • Không Can Thiệp • Từ Bi
+            </h1>
+            <p class="text-emerald-100 text-base md:text-lg max-w-3xl mx-auto font-normal leading-relaxed">
+                Nghiên cứu thị giác & Chuyển hóa tâm thức: Khám phá cốt tủy Tánh Thấy, tháo gỡ ảo tưởng kiểm soát của Bản Ngã và thực hành tiến trình Dừng – Nhìn – Buông trong đời sống.
+            </p>
+        </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-center space-x-2 md:space-x-8 text-xs md:text-sm font-semibold text-slate-600 overflow-x-auto">
+            <a href="#kpi" class="hover:text-emerald-600 transition-colors py-1 px-2 whitespace-nowrap">Tổng Quan</a>
+            <a href="#tanhthey" class="hover:text-emerald-600 transition-colors py-1 px-2 whitespace-nowrap">Tánh Thấy vs Bản Ngã</a>
+            <a href="#so-sanh" class="hover:text-emerald-600 transition-colors py-1 px-2 whitespace-nowrap">3 Thái Độ Hành Xử</a>
+            <a href="#chuyen-hoa" class="hover:text-emerald-600 transition-colors py-1 px-2 whitespace-nowrap">Tiến Trình Cảm Xúc</a>
+            <a href="#thuc-hanh" class="hover:text-emerald-600 transition-colors py-1 px-2 whitespace-nowrap">Thực Hành Interactive</a>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="max-w-6xl mx-auto px-4 py-8 space-y-12">
+
+        <!-- KPI / Highlight Cards Section -->
+        <section id="kpi" class="space-y-4">
+            <div class="text-center max-w-3xl mx-auto mb-6">
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900">3 Trụ Cột Tâm Thức Cốt Tủy</h2>
+                <p class="text-slate-600 mt-2 text-sm md:text-base">
+                    Các chỉ số nhận thức nền tảng định hình sự chuyển hóa từ đau khổ ái-thủ-hữu sang tự do an tịnh nội tại.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition-all border-t-4 border-t-emerald-500">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider bg-emerald-50 px-2.5 py-1 rounded-md">Trạng Thái 01</span>
+                        <span class="text-2xl">👁️</span>
+                    </div>
+                    <div class="text-2xl font-black text-slate-900 mb-1">Chỉ Nhìn Thuần Túy</div>
+                    <p class="text-xs font-bold text-emerald-600 mb-3">Không thêm bớt • Không dán nhãn</p>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Nhận biết thực tại qua Tánh Thấy trực tiếp, không qua bộ lọc định kiến hay thước đo đúng - sai chủ quan của bản ngã.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition-all border-t-4 border-t-amber-500">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-amber-700 uppercase tracking-wider bg-amber-50 px-2.5 py-1 rounded-md">Trạng Thái 02</span>
+                        <span class="text-2xl">🌿</span>
+                    </div>
+                    <div class="text-2xl font-black text-slate-900 mb-1">Không Can Thiệp</div>
+                    <p class="text-xs font-bold text-amber-600 mb-3">Tôn trọng Nhân Quả • Để Pháp Vận Hành</p>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Chấm dứt ảo tưởng ép buộc hoàn cảnh và người khác phải theo kịch bản cá nhân. Để yên cho mỗi người học bài học nghiệp duyên.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition-all border-t-4 border-t-teal-500">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-teal-700 uppercase tracking-wider bg-teal-50 px-2.5 py-1 rounded-md">Trạng Thái 03</span>
+                        <span class="text-2xl">🕊️</span>
+                    </div>
+                    <div class="text-2xl font-black text-slate-900 mb-1">Từ Bi Trí Tuệ</div>
+                    <p class="text-xs font-bold text-teal-600 mb-3">Khai Thị Soi Sáng • Lắng Nghe Trọn Vẹn</p>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Từ bi song hành cùng sự soi sáng quy luật nhân quả; hiện diện bình an mà không trói buộc hay áp đặt đối phương.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 1: Tánh Thấy vs Bản Ngã -->
+        <section id="tanhthey" class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+                <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Phân Tích Động Lực Tâm Lý</span>
+                <h2 class="text-2xl font-extrabold text-slate-900 mt-1">Cơ Cấu Tâm Thức: Bản Ngã Kiểm Soát vs Tánh Biết Sáng Soi</h2>
+                <p class="text-slate-600 text-sm md:text-base mt-2">
+                    Trong đời sống hàng ngày, khi va chạm với nghịch cảnh hay lời chỉ trích, tâm trí con người dao động giữa phản ứng tự động của Bản ngã và sự quan sát tĩnh lặng của Tánh thấy. Dưới đây là phân bổ các thành tố nuôi dưỡng sự an tịnh so với các yếu tố gây mất ổn định nội tâm.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <!-- Explanatory Text Column -->
+                <div class="space-y-4">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <h3 class="font-bold text-slate-900 text-base mb-2">1. Tiến trình Phản ứng của Bản Ngã</h3>
+                        <p class="text-slate-600 text-sm">
+                            Khi tiếp xúc đối tượng, Bản ngã lập tức thực hiện 3 bước: <strong class="text-slate-800">Dán nhãn</strong> (Phân định đúng-sai) → <strong class="text-slate-800">Khởi tâm Tham/Sân</strong> (Ưa thích hoặc chối bỏ) → <strong class="text-slate-800">Thúc đẩy Can thiệp</strong> (Sửa lưng, áp đặt). Tiến trình này tiêu tốn năng lượng và tạo nên mâu thuẫn triên miên.
+                        </p>
+                    </div>
+
+                    <div class="bg-emerald-50/60 p-4 rounded-xl border border-emerald-100">
+                        <h3 class="font-bold text-emerald-900 text-base mb-2">2. Tiến trình Tỉnh Thức của Tánh Thấy</h3>
+                        <p class="text-emerald-800 text-sm">
+                            Tánh thấy vận hành theo cơ chế: <strong class="text-emerald-950">Chỉ thấy như thực</strong> → <strong class="text-emerald-950">Không thêm bớt suy diễn</strong> → <strong class="text-emerald-950">Trọn vẹn quan sát</strong>. Tâm trả về trạng thái nguyên sơ vốn an tịnh, các "khách trần phiền não" tự chìm lắng mà không cần xua đuổi.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Visualization Column -->
+                <div class="flex flex-col items-center justify-center">
+                    <div class="w-full text-center mb-2">
+                        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Cơ cấu Thành tố Năng lượng Tâm thức</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="tanhTheyChart"></canvas>
+                    </div>
+                    <p class="text-xs text-slate-500 text-center mt-3 italic">
+                        Biểu đồ phân bổ tỷ lệ các yếu tố tâm thức giữa trạng thái Bất An (bị Bản ngã chi phối) và An Tịnh (sống bằng Tánh thấy).
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Comparison Bar Chart of 3 Mindsets -->
+        <section id="so-sanh" class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+                <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Đối Chiếu Hành Vi</span>
+                <h2 class="text-2xl font-extrabold text-slate-900 mt-1">Đánh Giá Định Lượng: 3 Thái Độ Ứng Xử Trước Nghịch Cảnh</h2>
+                <p class="text-slate-600 text-sm md:text-base mt-2">
+                    Nhiều người lầm tưởng "Không can thiệp" là bàng quan vô cảm. Hòa thượng Viên Minh phân định rõ 3 thái độ: Can thiệp vị ngã, Từ bi trí tuệ và Bàng quan thờ ơ trên các tiêu chí năng lượng và sự dính mắc.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Chart Column -->
+                <div class="lg:col-span-7 flex flex-col justify-center">
+                    <div class="chart-container">
+                        <canvas id="compareChart"></canvas>
+                    </div>
+                    <p class="text-xs text-slate-500 text-center mt-3 italic">
+                        So sánh mức độ Äp đặt, Tôn trọng Nhân quả, Dính mắc Kết quả và Năng lượng Bình an giữa 3 thái độ sống.
+                    </p>
+                </div>
+
+                <!-- Context & Analysis Column -->
+                <div class="lg:col-span-5 space-y-4 flex flex-col justify-center">
+                    <div class="p-4 rounded-xl bg-rose-50 border border-rose-100">
+                        <div class="font-bold text-rose-900 text-sm flex items-center gap-2">
+                            <span>⚡</span> Can Thiệp Vị Ngã
+                        </div>
+                        <p class="text-xs text-rose-800 mt-1 leading-relaxed">
+                            Áp đặt cao (95%), dính mắc kết quả tuyệt đối (90%). Mang lại mức độ bình an cực thấp (15%) do liên tục xung đột với thực tại.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-100">
+                        <div class="font-bold text-emerald-900 text-sm flex items-center gap-2">
+                            <span>🌱</span> Từ Bi Trí Tuệ (Khai Thị)
+                        </div>
+                        <p class="text-xs text-emerald-800 mt-1 leading-relaxed">
+                            Tôn trọng nhân quả tối đa (95%), không áp đặt (10%), đạt chỉ số Bình An nội tại cao nhất (95%). Cứu giúp người bằng tâm tự do.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-100 border border-slate-200">
+                        <div class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                            <span>🧊</span> Bàng Quan Vô Cảm
+                        </div>
+                        <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                            Trốn tránh trách nhiệm, thiếu thấu cảm. Mặc dù không áp đặt nhưng chỉ số bình an chỉ ở mức trung bình (40%) do còn si mê/sợ phiền.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Time Series / Intensity Curve of Emotion -->
+        <section id="chuyen-hoa" class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+                <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Mô Hình Chuyển Hóa Cảm Xúc</span>
+                <h2 class="text-2xl font-extrabold text-slate-900 mt-1">Động Học Cơn Giận & Áp Lực Theo Thời Gian</h2>
+                <p class="text-slate-600 text-sm md:text-base mt-2">
+                    So sánh diễn biến cường độ tiêu cực (sân hận, lo âu) trong hai trường hợp: <strong class="text-slate-900">Có can thiệp/tranh luận</strong> (càng khuấy nước càng đục) vs <strong class="text-slate-900">Thực hành Dừng – Nhìn – Buông</strong> (nước ngừng khuấy tự lắng trong).
+                </p>
+            </div>
+
+            <div class="space-y-6">
+                <div class="chart-container !max-w-4xl">
+                    <canvas id="emotionTimelineChart"></canvas>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <div class="text-xs font-bold text-slate-500 uppercase">Giai Đoạn 1: Dừng (0-15s)</div>
+                        <div class="text-sm font-bold text-slate-800 mt-1">Ngắt phản xạ tự động</div>
+                        <p class="text-xs text-slate-600 mt-1">
+                            Tạm ngưng mọi lời nói, hành động gõ phím hay tranh luận. Giữ cơ thể ngồi yên thả lỏng.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <div class="text-xs font-bold text-slate-500 uppercase">Giai Đoạn 2: Nhìn (15-45s)</div>
+                        <div class="text-sm font-bold text-slate-800 mt-1">Soi sáng Thân - Thọ - Tâm</div>
+                        <p class="text-xs text-slate-600 mt-1">
+                            Nhận diện tim đập, lồng ngực thắt lại hay cơn giận đang có mặt mà không phán xét đúng/sai.
+                        </p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <div class="text-xs font-bold text-slate-500 uppercase">Giai Đoạn 3: Buông (45-60s)</div>
+                        <div class="text-sm font-bold text-slate-800 mt-1">Pháp tự nhiên lắng dịu</div>
+                        <p class="text-xs text-slate-600 mt-1">
+                            Không xua đuổi, không ôm ấp. Năng lượng sân hận tự tiêu tan theo quy luật vô thường.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Pure HTML/CSS Process Flow Diagram (NO SVG) -->
+        <section class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+                <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Sơ Đồ Quy Trình Thực Hành</span>
+                <h2 class="text-2xl font-extrabold text-slate-900 mt-1">Thuật Ứng Xử: Tiến Trình "Dừng – Nhìn – Buông"</h2>
+                <p class="text-slate-600 text-sm md:text-base mt-2">
+                    Các bước cụ thể để áp dụng nguyên lý "Không Phán Xét – Không Can Thiệp" trực tiếp vào các tình huống xung đột đời sống.
+                </p>
+            </div>
+
+            <!-- Flowchart Container using Tailwind Flex/Grid without SVG -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
+                <!-- Step 1 -->
+                <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200 flex flex-col justify-between relative group hover:border-emerald-500 transition-all">
+                    <div>
+                        <div class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-sm mb-3">1</div>
+                        <h3 class="font-extrabold text-slate-900 text-base mb-2">Bối Cảnh Nghịch Cảnh</h3>
+                        <p class="text-slate-600 text-xs leading-relaxed">
+                            Bị chỉ trích, con cái bướng bỉnh, người thân làm thất bại hoặc gặp bình luận ác ý trên mạng.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-200/60 text-[11px] text-slate-500 font-semibold">
+                        Kích thích Bên Ngoài
+                    </div>
+                </div>
+
+                <!-- Arrow 1 (Desktop) -->
+                <div class="hidden md:flex absolute left-[24%] top-1/2 -translate-y-1/2 z-10 text-emerald-600 font-black text-xl">➔</div>
+
+                <!-- Step 2 -->
+                <div class="bg-emerald-50/80 rounded-2xl p-5 border border-emerald-200 flex flex-col justify-between relative group hover:border-emerald-500 transition-all">
+                    <div>
+                        <div class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-sm mb-3">2</div>
+                        <h3 class="font-extrabold text-emerald-950 text-base mb-2">DỪNG (Pause)</h3>
+                        <p class="text-emerald-900 text-xs leading-relaxed">
+                            Cắt đứt phản xạ thói quen: Không quát tháo, không phân trần, ngắt hành vi đáp trả lập tức.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-emerald-200 text-[11px] text-emerald-700 font-semibold">
+                        Làm Rỗng Phản Ứng
+                    </div>
+                </div>
+
+                <!-- Arrow 2 (Desktop) -->
+                <div class="hidden md:flex absolute left-[49%] top-1/2 -translate-y-1/2 z-10 text-emerald-600 font-black text-xl">➔</div>
+
+                <!-- Step 3 -->
+                <div class="bg-teal-50/80 rounded-2xl p-5 border border-teal-200 flex flex-col justify-between relative group hover:border-teal-500 transition-all">
+                    <div>
+                        <div class="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold text-sm mb-3">3</div>
+                        <h3 class="font-extrabold text-teal-950 text-base mb-2">NHÌN (Observe)</h3>
+                        <p class="text-teal-900 text-xs leading-relaxed">
+                            Trở về soi sáng Thân - Thọ - Tâm. Ghi nhận cảm giác khó chịu như nó đang là, không dán nhãn.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-teal-200 text-[11px] text-teal-700 font-semibold">
+                        Chánh Niệm Thuần Túy
+                    </div>
+                </div>
+
+                <!-- Arrow 3 (Desktop) -->
+                <div class="hidden md:flex absolute left-[74%] top-1/2 -translate-y-1/2 z-10 text-emerald-600 font-black text-xl">➔</div>
+
+                <!-- Step 4 -->
+                <div class="bg-amber-50/80 rounded-2xl p-5 border border-amber-200 flex flex-col justify-between relative group hover:border-amber-500 transition-all">
+                    <div>
+                        <div class="w-8 h-8 rounded-full bg-amber-600 text-white flex items-center justify-center font-bold text-sm mb-3">4</div>
+                        <h3 class="font-extrabold text-amber-950 text-base mb-2">BUÔNG & HÀNH ĐỘNG</h3>
+                        <p class="text-amber-900 text-xs leading-relaxed">
+                            Nước đục tự lắng trong. Khi tâm an tịnh, mới đưa ra quyết định khai thị hoặc hỗ trợ sáng suốt.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-amber-200 text-[11px] text-amber-700 font-semibold">
+                        Từ Bi & Trí Tuệ
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Interactive Simulation & Self Assessment -->
+        <section id="thuc-hanh" class="bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 text-white rounded-2xl p-6 md:p-8 shadow-xl space-y-8">
+            <div class="text-center max-w-3xl mx-auto space-y-2">
+                <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest">Công Cụ Tương Tác Trực Tuyến</span>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-white">Mô Phỏng Thực Hành & Tự Vấn Nội Tâm</h2>
+                <p class="text-emerald-100 text-xs md:text-sm">
+                    Chọn tình huống đời sống để kiểm tra phản xạ của Bản ngã và luyện tập 60 giây lắng tâm Dừng - Nhìn - Buông.
+                </p>
+            </div>
+
+            <!-- Tab Buttons -->
+            <div class="flex justify-center border-b border-emerald-800/80 gap-4">
+                <button id="btnTabSim" onclick="switchAppTab('sim')" class="pb-3 text-sm font-bold border-b-2 border-emerald-400 text-emerald-400 transition-all">
+                    1. Mô Phỏng Tình Huống
+                </button>
+                <button id="btnTabTimer" onclick="switchAppTab('timer')" class="pb-3 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-emerald-300 transition-all">
+                    2. 60s Thiền Lắng Tâm
+                </button>
+            </div>
+
+            <!-- Tab Content 1: Scenario Simulator -->
+            <div id="appTabSim" class="space-y-6">
+                <div class="max-w-xl mx-auto">
+                    <label for="scenarioSelect" class="block text-xs font-semibold text-emerald-300 mb-2">Chọn tình huống bạn đang gặp phải:</label>
+                    <select id="scenarioSelect" onchange="renderScenarioApp()" class="w-full bg-slate-800 border border-emerald-700/60 rounded-xl px-4 py-3 text-sm text-emerald-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <option value="0">Bị cấp trên khiển trách bất công trước tập thể</option>
+                        <option value="1">Con cái bướng bỉnh, không chịu học hành theo ý muốn</option>
+                        <option value="2">Người thân làm ăn thất bại hoặc vướng thói quen xấu</option>
+                        <option value="3">Gặp bình luận xúc phạm, ác ý trên mạng xã hội</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Ego Card -->
+                    <div class="bg-rose-950/40 border border-rose-800/60 rounded-2xl p-6 space-y-3">
+                        <div class="flex items-center gap-2 text-rose-400 font-extrabold text-base">
+                            <span>⚡</span> Tâm Phán Xét & Can Thiệp (Bản Ngã)
+                        </div>
+                        <ul id="appEgoList" class="space-y-2 text-xs text-rose-200/90 list-disc list-inside">
+                            <!-- Populated JS -->
+                        </ul>
+                    </div>
+
+                    <!-- Wisdom Card -->
+                    <div class="bg-emerald-950/40 border border-emerald-700/60 rounded-2xl p-6 space-y-3">
+                        <div class="flex items-center gap-2 text-emerald-400 font-extrabold text-base">
+                            <span>🌱</span> Tâm Không Phán Xét & Từ Bi (Trí Tuệ)
+                        </div>
+                        <ul id="appWisdomList" class="space-y-2 text-xs text-emerald-200/90 list-disc list-inside">
+                            <!-- Populated JS -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content 2: Timer Practice -->
+            <div id="appTabTimer" class="hidden text-center space-y-6 py-4">
+                <div class="max-w-md mx-auto bg-slate-800/80 border border-emerald-800/60 rounded-3xl p-6 space-y-4">
+                    <span id="timerBadge" class="inline-block px-3 py-1 rounded-full bg-emerald-900 text-emerald-300 text-xs font-semibold">
+                        Giai Đoạn Chuẩn Bị
+                    </span>
+                    <div id="timerCircle" class="w-36 h-36 mx-auto rounded-full border-4 border-emerald-500 bg-emerald-950/50 flex flex-col items-center justify-center transition-all duration-1000">
+                        <span id="timerText" class="text-sm font-bold text-emerald-300">Thả Lỏng</span>
+                        <span id="timerClock" class="text-3xl font-black text-white mt-1">00:60</span>
+                    </div>
+                    <div>
+                        <h3 id="timerTitle" class="text-lg font-extrabold text-white">Sẵn Sàng Quan Sát Tâm</h3>
+                        <p id="timerDesc" class="text-xs text-emerald-200/80 mt-1 max-w-xs mx-auto">
+                            Khi có bất an hay áp lực, nhấn nút bắt đầu để thực hành 1 phút lắng tâm theo tiến trình Dừng - Nhìn - Buông.
+                        </p>
+                    </div>
+                    <button id="btnStartTimer" onclick="toggleAppTimer()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg text-sm">
+                        Bắt Đầu Thực Hành (60s)
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusion Quote Section -->
+        <section class="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200/80 rounded-2xl p-8 text-center space-y-4">
+            <span class="text-3xl">🕊️</span>
+            <blockquote class="text-lg md:text-xl font-bold text-slate-800 max-w-3xl mx-auto italic">
+                "Có lúc Thầy khuyên mình nên cụ thể làm một cái gì đó để giúp người khác... Và có những lúc Thầy khuyên hãy cứ để yên cho họ học bài học của họ, và mình học bài học của mình."
+            </blockquote>
+            <p class="text-xs font-bold text-emerald-700 tracking-wider uppercase">
+                — Hòa thượng Thích Viên Minh (Tổ đình Bửu Long)
+            </p>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 text-center text-xs">
+        <div class="max-w-6xl mx-auto px-4 space-y-2">
+            <p>Trợ Lý Phân Tích & Nghiên Cứu Pháp Thoại Phật Giáo Nguyên Thủy (Theravāda)</p>
+            <p class="text-slate-500">Nguồn tư liệu gốc: Trung Tâm Hỗ Tông & Phật Pháp Vấn Đáp • HT Thích Viên Minh</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Charts & Logic -->
+    <script>
+        // --- HELPER: Label Wrapping Logic for Chart.js (>16 chars) ---
+        function formatChartLabel(label, maxLen = 16) {
+            if (typeof label !== 'string' || label.length <= maxLen) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).trim().length > maxLen) {
+                    if (currentLine) lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine += (currentLine ? ' ' : '') + word;
+                }
+            });
+            if (currentLine) lines.push(currentLine.trim());
+            return lines;
+        }
+
+        // Global Chart Defaults
+        Chart.defaults.font.family = '"Plus Jakarta Sans", sans-serif';
+        Chart.defaults.color = '#475569';
+
+        // Universal Tooltip Configuration Requirement
+        const universalTooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        // --- 1. Tánh Thấy vs Bản Ngã Donut Chart ---
+        const ctxTanhthey = document.getElementById('tanhTheyChart').getContext('2d');
+        const tanhTheyLabelsRaw = [
+            'Dán nhãn Đúng - Sai',
+            'Khởi tâm Tham / Sân',
+            'Cưỡng cầu Can thiệp',
+            'Tánh thấy Thuần túy',
+            'Không thêm bớt',
+            'Để Pháp tự vận hành'
+        ];
+        const tanhTheyLabelsFormatted = tanhTheyLabelsRaw.map(l => formatChartLabel(l, 16));
+
+        new Chart(ctxTanhthey, {
+            type: 'doughnut',
+            data: {
+                labels: tanhTheyLabelsFormatted,
+                datasets: [{
+                    data: [25, 25, 20, 10, 10, 10],
+                    backgroundColor: [
+                        '#f43f5e', // Rose 500
+                        '#fb7185', // Rose 400
+                        '#f59e0b', // Amber 500
+                        '#10b981', // Emerald 500
+                        '#059669', // Emerald 600
+                        '#0d9488'  // Teal 600
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 12,
+                            padding: 12,
+                            font: { size: 11 }
+                        }
+                    },
+                    tooltip: universalTooltipConfig
+                },
+                cutout: '60%'
+            }
+        });
+
+        // --- 2. Bar Chart: So Sánh 3 Thái Độ Ứng Xử ---
+        const ctxCompare = document.getElementById('compareChart').getContext('2d');
+        const compareMetricsRaw = [
+            'Mức độ Áp đặt',
+            'Tôn trọng Nhân quả',
+            'Dính mắc Kết quả',
+            'Năng lượng Bình an'
+        ];
+        const compareMetricsFormatted = compareMetricsRaw.map(m => formatChartLabel(m, 16));
+
+        new Chart(ctxCompare, {
+            type: 'bar',
+            data: {
+                labels: compareMetricsFormatted,
+                datasets: [
+                    {
+                        label: 'Can Thiệp Vị Ngã',
+                        data: [95, 15, 90, 15],
+                        backgroundColor: '#f43f5e',
+                        borderRadius: 6
+                    },
+                    {
+                        label: 'Từ Bi Trí Tuệ (Khai Thị)',
+                        data: [10, 95, 15, 95],
+                        backgroundColor: '#10b981',
+                        borderRadius: 6
+                    },
+                    {
+                        label: 'Bàng Quan Vô Cảm',
+                        data: [15, 20, 30, 40],
+                        backgroundColor: '#94a3b8',
+                        borderRadius: 6
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            callback: function(value) { return value + '%'; }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { boxWidth: 12, font: { size: 11 } }
+                    },
+                    tooltip: universalTooltipConfig
+                }
+            }
+        });
+
+        // --- 3. Line Chart: Timeline Cường Đồ Cảm Xúc ---
+        const ctxEmotion = document.getElementById('emotionTimelineChart').getContext('2d');
+        const timelineLabelsRaw = ['0s (Mới phát)', '15s (Dừng)', '30s (Nhìn)', '45s (Buông)', '60s (An Tịnh)'];
+        const timelineLabelsFormatted = timelineLabelsRaw.map(l => formatChartLabel(l, 16));
+
+        new Chart(ctxEmotion, {
+            type: 'line',
+            data: {
+                labels: timelineLabelsFormatted,
+                datasets: [
+                    {
+                        label: 'Không Can Thiệp (Dừng - Nhìn - Buông)',
+                        data: [90, 65, 35, 15, 5],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointRadius: 5
+                    },
+                    {
+                        label: 'Phản Ứng Tranh Luận / Can Thiệp',
+                        data: [90, 95, 88, 92, 85],
+                        borderColor: '#f43f5e',
+                        backgroundColor: 'rgba(244, 63, 94, 0.05)',
+                        fill: true,
+                        tension: 0.2,
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        pointRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        title: { display: true, text: 'Cường Độ Căng Thẳng (%)' },
+                        beginAtZero: true,
+                        max: 100
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { boxWidth: 12, font: { size: 11 } }
+                    },
+                    tooltip: universalTooltipConfig
+                }
+            }
+        });
+
+        // --- Interactive App Data & Logic ---
+        const scenarioData = [
+            {
+                ego: [
+                    "Phán xét: 'Sếp thiên vị, mù quáng, cố tình dìm hàng mình.'",
+                    "Cảm xúc: Tự ái, tức giận, tức giận trào dâng, muốn cãi tay đôi lập tức.",
+                    "Can thiệp: Lập tức gồng người phân trần, tìm cách lật lại vấn đề ngay lúc nóng nảy.",
+                    "Hậu quả: Không khí căng thẳng leo thang, tổn thương năng lượng đôi bên."
+                ],
+                wisdom: [
+                    "Không phán xét: Ghi nhận âm thanh lời nói, quan sát cảm giác nóng rát trong ngực.",
+                    "Chỉ thấy: Nhận biết rõ ràng phần nào thuộc trách nhiệm mình, phần nào do duyên chưa đủ.",
+                    "Từ bi: Thấu cảm áp lực cấp trên đang gánh chịu; lắng nghe trọn vẹn không chống cự.",
+                    "Hành động: Sau khi tâm lắng trong, trình bày sự thật điềm tĩnh, khách quan."
+                ]
+            },
+            {
+                ego: [
+                    "Phán xét: 'Nó hư hỏng, bất hiếu, không biết nghĩ cho tương lai.'",
+                    "Cảm xúc: Thất vọng, hoảng sợ mất mặt với người xung quanh.",
+                    "Can thiệp: Quát tháo, áp đặt, tịch thu đồ đạc, ép con học theo ngành mình chọn.",
+                    "Hậu quả: Tạo khoảng cách xa cách, đứa trẻ thu mình lại hoặc nổi loạn ngầm."
+                ],
+                wisdom: [
+                    "Không phán xét: Tôn trọng con là một cá thể độc lập có nghiệp duyên riêng.",
+                    "Không can thiệp: Không áp đặt ước mơ dang dở của mình lên đời con.",
+                    "Từ bi: Lắng nghe tâm tư không định kiến; làm chỗ dựa bình an khi con vấp ngã.",
+                    "Khai thị: Soi sáng điều hay lẽ phải bằng chính tấm gương sống an lạc."
+                ]
+            },
+            {
+                ego: [
+                    "Phán xét: 'Tại sao nó dại dột thế? Nói mãi mà không chịu nghe!'",
+                    "Cảm xúc: Sốt ruột, bực bội, bất an thường trực.",
+                    "Can thiệp: Chạy vạy lo thay toàn bộ hậu quả, càm ràm chỉ trích mỗi ngày.",
+                    "Hậu quả: Tước đoạt cơ hội học bài học nhân quả của người thân, bản thân kiệt sức."
+                ],
+                wisdom: [
+                    "Không phán xét: Hiểu mỗi người phải tự trải nghiệm nghịch cảnh mới thực sự giác ngộ.",
+                    "Để yên: Đứng lùi lại, hỗ trợ vừa đủ trong khả năng nhưng không gánh thay bài học.",
+                    "Từ bi: Hiện diện với tâm yêu thương, bình thản, không chì chiết quá khứ.",
+                    "Nguyên tắc: Tận nhân lực tri thiên mệnh, hành động mà không cưỡng cầu."
+                ]
+            },
+            {
+                ego: [
+                    "Phán xét: 'Đám người vô văn hóa, ghen ăn tức ở.'",
+                    "Cảm xúc: Tim đập nhanh, sân hận trào dâng, muốn gõ phím phản kích cay độc hơn.",
+                    "Can thiệp: Tranh luận thâu đêm trên mạng, huy động người vào bênh vực.",
+                    "Hậu quả: Kéo dài chuỗi sân hận, tâm trí rối loạn, tự đầu độc nội tâm."
+                ],
+                wisdom: [
+                    "Không phán xét: Coi bình luận ác ý như gió thoảng qua cành cây; không bạn không thù.",
+                    "Chỉ thấy: Thấy rõ tiến trình duyên khởi: có khen ắt có chê ở đời.",
+                    "Không can thiệp: Ngừng khuấy động, không tranh luận để nước tự lắng.",
+                    "Từ bi: Khởi tâm thương xót người đang chịu sự thiêu đốt của tâm sân."
+                ]
+            }
+        ];
+
+        function renderScenarioApp() {
+            const idx = document.getElementById('scenarioSelect').value;
+            const egoUl = document.getElementById('appEgoList');
+            const wisUl = document.getElementById('appWisdomList');
+
+            egoUl.innerHTML = scenarioData[idx].ego.map(item => `<li class="leading-relaxed">${item}</li>`).join('');
+            wisUl.innerHTML = scenarioData[idx].wisdom.map(item => `<li class="leading-relaxed">${item}</li>`).join('');
+        }
+        renderScenarioApp();
+
+        function switchAppTab(tab) {
+            const tabSim = document.getElementById('appTabSim');
+            const tabTimer = document.getElementById('appTabTimer');
+            const btnSim = document.getElementById('btnTabSim');
+            const btnTimer = document.getElementById('btnTabTimer');
+
+            if (tab === 'sim') {
+                tabSim.classList.remove('hidden');
+                tabTimer.classList.add('hidden');
+                btnSim.className = "pb-3 text-sm font-bold border-b-2 border-emerald-400 text-emerald-400 transition-all";
+                btnTimer.className = "pb-3 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-emerald-300 transition-all";
+            } else {
+                tabSim.classList.add('hidden');
+                tabTimer.classList.remove('hidden');
+                btnTimer.className = "pb-3 text-sm font-bold border-b-2 border-emerald-400 text-emerald-400 transition-all";
+                btnSim.className = "pb-3 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-emerald-300 transition-all";
+            }
+        }
+
+        // Timer Logic
+        let timerInterval = null;
+        let remainingTime = 60;
+        let isTimerRunning = false;
+
+        const timerPhases = [
+            { from: 60, to: 46, badge: "Giai Đoạn 1: DỪNG (Pause)", text: "Dừng Lại", title: "Ngắt Mọi Phản Xạ Bên Ngoài", desc: "Không nói, không gõ phím. Ngồi yên thả lỏng ngắt nguồn năng lượng cho cơn giận." },
+            { from: 45, to: 16, badge: "Giai Đoạn 2: NHÌN (Observe)", text: "Chỉ Nhìn", title: "Soi Sáng Thân & Thọ Thuần Túy", desc: "Hướng sự chú ý vào hơi thở và cảm giác khó chịu trong ngực mà không kể lể nguyên nhân." },
+            { from: 15, to: 0, badge: "Giai Đoạn 3: BUÔNG (Let Be)", text: "Buông Xả", title: "Để Pháp Tự Nhiên Lắng Dịu", desc: "Không xua đuổi. Như ngừng khuấy nước để bùn đục tự chìm, tâm an tịnh hiển lộ." }
+        ];
+
+        function toggleAppTimer() {
+            const btn = document.getElementById('btnStartTimer');
+            if (isTimerRunning) {
+                clearInterval(timerInterval);
+                isTimerRunning = false;
+                btn.innerText = "Tiếp Tục Thực Hành";
+            } else {
+                if (remainingTime <= 0) remainingTime = 60;
+                isTimerRunning = true;
+                btn.innerText = "Tạm Dừng";
+                runTimerStep();
+                timerInterval = setInterval(runTimerStep, 1000);
+            }
+        }
+
+        function runTimerStep() {
+            const clock = document.getElementById('timerClock');
+            const badge = document.getElementById('timerBadge');
+            const title = document.getElementById('timerTitle');
+            const desc = document.getElementById('timerDesc');
+            const circleText = document.getElementById('timerText');
+            const btn = document.getElementById('btnStartTimer');
+
+            if (remainingTime <= 0) {
+                clearInterval(timerInterval);
+                isTimerRunning = false;
+                clock.innerText = "00:00";
+                badge.innerText = "Hoàn Tất Lắng Tâm";
+                title.innerText = "Tâm Trở Về Bình An Nguyên Sơ";
+                desc.innerText = "Nội tâm đã lắng dịu. Giờ đây bạn có thể ứng xử với tâm từ bi và trí tuệ sáng suốt.";
+                circleText.innerText = "An Tịnh";
+                btn.innerText = "Thực Hành Lại (60s)";
+                return;
+            }
+
+            const sec = remainingTime % 60;
+            clock.innerText = `00:${sec < 10 ? '0' : ''}${sec}`;
+
+            const activePhase = timerPhases.find(p => remainingTime <= p.from && remainingTime > p.to);
+            if (activePhase) {
+                badge.innerText = activePhase.badge;
+                title.innerText = activePhase.title;
+                desc.innerText = activePhase.desc;
+                circleText.innerText = activePhase.text;
+            }
+
+            remainingTime--;
+        }
+    </script>
+</body>
+</html>
