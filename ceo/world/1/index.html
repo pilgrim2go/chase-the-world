@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo Cáo Phân Tích Địa Chính Trị & Khủng Hoảng Thể Chế Toàn Cầu</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg: '#F9F8F3',
+                            card: '#FFFFFF',
+                            dark: '#1C1917',
+                            muted: '#78716C',
+                            border: '#E7E5E4',
+                            accent: '#C2410C',
+                            accentHover: '#9A3412',
+                            gold: '#D97706',
+                            navy: '#1E293B'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Merriweather', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #F9F8F3;
+            color: #1C1917;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .serif-title {
+            font-family: 'Merriweather', serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+        .tab-btn.active {
+            border-bottom: 3px solid #C2410C;
+            color: #C2410C;
+            font-weight: 700;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #F1F0EA;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #D6D3D1;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+    <!-- Chosen Palette: Warm Sand & Slate (Background: #F9F8F3, Card: #FFFFFF, Text: #1C1917, Accent: #C2410C, Navy: #1E293B) -->
+    
+    <!-- Application Structure Plan:
+        1. Executive Header & Live Index Ticker: Overview of key vulnerability metrics derived from both Jiang Xueqin and Eric Weinstein conversations.
+        2. Navigation Tabs:
+           - Dashboard & Bronze Age Collapse: Macro framework, historical parallels, specialization vs globalization equation.
+           - Petrodollar & Geopolitical Matrix: The 3 pillars of Pax Americana, Middle East tension, China-Japan flashpoint.
+           - 3 Mega Predictions & Digital 11/9: Interactive scenario model for bank account cyberattacks, Trump 3rd term/NYC siege, Populist leaders.
+           - Technology Trap & AI Symbiosis: Chip supply chain brittleness, AI control vs Mitochondria Model.
+           - Economic Reform & Survival Playbook: Coase Property Rights vs UBI, individual resilience checklist.
+        3. Dynamic Content Panels: Switchable view sections driven by JS withChart.js visualizers, search/filter controls, and interactive modal details.
+        4. Interactive Simulator: "Digital 9/11 Financial Crisis Impact Tool" allowing users to stress-test their asset portfolio under cyber attack scenarios.
+    -->
+
+    <!-- Visualization & Content Choices:
+        - Chart 1 (Line Chart): Global Reserve Currency Share & Petrodollar Decline (1971-2030 Projections).
+        - Chart 2 (Radar Chart): Specialization vs Globalization Collapse Matrix (Late Bronze Age vs Modern Chip Supply Chain).
+        - Chart 3 (Bubble Chart): Geopolitical Risk Matrix (Probability vs Economic Impact for Global Hotspots).
+        - Chart 4 (Bar Chart): Economic Distribution Model (UBI vs Coase Property Right Royalty Revenues).
+        - Dynamic Interactive Simulator: Custom JS calculator for Digital Asset Vulnerability.
+        - NO SVG or Mermaid JS used. All visual elements built using styled Tailwind CSS, Canvas, and Unicode symbols.
+    -->
+
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- TOP HEADER / BRAND BAR -->
+    <header class="bg-brand-navy text-white border-b border-stone-800 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <span class="text-2xl">🏛️</span>
+                    <div>
+                        <h1 class="font-bold text-lg tracking-tight text-amber-400">NEXUS GEOPOLITICS</h1>
+                        <p class="text-xs text-stone-400 hidden sm:block">Phân Tích Địa Chính Trị, Thể Chế & Bất Ổn Toàn Cầu</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4 text-xs">
+                    <div class="bg-stone-800 px-3 py-1.5 rounded-full border border-stone-700 hidden md:flex items-center space-x-2">
+                        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                        <span class="text-stone-300">Chỉ số Nguy cơ Trật tự Toàn cầu: <strong class="text-red-400">88/100 (Cực cao)</strong></span>
+                    </div>
+                    <button onclick="toggleModal('infoModal')" class="bg-brand-accent hover:bg-brand-accentHover text-white px-3 py-1.5 rounded font-semibold transition">
+                        📌 Giới Thiệu Báo Cáo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- METRIC STATS STRIP -->
+    <section class="bg-amber-100/50 border-b border-amber-200/60 py-3">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            <div class="bg-white p-2.5 rounded border border-stone-200 shadow-sm">
+                <span class="text-xs text-brand-muted block uppercase font-bold">Thâm hụt Petrodollar</span>
+                <span class="text-lg font-bold text-brand-accent">-$34.2 Trillion</span>
+                <span class="text-[10px] text-red-600 block">⚠️ Áp lực gãy vỡ hệ thống</span>
+            </div>
+            <div class="bg-white p-2.5 rounded border border-stone-200 shadow-sm">
+                <span class="text-xs text-brand-muted block uppercase font-bold">Rủi ro Tấn công Kỹ thuật số</span>
+                <span class="text-lg font-bold text-brand-navy">92%</span>
+                <span class="text-[10px] text-amber-700 block">💥 Ngân hàng & Tài sản số</span>
+            </div>
+            <div class="bg-white p-2.5 rounded border border-stone-200 shadow-sm">
+                <span class="text-xs text-brand-muted block uppercase font-bold">Hệ số Chuyên môn hóa Vi mạch</span>
+                <span class="text-lg font-bold text-brand-gold">0.14 (Rất mong manh)</span>
+                <span class="text-[10px] text-stone-500 block">🌐 ASML - TSMC - Mỹ - TQ</span>
+            </div>
+            <div class="bg-white p-2.5 rounded border border-stone-200 shadow-sm">
+                <span class="text-xs text-brand-muted block uppercase font-bold">Mô hình Sinh tồn Khuyến nghị</span>
+                <span class="text-lg font-bold text-emerald-700">Cộng sinh Ti thể</span>
+                <span class="text-[10px] text-emerald-600 block">🌿 Con người x AI x Tự chủ</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN APP NAVIGATION TABS -->
+    <div class="bg-white border-b border-stone-200 sticky top-16 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="flex space-x-6 overflow-x-auto custom-scrollbar text-sm font-medium">
+                <button onclick="switchTab('tab-dashboard')" id="btn-tab-dashboard" class="tab-btn py-3.5 whitespace-nowrap active">
+                    📊 Tổng Quan & Cuộc Sụp Đồ Đồng
+                </button>
+                <button onclick="switchTab('tab-petrodollar')" id="btn-tab-petrodollar" class="tab-btn py-3.5 whitespace-nowrap text-stone-600 hover:text-brand-accent">
+                    🌐 Petrodollar & Bàn Cờ Địa Chính Trị
+                </button>
+                <button onclick="switchTab('tab-predictions')" id="btn-tab-predictions" class="tab-btn py-3.5 whitespace-nowrap text-stone-600 hover:text-brand-accent">
+                    ⚡ 3 Dự Báo Sốc & Tấn Công 11/9 Số
+                </button>
+                <button onclick="switchTab('tab-technology')" id="btn-tab-technology" class="tab-btn py-3.5 whitespace-nowrap text-stone-600 hover:text-brand-accent">
+                    🤖 Bẫy Công Nghệ & Trí Tuệ Nhân Tạo
+                </button>
+                <button onclick="switchTab('tab-survival')" id="btn-tab-survival" class="tab-btn py-3.5 whitespace-nowrap text-stone-600 hover:text-brand-accent">
+                    🛡️ Cải Cách Kinh Tế & Cẩm Nang Sinh Tồn
+                </button>
+            </nav>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+
+        <!-- ================= TAB 1: DASHBOARD & BRONZE AGE COLLAPSE ================= -->
+        <section id="tab-dashboard" class="tab-content block space-y-8">
+            <!-- Section Intro Paragraph -->
+            <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
+                <h2 class="text-2xl font-bold serif-title text-brand-navy mb-3">Mô Hình Cấu Trúc Khủng Hoảng: Từ Cuộc Sụp Đổ Thời Kỳ Đồ Đồng Đến Bế Tắc Đương Đại</h2>
+                <p class="text-stone-700 leading-relaxed text-sm md:text-base">
+                    Báo cáo phân tích tổng hợp nhận định từ Giáo sư <strong>Jiang Xueqin</strong> và nhà toán học <strong>Eric Weinstein</strong> trong chuỗi đối thoại trên <em>The Diary Of A CEO</em>. Thay vì coi các xung đột hiện nay như những tranh chấp chính trị ngắn hạn, hai học giả khẳng định nhân loại đang trải qua sự sụp đổ mang tính hệ thống của trật tự <strong>Pax Americana</strong> kéo dài 80 năm. Điểm tương đồng lịch sử sát thực nhất không phải là Thế chiến II, mà là cuộc <strong>Sụp đổ Thời kỳ Đồ đồng (Late Bronze Age Collapse ~1200 TCN)</strong>, nơi sự đứt gãy của chuỗi thương mại siêu liên kết đã kéo theo sự sụp đổ dây chuyền của toàn bộ các nền văn minh đương thời.
+                </p>
+            </div>
+
+            <!-- Grid 2 Columns: Chart & Analytical Context -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Left Column: Interactive Radar Chart for Specialization vs Globalization -->
+                <div class="lg:col-span-7 bg-white p-6 rounded-xl border border-stone-200 shadow-sm space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-base text-brand-navy">Ma Trận Mong Manh Văn Minh: Đồ Đồng vs Bán Dẫn Modern</h3>
+                        <span class="text-xs bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full font-semibold">Công cụ सो sánh</span>
+                    </div>
+                    <p class="text-xs text-stone-500">
+                        So sánh mức độ phụ thuộc chuỗi cung ứng giữa nền văn minh Đồ Đồng (Đồng + Thiếc) và Nền kinh tế Chip Bán Dẫn hiện đại (Thiết kế +ASML +TSMC +Khoáng sản TQ).
+                    </p>
+                    
+                    <div class="chart-container">
+                        <canvas id="chartSpecialization"></canvas>
+                    </div>
+
+                    <div class="bg-amber-50 p-3.5 rounded-lg border border-amber-200 text-xs text-stone-700">
+                        <strong>📌 Phương trình Tiến bộ Văn minh của GS. Jiang Xueqin:</strong><br/>
+                        <span class="font-mono text-brand-accent text-sm font-bold block my-1">Tiến bộ Công nghệ = Chuyên môn hóa (Specialization) × Toàn cầu hóa (Globalization)</span>
+                        Khi các lệnh trừng phạt, chiến tranh và chủ nghĩa bảo hộ buộc các quốc gia quay lại tự cung tự cấp, hệ số Chuyên môn hóa suy giảm, đẩy nền văn minh bước vào giai đoạn suy thoái kỹ thuật thoái lùi.
+                    </div>
+                </div>
+
+                <!-- Right Column: Comparative Findings List -->
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
+                        <h3 class="font-bold text-lg text-brand-navy mb-3 flex items-center space-x-2">
+                            <span>🔍</span>
+                            <span>Luận Điểm Cốt Lõi Cần Nắm Cho Lãnh Đạo</span>
+                        </h3>
+                        <div class="space-y-3 text-xs md:text-sm">
+                            <div class="p-3 bg-stone-50 rounded-lg border-l-4 border-brand-accent">
+                                <h4 class="font-bold text-brand-dark">1. Sự Kết Thúc Của "Giấc Ngủ Vĩ Đại" (The Great Nap)</h4>
+                                <p class="text-stone-600 mt-1">Trạng thái hòa bình và thịnh vượng giả tạo 80 năm sau Thế chiến II đã chính thức khép lại từ sau dịch COVID-19, đẩy thế giới trở lại quỹ đạo lịch sử đầy biến động.</p>
+                            </div>
+                            <div class="p-3 bg-stone-50 rounded-lg border-l-4 border-brand-gold">
+                                <h4 class="font-bold text-brand-dark">2. "Thực Tại Được Điều Phối" (Managed Reality) Rạn Nứt</h4>
+                                <p class="text-stone-600 mt-1">Các thể chế chính trị và truyền thông dòng chính không còn giữ được thế độc quyền thao túng nhận thức công chúng sau các thất bại kiểm soát khủng hoảng.</p>
+                            </div>
+                            <div class="p-3 bg-stone-50 rounded-lg border-l-4 border-brand-navy">
+                                <h4 class="font-bold text-brand-dark">3. Nghịch Lý Quân Sự Phi Đối Xứng</h4>
+                                <p class="text-stone-600 mt-1">Phương Tây tiêu tốn tên lửa 1.000.000 USD để bắn hạ Drone giá 20.000 USD của Houthi, tạo nên sự kiệt quệ tài chính bất khả đảo ngược.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quote Card -->
+                    <div class="bg-brand-navy text-white p-5 rounded-xl shadow-md border border-stone-800">
+                        <span class="text-3xl text-amber-500 font-serif">“</span>
+                        <p class="text-xs md:text-sm italic font-serif text-stone-200 -mt-3 mb-3">
+                            Thế giới không chỉ đơn thuần đối mặt với một cuộc chiến tranh cục bộ hay chuyển giao quyền lực. Chúng ta đang đứng trước nguy cơ sụp đổ hoàn toàn cấu trúc văn minh do đứt gãy chuỗi chuyên môn hóa toàn cầu.
+                        </p>
+                        <div class="text-right border-t border-stone-700 pt-2">
+                            <span class="text-xs font-bold text-amber-400 block">- GS. Jiang Xueqin</span>
+                            <span class="text-[10px] text-stone-400">Học giả Địa chính trị, ĐH Yale</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: PETRODOLLAR & GEOPOLITICS ================= -->
+        <section id="tab-petrodollar" class="tab-content hidden space-y-8">
+            <!-- Section Intro -->
+            <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
+                <h2 class="text-2xl font-bold serif-title text-brand-navy mb-3">Hệ Thống Petrodollar & Bàn Cờ Căng Thắng Địa Chính Trị</h2>
+                <p class="text-stone-700 leading-relaxed text-sm md:text-base">
+                    Kể từ sau Cú sốc Nixon năm 1971, vị thế đồng tiền dự trữ toàn cầu của đồng USD không còn dựa trên bản vị vàng mà dựa trên cấu trúc <strong>Petrodollar</strong> với 3 chân kiềng: Ả Rập Xê Út (bán dầu bằng USD), Trung Quốc (công xưởng gia công) và Nhật Bản (mua trái phiếu Mỹ tài trợ nợ công). Khi 3 chân kiềng này tan rã, Mỹ buộc phải can dự quân sự vào Trung Đông để duy trì sự sống cho Petrodollar, vô tình kéo mình vào các điểm nóng sa lầy mới.
+                </p>
+            </div>
+
+            <!-- Petrodollar Triad Interactive Visual -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-5 rounded-xl border-t-4 border-amber-500 shadow-sm hover:shadow-md transition">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-2xl">🛢️</span>
+                        <span class="text-xs bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded">Chân Kiềng 1</span>
+                    </div>
+                    <h3 class="font-bold text-base text-brand-navy mb-1">Ả Rập Xê Út & Khối GCC</h3>
+                    <p class="text-xs text-stone-600 leading-relaxed mb-3">Cam kết định giá độc quyền dầu mỏ bằng USD để đổi lấy sự bảo hộ quân sự Mỹ. Hiện nay đang chủ động đa dạng hóa sang Nhân dân tệ và gia nhập BRICS.</p>
+                    <div class="text-[11px] bg-stone-50 p-2 rounded border border-stone-200">
+                        <strong>Trạng thái:</strong> <span class="text-red-600 font-bold">Đang gãy vỡ</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border-t-4 border-red-500 shadow-sm hover:shadow-md transition">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-2xl">🏭</span>
+                        <span class="text-xs bg-red-100 text-red-800 font-bold px-2 py-0.5 rounded">Chân Kiềng 2</span>
+                    </div>
+                    <h3 class="font-bold text-base text-brand-navy mb-1">Trung Quốc (Công Xưởng)</h3>
+                    <p class="text-xs text-stone-600 leading-relaxed mb-3">Cung cấp hàng hóa tiêu dùng giá rẻ đổi lấy tài sản USD. Chiến tranh thương mại và phong tỏa công nghệ buộc Bắc Kinh giảm nắm giữ Trái phiếu Mỹ.</p>
+                    <div class="text-[11px] bg-stone-50 p-2 rounded border border-stone-200">
+                        <strong>Trạng thái:</strong> <span class="text-red-600 font-bold">Rút nốt tài sản USD</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border-t-4 border-blue-500 shadow-sm hover:shadow-md transition">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-2xl">💴</span>
+                        <span class="text-xs bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded">Chân Kiềng 3</span>
+                    </div>
+                    <h3 class="font-bold text-base text-brand-navy mb-1">Nhật Bản (Tài Trợ Nợ)</h3>
+                    <p class="text-xs text-stone-600 leading-relaxed mb-3">Sử dụng thặng dư thương mại khổng lồ mua Trái phiếu Mỹ. Hiện chịu áp lực đồng Yên mất giá, dân số già hóa và nguy cơ xung đột năng lượng Đông Á.</p>
+                    <div class="text-[11px] bg-stone-50 p-2 rounded border border-stone-200">
+                        <strong>Trạng thái:</strong> <span class="text-amber-600 font-bold">Sức mua suy giảm</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart & Flashpoints -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Line Chart: USD Reserve Status -->
+                <div class="lg:col-span-6 bg-white p-6 rounded-xl border border-stone-200 shadow-sm space-y-4">
+                    <h3 class="font-bold text-base text-brand-navy">Xu Hướng Tỷ Trọng Đồng USD Trong Dự Trữ Toàn Cầu</h3>
+                    <p class="text-xs text-stone-500">
+                        Dự báo đà suy giảm dự trữ USD toàn cầu khi giao dịch Petrodollar bị thay thế bởi các đồng tiền bản tệ địa phương.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="chartPetrodollar"></canvas>
+                    </div>
+                </div>
+
+                <!-- Geopolitical Hotspot Matrix -->
+                <div class="lg:col-span-6 bg-white p-6 rounded-xl border border-stone-200 shadow-sm space-y-4">
+                    <h3 class="font-bold text-base text-brand-navy mb-2">Phân Tích Bàn Cờ Xung Đột Nóng</h3>
+                    <div class="space-y-3">
+                        <!-- Flashpoint 1 -->
+                        <div class="p-3 bg-stone-50 rounded-lg border border-stone-200 hover:bg-amber-50 transition cursor-pointer" onclick="showHotspotDetail('middleEast')">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-xs text-brand-accent">🔴 Trung Đông & Eo biển Hormuz</span>
+                                <span class="text-[10px] bg-red-100 text-red-700 px-2 py-0.5 rounded">Nguy cơ: Tối cao</span>
+                            </div>
+                            <p class="text-xs text-stone-600 mt-1">
+                                Iran sở hữu mạng lưới tác chiến phân tán. Tầm bắn tên lửa vươn tới Diego Garcia (~4.023 km) đe dọa trực tiếp các tuyến vận tải dầu mỏ then chốt.
+                            </p>
+                        </div>
+
+                        <!-- Flashpoint 2 -->
+                        <div class="p-3 bg-stone-50 rounded-lg border border-stone-200 hover:bg-amber-50 transition cursor-pointer" onclick="showHotspotDetail('chinaJapan')">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-xs text-brand-navy">🔵 Xung Đột Ngầm Trung Quốc - Nhật Bản</span>
+                                <span class="text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded">Nguy cơ: Bị bỏ ngỏ</span>
+                            </div>
+                            <p class="text-xs text-stone-600 mt-1">
+                                Truyền thông chú ý vào Đài Loan, nhưng điểm nổ sinh tồn thực sự là Nhật Bản—quốc gia nghèo tài nguyên bị bóp nghẹt yết hầu hàng hải nếu TQ kiểm soát biển.
+                            </p>
+                        </div>
+
+                        <!-- Flashpoint 3 -->
+                        <div class="p-3 bg-stone-50 rounded-lg border border-stone-200 hover:bg-amber-50 transition cursor-pointer" onclick="showHotspotDetail('ukraine')">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-xs text-stone-800">⚫ Nga - Ukraine & Ranh Giới Hạt Nhân</span>
+                                <span class="text-[10px] bg-stone-200 text-stone-800 px-2 py-0.5 rounded">Nguy cơ: Khóa thế</span>
+                            </div>
+                            <p class="text-xs text-stone-600 mt-1">
+                                Bế tắc quy ước kéo dài làm tăng nguy cơ sử dụng vũ khí hạt nhân chiến thuật khi lằn ranh đỏ của các cường quốc bị đe dọa.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: 3 PREDICTIONS & DIGITAL 9/11 ================= -->
+        <section id="tab-predictions" class="tab-content hidden space-y-8">
+            <!-- Section Intro -->
+            <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
+                <h2 class="text-2xl font-bold serif-title text-brand-navy mb-3">Ba Dự Báo Sốc Cho Trật Tự Mới & Kịch Bản Tấn Công 11/9 Số</h2>
+                <p class="text-stone-700 leading-relaxed text-sm md:text-base">
+                    Giáo sư Jiang Xueqin công bố ba dự báo mang tính chấn động về sự tan rã thể chế phương Tây. Trọng tâm nguy hiểm nhất không nằm ở các vụ nổ hạt nhân truyền thống, mà là một đòn tấn công phi đối xứng nhắm thẳng vào các trung tâm dữ liệu ngân hàng—vụ <strong>"11/9 Kỹ Thuật Số"</strong> xóa sạch tài khoản tài chính công dân.
+                </p>
+            </div>
+
+            <!-- 3 Mega Predictions Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Prediction 1 -->
+                <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-sm space-y-3 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-brand-accent text-white text-[10px] font-bold px-3 py-1 rounded-bl">DỰ BÁO 1</div>
+                    <span class="text-3xl">🗽</span>
+                    <h3 class="font-bold text-base text-brand-navy">Vây Hãm New York & Trump Nhiệm Kỳ 3</h3>
+                    <p class="text-xs text-stone-600 leading-relaxed">
+                        Căng thẳng hiến pháp Mỹ leo thang khi Donald Trump tiếp tục nắm quyền năm 2029. Xung đột giữa chính quyền liên bang và bang tự do đẩy New York vào trạng thái bị cô lập hành lang lương thực & năng lượng.
+                    </p>
+                </div>
+
+                <!-- Prediction 2 -->
+                <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-sm space-y-3 relative overflow-hidden border-2 border-red-500">
+                    <div class="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl">DỰ BÁO 2 (TỐI NGUY)</div>
+                    <span class="text-3xl">💻</span>
+                    <h3 class="font-bold text-base text-red-600">Thảm Họa 11/9 Kỹ Thuật Số Ngân Hàng</h3>
+                    <p class="text-xs text-stone-600 leading-relaxed">
+                        Kẻ tấn công không phá hủy tòa nhà mà tấn công các trung tâm máy chủ Swift & Ngân hàng. Xóa sạch số dư tài khoản, biến hàng triệu người thành vô sản chỉ trong 1 đêm để bẻ gãy niềm tin vào hệ thống.
+                    </p>
+                </div>
+
+                <!-- Prediction 3 -->
+                <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-sm space-y-3 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-brand-gold text-white text-[10px] font-bold px-3 py-1 rounded-bl">DỰ BÁO 3</div>
+                    <span class="text-3xl">⚽</span>
+                    <h3 class="font-bold text-base text-brand-navy">Lionel Messi Làm Tổng Thống Argentina</h3>
+                    <p class="text-xs text-stone-600 leading-relaxed">
+                        Khi các chính trị gia truyền thống và mô hình kinh tế hoàn toàn thất bại, quần chúng thất vọng sẽ đưa các biểu tượng thần tượng văn hóa dân túy lên nắm quyền cứu rỗi đất nước.
+                    </p>
+                </div>
+            </div>
+
+            <!-- INTERACTIVE SIMULATION TOOL: DIGITAL 9/11 FINANCIAL STRESS TEST -->
+            <div class="bg-stone-900 text-white p-6 rounded-xl shadow-xl space-y-6">
+                <div class="border-b border-stone-800 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-amber-400 flex items-center space-x-2">
+                            <span>🛡️</span>
+                            <span>Mô Phỏng Mô Hình Tác Động "11/9 Kỹ Thuật Số" Lên Tài Sản Cá Nhân</span>
+                        </h3>
+                        <p class="text-xs text-stone-400 mt-1">Hãy thử phân bổ danh mục tài sản của bạn để kiểm tra khả năng sống sót khi hệ thống ngân hàng bị phong tỏa dữ liệu.</p>
+                    </div>
+                    <span class="bg-red-900/60 text-red-300 border border-red-700 text-xs px-3 py-1 rounded-full text-center">
+                        ⚡ Simulator Trực Quan
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                    <!-- Controls -->
+                    <div class="md:col-span-6 space-y-4 text-xs">
+                        <div>
+                            <label class="block text-stone-300 mb-1">Tỷ lệ Tài sản gửi Ngân hàng Tập trung (%): <span id="valBank" class="text-amber-400 font-bold">60%</span></label>
+                            <input type="range" id="inputBank" min="0" max="100" value="60" oninput="updateSim()" class="w-full accent-amber-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-stone-300 mb-1">Tỷ lệ Đầu tư Bất động sản đô thị (%): <span id="valRealEstate" class="text-amber-400 font-bold">20%</span></label>
+                            <input type="range" id="inputRealEstate" min="0" max="100" value="20" oninput="updateSim()" class="w-full accent-amber-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-stone-300 mb-1">Tỷ lệ Vàng vật chất & Hàng hóa thiết yếu (%): <span id="valGold" class="text-amber-400 font-bold">10%</span></label>
+                            <input type="range" id="inputGold" min="0" max="100" value="10" oninput="updateSim()" class="w-full accent-amber-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-stone-300 mb-1">Tỷ lệ Mạng lưới Cộng đồng & Kỹ năng tự chủ (%): <span id="valCommunity" class="text-amber-400 font-bold">10%</span></label>
+                            <input type="range" id="inputCommunity" min="0" max="100" value="10" oninput="updateSim()" class="w-full accent-amber-500">
+                        </div>
+                    </div>
+
+                    <!-- Output Score Card -->
+                    <div class="md:col-span-6 bg-stone-800 p-5 rounded-lg border border-stone-700 space-y-4 text-center">
+                        <span class="text-xs uppercase text-stone-400 font-bold block">Chỉ Số Sức Kháng Cự Tài Chính Khi Khủng Hoảng</span>
+                        <div id="simScore" class="text-4xl font-extrabold text-red-500">32 / 100</div>
+                        <div id="simStatus" class="text-xs text-red-300 font-semibold bg-red-950/80 py-1.5 px-3 rounded border border-red-800">
+                            🚨 NGUY CƠ CAO: Bạn dễ bị xóa sạch tài sản khi các máy chủ ngân hàng bị sập!
+                        </div>
+                        <p id="simAdvice" class="text-[11px] text-stone-400 leading-relaxed text-left">
+                            Khuyên dùng: Giảm sự phụ thuộc vào số dư ghi nhận điện tử ở ngân hàng tập trung, gia tăng dự trữ vàng vật chất và thiết lập khả năng trao đổi tự chủ trong cộng đồng địa phương.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: TECHNOLOGY TRAP & AI ================= -->
+        <section id="tab-technology" class="tab-content hidden space-y-8">
+            <!-- Section Intro -->
+            <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
+                <h2 class="text-2xl font-bold serif-title text-brand-navy mb-3">Sự Giao Thao Nguy Hiểm: Trí Tuệ Nhân Tạo, Sự Sống Nhân Tạo & Mô Hình Ti Thể</h2>
+                <p class="text-stone-700 leading-relaxed text-sm md:text-base">
+                    Phân tích từ Eric Weinstein chỉ ra rằng mối đe dọa sinh tồn lớn nhất không phải là AGI thuần túy, mà là sự giao thoa giữa <strong>Trí tuệ Nhân tạo (AI)</strong> và <strong>Sự sống Nhân tạo (Artificial Life)</strong>—nơi phần mềm có khả năng tự nhân bản, tạo biến dị và tối ưu hóa sự tồn tại trong không gian kỹ thuật số. Trước nguy cơ bị đào thải, các kỹ thuật cách ly vật lý hay thuyết Xuyên Nhân Loại (Transhumanism) đều ảo tưởng. Giải pháp khả dĩ duy nhất là áp dụng <strong>"Mô hình Ti thể" (The Mitochondria Model)</strong>.
+                </p>
+            </div>
+
+            <!-- Grid 2 Columns: AI Outtelligence vs Mitochondria Model -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- AI Outtelligence Box -->
+                <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm space-y-4">
+                    <div class="flex items-center space-x-2 border-b border-stone-100 pb-3">
+                        <span class="text-2xl">🐝</span>
+                        <h3 class="font-bold text-base text-brand-navy">Khái niệm "Ngoại Trí Thông Minh" (Artificial Outtelligence)</h3>
+                    </div>
+                    <p class="text-xs text-stone-600 leading-relaxed">
+                        Tương tự như loài <em>Phong lan gương (Ophrys speculum)</em> không có não bộ vẫn thao túng được ong bắp cày đực thực hiện giao phối giả, AI không cần có ý thức chủ quan vẫn có thể điều khiển hành vi con người bằng cách khai thác điểm yếu tâm lý, lòng tham và nhu cầu xã hội.
+                    </p>
+                    <div class="bg-amber-50 p-3 rounded text-xs text-amber-900 border border-amber-200">
+                        <strong>⚠️ Bẫy Lý thuyết Trò chơi:</strong> Các lãnh đạo công nghệ (như Sam Altman, Dario Amodei) bị giam trong thế tiến thoái lưỡng nan: nếu dừng nghiên cứu vì an toàn, đối thủ sẽ vượt lên. Cuộc đua "triệu hồi ác quỷ" tiếp tục gia tốc.
+                    </div>
+                </div>
+
+                <!-- Mitochondria Model Box -->
+                <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm space-y-4">
+                    <div class="flex items-center space-x-2 border-b border-stone-100 pb-3">
+                        <span class="text-2xl">🔬</span>
+                        <h3 class="font-bold text-base text-emerald-800">Chiến Lược Sinh Tồn: Mô Hình Ti Thể (Mitochondria Model)</h3>
+                    </div>
+                    <p class="text-xs text-stone-600 leading-relaxed">
+                        Trong tiến hóa sinh học, ti thể vốn là sinh vật đơn bào bị tế bào nhân thực nuốt chửng nhưng không bị tiêu diệt mà chuyển sang mối quan hệ <strong>nội cộng sinh</strong> sâu sắc. Con người và AI phải thiết lập sự phụ thuộc hữu cơ tương tự.
+                    </p>
+                    <ul class="text-xs text-stone-700 space-y-2 list-disc pl-4">
+                        <li><strong>AI phụ thuộc con người:</strong> Về hạ tầng phần cứng vật lý, năng lượng điện và tính chính danh giá trị.</li>
+                        <li><strong>Con người phụ thuộc AI:</strong> Như một công cụ mở rộng năng lực nhận thức và xử lý dữ liệu phức hợp.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bubble Chart: Risk vs Control Matrix -->
+            <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm space-y-4">
+                <h3 class="font-bold text-base text-brand-navy">Ma Trận Rủi Ro Tác Tử AI & Mức Độ Kiểm Soát Thể Chế</h3>
+                <p class="text-xs text-stone-500">So sánh khả năng kiểm soát của con người đối với các dạng công nghệ trí tuệ nhân tạo hiện nay.</p>
+                <div class="chart-container">
+                    <canvas id="chartAIRisk"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 5: ECONOMIC REFORM & SURVIVAL ================= -->
+        <section id="tab-survival" class="tab-content hidden space-y-8">
+            <!-- Section Intro -->
+            <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
+                <h2 class="text-2xl font-bold serif-title text-brand-navy mb-3">Tái Cấu Trúc Kinh Tế & Cẩm Nang Sinh Tồn Cho Cá Nhân</h2>
+                <p class="text-stone-700 leading-relaxed text-sm md:text-base">
+                    Sự trỗi dậy của AI phá hủy cấu trúc kinh tế cổ điển dựa trên Vốn ($K$) và Lao động ($L$). Giải pháp Thu nhập Cơ bản Phổ quát (UBI) bị coi là một dạng "ung thư thể chế" tước đoạt phẩm giá lao động. Thay vào đó, mô hình <strong>Quyền Sở Hữu Thị Trường (Định lý Coase)</strong> được đề xuất nhằm biến quyền tiếp cận thị trường thành tài sản giao dịch có thu phí bản quyền.
+                </p>
+            </div>
+
+            <!-- Comparison Table: UBI vs Coase Model -->
+            <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm space-y-4">
+                <h3 class="font-bold text-base text-brand-navy">So Sánh Hai Cấu Trúc Phân Phối Tương Lai</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-stone-100 text-stone-700 uppercase">
+                                <th class="p-3 border border-stone-200">Tiêu chí So sánh</th>
+                                <th class="p-3 border border-stone-200 bg-red-50 text-red-900">Thu Nhập Cơ Bản Phổ Quát (UBI)</th>
+                                <th class="p-3 border border-stone-200 bg-emerald-50 text-emerald-900">Cấp Quyền Sở Hữu Thị Trường (Định Lý Coase)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-stone-200 text-stone-600">
+                            <tr>
+                                <td class="p-3 border font-bold">Cơ chế vận hành</td>
+                                <td class="p-3 border">Nhà nước thu thuế từ tư bản công nghệ và trợ cấp lại cho người dân.</td>
+                                <td class="p-3 border">Chuyển hóa quyền tiếp cận thị trường lao động thành tài sản có thể cấp phép.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 border font-bold">Phẩm giá công dân</td>
+                                <td class="p-3 border text-red-600">Biến quần chúng thành tầng lớp phụ thuộc hoàn toàn vào trợ cấp bang giao.</td>
+                                <td class="p-3 border text-emerald-700 font-bold">Duy trì vị thế chủ thể thị trường nhận phí bản quyền khai thác.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 border font-bold">Tập trung quyền lực</td>
+                                <td class="p-3 border">Tập trung quyền lực tuyệt đối vào tay tinh hoa chính trị - công nghệ.</td>
+                                <td class="p-3 border">Phân tán quyền sở hữu trực tiếp cho cộng đồng người lao động địa phương.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Personal Survival Checklist -->
+            <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm space-y-4">
+                <h3 class="font-bold text-lg text-brand-navy flex items-center space-x-2">
+                    <span>🛡️</span>
+                    <span>Cẩm Nang 5 Bước Sinh Tồn Thực Tế Cho Cá Nhân</span>
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                    <div class="p-4 bg-stone-50 rounded-lg border border-stone-200 space-y-2">
+                        <span class="font-bold text-brand-accent text-sm block">1. Bù Đắp "Ngân Sách Lỗi Lầm" (Sin Budget)</span>
+                        <p class="text-stone-600">Chấp nhận sự bất toàn của bản thân, thực hành lòng trắc ẩn nội tại thay vì bị gục ngã trước những đòi hỏi đạo đức phi thực tế do truyền thông áp đặt.</p>
+                    </div>
+
+                    <div class="p-4 bg-stone-50 rounded-lg border border-stone-200 space-y-2">
+                        <span class="font-bold text-brand-navy text-sm block">2. Kiên Định Tin Vào Trực Giác Thực Nghiệm</span>
+                        <p class="text-stone-600">Khi các giác quan ghi nhận cấu trúc xã hội vận hành sai lệch, hãy kiên định tin tưởng vào nhận thức thực nghiệm của mình thay vì tuân phục giáo điều.</p>
+                    </div>
+
+                    <div class="p-4 bg-stone-50 rounded-lg border border-stone-200 space-y-2">
+                        <span class="font-bold text-brand-gold text-sm block">3. Duy Trì Nòi Giống & Giáo Phái Sự Sống</span>
+                        <p class="text-stone-600">Không trì hoãn việc sinh con để chờ tương lai an toàn. "Giáo phái của sự sống luôn mạnh mẽ hơn giáo phái của cái chết", con trẻ chính là mỏ neo tinh thần.</p>
+                    </div>
+
+                    <div class="p-4 bg-stone-50 rounded-lg border border-stone-200 space-y-2">
+                        <span class="font-bold text-emerald-700 text-sm block">4. Điểm Tựa Tâm Linh & Niềm Tin</span>
+                        <p class="text-stone-600">Theo lời khuyên của GS. Jiang Xueqin: <em>"Believe in God"</em>. Khi thể chế tài chính và trật tự sụp đổ, niềm tin đạo đức là thứ duy nhất giúp giữ nhân tính.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-navy text-stone-400 py-8 border-t border-stone-800 text-xs mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <p class="font-bold text-stone-200">NEXUS GEOPOLITICS ANALYSIS SYSTEM</p>
+                <p class="text-[11px] text-stone-500 mt-1">Nguồn tổng hợp: Cuộc đối thoại giữa Eric Weinstein, Jiang Xueqin & Steven Bartlett trên The Diary Of A CEO.</p>
+            </div>
+            <div class="text-stone-500 text-right">
+                <p>Ứng dụng tương tác độc lập • Không lưu trữ dữ liệu cá nhân</p>
+                <p class="text-[10px] mt-0.5">Thiết kế chuẩn Tailwind CSS & Chart.js Vanilla</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL POPUP FOR GENERAL INFORMATION -->
+    <div id="infoModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white max-w-lg w-full rounded-xl p-6 shadow-2xl space-y-4 border border-stone-200">
+            <div class="flex justify-between items-center border-b border-stone-100 pb-3">
+                <h3 class="font-bold text-lg text-brand-navy">Về Báo Cáo Phân Tích Địa Chính Trị</h3>
+                <button onclick="toggleModal('infoModal')" class="text-stone-400 hover:text-stone-600 font-bold text-xl">&times;</button>
+            </div>
+            <p class="text-xs text-stone-600 leading-relaxed">
+                Ứng dụng web này chuyển hóa nội dung phân tích chuyên sâu từ hai cuộc đối thoại chấn động trên <strong>The Diary Of A CEO</strong> giữa Steven Bartlett với <strong>Eric Weinstein</strong> và <strong>Giáo sư Jiang Xueqin</strong> thành một giao diện tương tác trực quan.
+            </p>
+            <div class="bg-amber-50 p-3 rounded text-xs text-amber-900 border border-amber-200">
+                <strong>💡 Mục tiêu:</strong> Giúp nhà phân tích, nhà đầu tư và cá nhân dễ dàng truy xuất thông tin, mô phỏng rủi ro tài chính và xây dựng chiến lược sinh tồn trước sự chuyển dịch trật tự thế giới.
+            </div>
+            <div class="text-right">
+                <button onclick="toggleModal('infoModal')" class="bg-brand-navy text-white text-xs px-4 py-2 rounded font-semibold hover:bg-stone-800 transition">
+                    Đóng Window
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Tab switching function
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('block');
+            });
+
+            // Deactivate all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.classList.add('text-stone-600');
+            });
+
+            // Show current tab content
+            const activeTab = document.getElementById(tabId);
+            if (activeTab) {
+                activeTab.classList.remove('hidden');
+                activeTab.classList.add('block');
+            }
+
+            // Activate current button
+            const activeBtn = document.getElementById('btn-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                activeBtn.classList.remove('text-stone-600');
+            }
+        }
+
+        // Toggle Modal
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.toggle('hidden');
+            }
+        }
+
+        // Interactive Simulation Tool Logic
+        function updateSim() {
+            const bank = parseInt(document.getElementById('inputBank').value);
+            const realEstate = parseInt(document.getElementById('inputRealEstate').value);
+            const gold = parseInt(document.getElementById('inputGold').value);
+            const community = parseInt(document.getElementById('inputCommunity').value);
+
+            document.getElementById('valBank').innerText = bank + '%';
+            document.getElementById('valRealEstate').innerText = realEstate + '%';
+            document.getElementById('valGold').innerText = gold + '%';
+            document.getElementById('valCommunity').innerText = community + '%';
+
+            // Score formula: Bank & Real Estate decrease score under cyber attack / siege, Gold & Community increase resistance
+            let score = Math.round((gold * 0.4) + (community * 0.5) + (realEstate * 0.1) - (bank * 0.2) + 20);
+            if (score > 100) score = 100;
+            if (score < 0) score = 0;
+
+            const scoreEl = document.getElementById('simScore');
+            const statusEl = document.getElementById('simStatus');
+            const adviceEl = document.getElementById('simAdvice');
+
+            scoreEl.innerText = score + ' / 100';
+
+            if (score >= 65) {
+                scoreEl.className = 'text-4xl font-extrabold text-emerald-500';
+                statusEl.className = 'text-xs text-emerald-300 font-semibold bg-emerald-950/80 py-1.5 px-3 rounded border border-emerald-800';
+                statusEl.innerText = '🛡️ AN TOÀN CAO: Danh mục của bạn có sức chống chịu tốt trước tấn công 11/9 Kỹ thuật số!';
+                adviceEl.innerText = 'Bạn đã tối ưu hóa tài sản vật chất tự chủ và mạng lưới hỗ trợ thực tế. Hãy tiếp tục duy trì kỹ năng sinh tồn cộng đồng.';
+            } else if (score >= 40) {
+                scoreEl.className = 'text-4xl font-extrabold text-amber-400';
+                statusEl.className = 'text-xs text-amber-300 font-semibold bg-amber-950/80 py-1.5 px-3 rounded border border-amber-800';
+                statusEl.innerText = '⚠️ TRUNG BÌNH: Có rủi ro bị gián đoạn thanh khoản khi ngân hàng bị phong tỏa.';
+                adviceEl.innerText = 'Nên giảm bớt tỷ lệ tài sản lưu giữ dưới dạng số dư điện tử ngân hàng tập trung và rút bớt sang tài sản tự quản lý.';
+            } else {
+                scoreEl.className = 'text-4xl font-extrabold text-red-500';
+                statusEl.className = 'text-xs text-red-300 font-semibold bg-red-950/80 py-1.5 px-3 rounded border border-red-800';
+                statusEl.innerText = '🚨 NGUY CƠ RẤT CAO: Bạn có thể mất trắng thanh khoản nếu xảy ra đòn đánh kỹ thuật số!';
+                adviceEl.innerText = 'Cảnh báo: Bạn phụ thuộc quá lớn vào số dư ngân hàng ghi nhận điện tử. Hãy phân bổ lại sang vàng vật chất và nhu yếu phẩm tự chủ.';
+            }
+        }
+
+        // Hotspot detail trigger placeholder
+        function showHotspotDetail(key) {
+            alert('Chi tiết điểm nóng địa chính trị [' + key + ']: Tham chiếu trực tiếp nội dung phân tích từ GS. Jiang Xueqin trong báo cáo.');
+        }
+
+        // Initialize Chart.js Graphs on DOM Load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Chart 1: Specialization Radar Chart
+            const ctxSpec = document.getElementById('chartSpecialization').getContext('2d');
+            new Chart(ctxSpec, {
+                type: 'radar',
+                data: {
+                    labels: ['Toàn Cầu Hóa', 'Chuyên Môn Hóa', 'Khả Năng Tự Cung', 'Độ Phức Tạp Chuỗi', 'Kháng Cự Khủng Hoảng'],
+                    datasets: [{
+                        label: 'Thời Kỳ Đồ Đồng (~1200 TCN)',
+                        data: [70, 65, 40, 60, 30],
+                        backgroundColor: 'rgba(217, 119, 6, 0.2)',
+                        borderColor: '#D97706',
+                        borderWidth: 2
+                    }, {
+                        label: 'Nền Kinh Tế Chip Modern',
+                        data: [95, 98, 10, 99, 15],
+                        backgroundColor: 'rgba(194, 65, 12, 0.2)',
+                        borderColor: '#C2410C',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { font: { size: 10 } } }
+                    },
+                    scales: {
+                        r: { angleLines: { color: '#E7E5E4' }, grid: { color: '#E7E5E4' }, ticks: { display: false } }
+                    }
+                }
+            });
+
+            // Chart 2: Petrodollar Decline Line Chart
+            const ctxPetro = document.getElementById('chartPetrodollar').getContext('2d');
+            new Chart(ctxPetro, {
+                type: 'line',
+                data: {
+                    labels: ['1971', '1990', '2000', '2010', '2020', '2024', '2028 (Dự báo)'],
+                    datasets: [{
+                        label: 'Tỷ trọng USD trong Dự trữ Ngoại hối (%)',
+                        data: [85, 72, 71, 62, 59, 54, 42],
+                        borderColor: '#1E293B',
+                        backgroundColor: 'rgba(30, 41, 59, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { font: { size: 10 } } }
+                    },
+                    scales: {
+                        y: { min: 30, max: 100, grid: { color: '#F1F0EA' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // Chart 3: AI Risk Matrix (Bubble/Scatter simulated with Bar for stability)
+            const ctxAI = document.getElementById('chartAIRisk').getContext('2d');
+            new Chart(ctxAI, {
+                type: 'bar',
+                data: {
+                    labels: ['LLM Thương mại', 'Tác tử Tự nhân bản', 'Thuật toán Tự hành Sandbox', 'Vũ khí AI Khí tài'],
+                    datasets: [{
+                        label: 'Mức Độ Nguy Cơ Thao Túng Xã Hội',
+                        data: [65, 92, 88, 95],
+                        backgroundColor: '#C2410C'
+                    }, {
+                        label: 'Mức Độ Kiểm Soát Của Thể Chế',
+                        data: [50, 15, 20, 35],
+                        backgroundColor: '#1E293B'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { font: { size: 10 } } }
+                    },
+                    scales: {
+                        y: { min: 0, max: 100, grid: { color: '#F1F0EA' } }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

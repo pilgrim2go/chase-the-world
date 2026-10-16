@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyên Đề Địa Chính Trị: Khủng Hoảng An Ninh Toàn Cầu & WW3</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fcf0f0',
+                            100: '#fcdede',
+                            800: '#991b1b',
+                            900: '#7f1d1d',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Georgia', 'Cambria', 'Times New Roman', 'serif'],
+                        sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .prose p {
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
+            color: #334155;
+        }
+        .prose h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-top: 1.75rem;
+            margin-bottom: 0.75rem;
+            color: #0f172a;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-slate-900 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Chosen Palette: Warm Editorial Neutrals (Slate/Stone with Crimson/Amber Accents) -->
+
+    <!-- Application Structure Plan:
+        - Strategic Architecture:
+          1. Header & Tab Navigation: Switch seamlessly between Phase 1 (Dashboard Summary), Phase 2 (5-Article In-Depth Journalistic Series), and Interactive Simulator.
+          2. Phase 1 Section: Key takeaways, experts panel, security metrics grid, Atlantic Council survey chart.
+          3. Phase 2 Section: 5 full editorial articles formatted in journalistic standards with smooth sub-tab navigation.
+          4. Phase 3 (Simulator): Interactive 72-minute Nuclear Escalation Simulator with dynamic state updates.
+        - Justification: Solves layout truncation and fixes missing JS event handlers. Single-page navigation gives users full control.
+    -->
+
+    <!-- Visualization & Content Choices:
+        - Survey Data: Chart.js Dynamic Horizontal Bar Chart. Canvas-rendered, responsive.
+        - Nuclear Timeline: Interactive HTML/CSS step-by-step slider with live physical impact state.
+        - War Forms Comparison: Styled HTML/Tailwind Responsive Matrix Table.
+        - Icons: Pure Unicode symbols (🌐, 📊, 📜, ⏱️, 🕵️‍♂️, 📚, 🏛️, 🎯, 📈, ☢️, ⚠️) - NO SVG used.
+        - NO Mermaid JS used.
+    -->
+
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-stone-900 text-stone-100 border-b border-stone-800 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <span class="text-red-500 text-2xl">🌐</span>
+                    <div>
+                        <h1 class="font-serif font-bold text-base md:text-xl tracking-tight text-white">TẠP CHÍ ĐỊA CHÍNH TRỊ TOÀN CẦU</h1>
+                        <p class="text-xs text-stone-400 hidden sm:block">Hồ Sơ Báo Cáo Chuyên Sâu: Đánh Giá Rủi Ro Chiến Tranh Thế Giới III</p>
+                    </div>
+                </div>
+                <!-- Desktop Navigation Buttons -->
+                <nav class="hidden md:flex space-x-2 text-sm font-medium">
+                    <button onclick="switchTab('phase1')" id="nav-phase1" class="px-3 py-2 rounded-md bg-stone-800 text-white font-semibold transition">
+                        📊 Giai Đoạn 1: Tóm Tắt & Chẩn Đoán
+                    </button>
+                    <button onclick="switchTab('phase2')" id="nav-phase2" class="px-3 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">
+                        📜 Giai Đoạn 2: Chuỗi Bài Báo Chuyên Sâu
+                    </button>
+                    <button onclick="switchTab('simulator')" id="nav-simulator" class="px-3 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">
+                        ⏱️ Mô Phỏng Hạt Nhân 72 Phút
+                    </button>
+                </nav>
+                <!-- Mobile Select Dropdown -->
+                <div class="md:hidden">
+                    <select onchange="switchTab(this.value)" class="bg-stone-800 text-stone-200 text-xs rounded p-2 border border-stone-700 focus:outline-none">
+                        <option value="phase1">📊 Giai Đoạn 1: Tóm Tắt</option>
+                        <option value="phase2">📜 Giai Đoạn 2: Chuỗi Bài Báo</option>
+                        <option value="simulator">⏱️ Mô Phỏng 72 Phút</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ==================== GIAI ĐOẠN 1: TÓM TẮT & BẮT BỆNH NỘI DUNG ==================== -->
+        <section id="sec-phase1" class="space-y-8">
+            <!-- Intro Card -->
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-stone-200">
+                <div class="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs font-bold uppercase tracking-wider rounded-full mb-3">
+                    Báo Cáo Bắt Bệnh Nội Dung Video
+                </div>
+                <h2 class="font-serif text-2xl md:text-3xl font-bold text-stone-900 mb-4">
+                    Giai Đoạn 1: Tóm Tắt Khủng Hoảng Địa Chính Trị & Rủi Ro WW3
+                </h2>
+                <p class="text-stone-700 leading-relaxed text-sm md:text-base">
+                    Tọa đàm bàn tròn quy tụ ba chuyên gia hàng đầu về tình báo, quân sự và quan hệ quốc tế để phân tích sự chuyển dịch của trật tự thế giới. Nội dung tóm tắt dưới đây giúp hệ thống hóa các chỉ số an ninh suy thoái toàn cầu và cấu trúc lập luận chính trước khi chuyển sang đọc chuỗi bài báo chuyên sâu.
+                </p>
+            </div>
+
+            <!-- Speaker Profile Grid -->
+            <div>
+                <h3 class="font-serif text-lg font-bold text-stone-800 mb-4 flex items-center space-x-2">
+                    <span>👥</span>
+                    <span>Hội Đồng Chuyên Gia Phân Tích</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-5 rounded-lg border border-stone-200 shadow-sm">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <span class="p-2 bg-stone-100 text-2xl rounded-full">🕵️‍♂️</span>
+                            <div>
+                                <h4 class="font-bold text-stone-900">Andrew Bustamante</h4>
+                                <p class="text-xs text-stone-500">Cựu Sĩ quan CIA & Tên lửa Hạt nhân</p>
+                            </div>
+                        </div>
+                        <p class="text-xs text-stone-600 leading-relaxed">
+                            Chuyên gia về kỹ thuật tác chiến ngầm, tình báo chiến lược, chiến tranh ủy nhiệm và vận hành hạ tầng hầm phóng tên lửa đạn đạo ICBM Minuteman III.
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-lg border border-stone-200 shadow-sm">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <span class="p-2 bg-stone-100 text-2xl rounded-full">📚</span>
+                            <div>
+                                <h4 class="font-bold text-stone-900">Annie Jacobsen</h4>
+                                <p class="text-xs text-stone-500">Nhà báo Điều tra An ninh Quốc gia</p>
+                            </div>
+                        </div>
+                        <p class="text-xs text-stone-600 leading-relaxed">
+                            Tác giả cuốn sách <em>"Nuclear War: A Scenario"</em>. Chuyên phân tích quy trình ra quyết định hạt nhân khẩn cấp của Tổng thống và hậu quả mùa đông sinh quyển.
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-lg border border-stone-200 shadow-sm">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <span class="p-2 bg-stone-100 text-2xl rounded-full">🏛️</span>
+                            <div>
+                                <h4 class="font-bold text-stone-900">Dr. Benjamin Radd</h4>
+                                <p class="text-xs text-stone-500">Giảng viên Địa chính trị UCLA</p>
+                            </div>
+                        </div>
+                        <p class="text-xs text-stone-600 leading-relaxed">
+                            Chuyên gia quan hệ quốc tế và địa chính trị Trung Đông. Nghiên cứu sâu về tác chiến nhận thức, mạng xã hội và sự phân cực trong môi trường hậu sự thật.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Core Message Banner -->
+            <div class="bg-gradient-to-r from-stone-900 via-stone-800 to-red-950 text-white p-6 md:p-8 rounded-xl shadow-md">
+                <div class="flex items-start space-x-4">
+                    <span class="text-3xl">🎯</span>
+                    <div>
+                        <h4 class="text-xs uppercase tracking-widest text-red-400 font-bold mb-1">Thông Điệp Cốt Lõi</h4>
+                        <p class="font-serif text-base md:text-lg font-medium leading-relaxed">
+                            "Chiến tranh Thế giới thứ ba không khởi đầu bằng một trận giao tranh động năng bùng nổ như năm 1939, mà <strong>đã âm thầm diễn ra</strong> thông qua mạng lưới chiến tranh ủy nhiệm đa tầng, tác chiến bán dẫn, cấm vận kinh tế và sự thao túng nhận thức cộng đồng."
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Metrics Grid -->
+            <div>
+                <h3 class="font-serif text-lg font-bold text-stone-800 mb-4 flex items-center space-x-2">
+                    <span>📊</span>
+                    <span>Bộ Chỉ Số Rủi Ro An Ninh Toàn Cầu Ghi Nhận</span>
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white p-4 rounded-lg border border-stone-200 text-center">
+                        <div class="text-2xl md:text-3xl font-extrabold text-red-600">+66%</div>
+                        <div class="text-xs text-stone-600 mt-1">Tăng trưởng vùng xung đột (3 năm qua)</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-stone-200 text-center">
+                        <div class="text-2xl md:text-3xl font-extrabold text-red-600">59 Quốc gia</div>
+                        <div class="text-xs text-stone-600 mt-1">Đang có chiến tranh (Cao nhất từ 1946)</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-stone-200 text-center">
+                        <div class="text-2xl md:text-3xl font-extrabold text-amber-600">300.000 Quân</div>
+                        <div class="text-xs text-stone-600 mt-1">NATO sẵn sàng ứng trực cao (30 ngày)</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-stone-200 text-center">
+                        <div class="text-2xl md:text-3xl font-extrabold text-stone-800">72 Phút</div>
+                        <div class="text-xs text-stone-600 mt-1">Thời gian hủy diệt nếu hạt nhân bùng nổ</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Grid & Chart -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Topics Overview List -->
+                <div class="lg:col-span-7 bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
+                    <h3 class="font-serif text-lg font-bold text-stone-900 mb-4 flex items-center space-x-2">
+                        <span>📑</span>
+                        <span>5 Chủ Đề Phân Tích Cốt Lõi</span>
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-stone-50 rounded-lg border-l-4 border-red-600">
+                            <h4 class="font-bold text-xs md:text-sm text-stone-900">Chủ đề 1: Chuyển Dịch Hình Thái Xung Đột</h4>
+                            <p class="text-xs text-stone-600 mt-1">Từ chiến tranh quy ước sang tác chiến ủy nhiệm, vùng xám (grey-zone) và chiến tranh mạng chi phí thấp.</p>
+                        </div>
+                        <div class="p-3 bg-stone-50 rounded-lg border-l-4 border-amber-600">
+                            <h4 class="font-bold text-xs md:text-sm text-stone-900">Chủ đề 2: Khủng Hoảng Trung Đông & Điểm Nghẽn Tình Báo</h4>
+                            <p class="text-xs text-stone-600 mt-1">Trục Mỹ - Iran - Israel và căn bệnh bóp méo báo cáo tình báo phục vụ mục đích chính trị.</p>
+                        </div>
+                        <div class="p-3 bg-stone-50 rounded-lg border-l-4 border-red-700">
+                            <h4 class="font-bold text-xs md:text-sm text-stone-900">Chủ đề 3: Động Lực Hạt Nhân & Chuỗi Hủy Diệt 72 Phút</h4>
+                            <p class="text-xs text-stone-600 mt-1">Cửa sổ quyết định 6 phút, nguy cơ xung điện từ EMP và ảo tưởng về cuộc chiến hạt nhân giới hạn.</p>
+                        </div>
+                        <div class="p-3 bg-stone-50 rounded-lg border-l-4 border-blue-600">
+                            <h4 class="font-bold text-xs md:text-sm text-stone-900">Chủ đề 4: Trục Bán Dẫn Đài Loan & Địa Kinh Tế</h4>
+                            <p class="text-xs text-stone-600 mt-1">Đất hiếm, nhà máy chip TSMC và kịch bản phong tỏa phi động năng làm tê liệt phương Tây.</p>
+                        </div>
+                        <div class="p-3 bg-stone-50 rounded-lg border-l-4 border-stone-600">
+                            <h4 class="font-bold text-xs md:text-sm text-stone-900">Chủ đề 5: Tác Chiến Nhận Thức & Xã Hội Post-Truth</h4>
+                            <p class="text-xs text-stone-600 mt-1">Vũ khí hóa thuật toán mạng xã hội và tâm lý trốn chạy hầm ngầm sinh tồn của giới tỷ phú.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Atlantic Council Chart -->
+                <div class="lg:col-span-5 bg-white p-6 rounded-xl border border-stone-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-serif text-lg font-bold text-stone-900 mb-2 flex items-center space-x-2">
+                            <span>📈</span>
+                            <span>Dự Báo Rủi Ro (Atlantic Council)</span>
+                        </h3>
+                        <p class="text-xs text-stone-500 mb-4">Tỷ lệ % trong ~400 nhà chiến lược dự báo khủng hoảng trong 10 năm tới:</p>
+                        <div class="chart-container">
+                            <canvas id="atlanticChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <button onclick="switchTab('phase2')" class="inline-flex items-center px-4 py-2 bg-stone-900 text-white text-xs font-bold rounded-lg hover:bg-stone-800 transition">
+                            Chuyển Sang Chuỗi Bài Báo Chuyên Sâu ➔
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== GIAI ĐOẠN 2: CHUỖI BÀI BÁO CHUYÊN SÂU ==================== -->
+        <section id="sec-phase2" class="hidden space-y-8">
+            <!-- Header Banner -->
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-stone-200">
+                <div class="inline-block px-3 py-1 bg-stone-900 text-white text-xs font-bold uppercase tracking-wider rounded-full mb-3">
+                    Hồ Sơ Báo Chí Phân Tích
+                </div>
+                <h2 class="font-serif text-2xl md:text-3xl font-bold text-stone-900 mb-3">
+                    Giai Đoạn 2: Chuỗi 5 Bài Báo Phân Tích Chuyên Sâu
+                </h2>
+                <p class="text-stone-700 leading-relaxed text-sm">
+                    Mỗi bài báo dưới đây mổ xẻ một khía cạnh cốt lõi theo chuẩn mực báo chí chuyên nghiệp. Hãy sử dụng thanh chọn bài viết để di chuyển giữa các chủ đề.
+                </p>
+
+                <!-- Article Tabs -->
+                <div class="flex flex-wrap gap-2 mt-6 pt-4 border-t border-stone-200">
+                    <button onclick="selectArticle(1)" id="art-tab-1" class="px-3 py-2 text-xs font-bold rounded-md bg-red-700 text-white transition">
+                        Bài 1: Hình Thái Chiến Tranh
+                    </button>
+                    <button onclick="selectArticle(2)" id="art-tab-2" class="px-3 py-2 text-xs font-bold rounded-md bg-stone-200 text-stone-700 hover:bg-stone-300 transition">
+                        Bài 2: Khủng Hoảng Trung Đông
+                    </button>
+                    <button onclick="selectArticle(3)" id="art-tab-3" class="px-3 py-2 text-xs font-bold rounded-md bg-stone-200 text-stone-700 hover:bg-stone-300 transition">
+                        Bài 3: Hủy Diệt Hạt Nhân 72 Phút
+                    </button>
+                    <button onclick="selectArticle(4)" id="art-tab-4" class="px-3 py-2 text-xs font-bold rounded-md bg-stone-200 text-stone-700 hover:bg-stone-300 transition">
+                        Bài 4: Trục Bán Dẫn Đài Loan
+                    </button>
+                    <button onclick="selectArticle(5)" id="art-tab-5" class="px-3 py-2 text-xs font-bold rounded-md bg-stone-200 text-stone-700 hover:bg-stone-300 transition">
+                        Bài 5: Tác Chiến Nhận Thức
+                    </button>
+                </div>
+            </div>
+
+            <!-- ARTICLE 1 -->
+            <article id="article-1" class="bg-white p-6 md:p-10 rounded-xl border border-stone-200 shadow-sm prose max-w-none">
+                <div class="text-xs font-bold text-red-700 tracking-widest uppercase mb-2">BÀI 1 / PHÂN TÍCH HÌNH THÁI XUNG ĐỘT</div>
+                <h1 class="font-serif text-2xl md:text-3xl font-extrabold text-stone-900 leading-tight mb-4">
+                    Chiến Tranh Thế Giới Thứ Ba Đã Âm Thầm Khởi Động: Khi Bàn Cờ Chuyển Sang Bất Đối Xứng
+                </h1>
+                <div class="p-4 bg-stone-100 border-l-4 border-red-700 text-stone-800 italic text-sm md:text-base mb-6 font-serif">
+                    <strong>Sapo:</strong> Công chúng vẫn hình dung WW3 qua hình ảnh các đạo quân quy ước khổng lồ tràn qua biên giới. Tuy nhiên, giới phân tích an ninh vạch trần một thực tế đáng quan ngại: WW3 đã thực sự bắt đầu dưới hình thái chiến tranh ủy nhiệm đa tầng và tác chiến mạng phi động năng.
+                </div>
+
+                <div class="space-y-4 text-stone-800 text-sm md:text-base">
+                    <h3>Ảo Tưởng Về Một Cuộc Đụng Độ Động Năng Giữa Các Siêu Cường</h3>
+                    <p>
+                        Cựu sĩ quan tình báo ngầm CIA Andrew Bustamante khẳng định rằng mô hình chiến tranh tổng lực theo kiểu Trực tiếp - Động năng đã hoàn toàn bị vô hiệu hóa do nguyên lý Hủy diệt lẫn nhau (MAD). Khi 9 quốc gia nắm giữ năng lực hạt nhân chiến lược, bất kỳ đòn tấn công trực diện nào giữa các siêu cường cũng đồng nghĩa với sự tự sát.
+                    </p>
+                    <p>
+                        "Thay vì đụng độ trực tiếp, Chiến tranh Thế giới thứ ba vận hành thông qua các mắt xích chiến tranh ủy nhiệm (proxy warfare) đan cài phức tạp," Bustamante nhấn mạnh.
+                    </p>
+
+                    <h3>Cơ Chế "Chiến Tranh Chi Phí Thấp"</h3>
+                    <p>
+                        Các đại cường tài trợ ngân sách, chuyển giao công nghệ vũ khí, drone và dữ liệu tình báo vệ tinh cho các lực lượng trung gian nhằm bào mòn tiềm lực đối phương mà vẫn duy trì mức độ leo thang dưới ngưỡng chiến tranh toàn diện. Chuyên gia Benjamin Radd (UCLA) chỉ ra rằng ranh giới giữa thời chiến và thời bình đã bị xóa bỏ hoàn toàn trên không gian mạng và các chuỗi cung ứng chiến lược.
+                    </p>
+
+                    <!-- Comparison Table -->
+                    <div class="overflow-x-auto my-6">
+                        <table class="w-full text-xs md:text-sm text-left border-collapse border border-stone-200">
+                            <thead>
+                                <tr class="bg-stone-800 text-white">
+                                    <th class="p-3 border border-stone-700">Tiêu chí so sánh</th>
+                                    <th class="p-3 border border-stone-700">WW2 (Quy ước truyền thống)</th>
+                                    <th class="p-3 border border-stone-700">WW3 (Ủy nhiệm hiện đại)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-stone-50">
+                                    <td class="p-3 font-bold border border-stone-200">Bản chất xung đột</td>
+                                    <td class="p-3 border border-stone-200">Động năng quy ước toàn diện, tổng động viên</td>
+                                    <td class="p-3 border border-stone-200">Ủy nhiệm, phi đối xứng, vùng xám (grey-zone)</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold border border-stone-200">Không gian tác chiến</td>
+                                    <td class="p-3 border border-stone-200">Mặt đất, không phận, đại dương vật lý</td>
+                                    <td class="p-3 border border-stone-200">Vật lý, không gian mạng, chuỗi cung ứng, tâm lý</td>
+                                </tr>
+                                <tr class="bg-stone-50">
+                                    <td class="p-3 font-bold border border-stone-200">Lực lượng chủ đạo</td>
+                                    <td class="p-3 border border-stone-200">Quân đội chính quy đụng độ trực tiếp</td>
+                                    <td class="p-3 border border-stone-200">Lực lượng trung gian, cố vấn tình báo, tin tặc</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>Kết Luận & Ý Nghĩa Chiến Lược</h3>
+                    <p>
+                        Chiến tranh ủy nhiệm cho phép các bên can thiệp dai dẳng mà không cần tuyên chiến chính thức, làm vô hiệu hóa van can thiệp sớm của Liên Hợp Quốc.
+                    </p>
+                    <div class="p-4 bg-red-50 border border-red-200 rounded-lg text-red-900 font-medium text-xs md:text-sm">
+                        <strong>❓ Câu hỏi mở:</strong> Liệu các thể chế quốc tế hiện tại có đủ năng lực xây dựng cơ chế răn đe đối với các cuộc tấn công mạng phi động năng vốn không để lại dấu vết rõ ràng?
+                    </div>
+                </div>
+            </article>
+
+            <!-- ARTICLE 2 -->
+            <article id="article-2" class="hidden bg-white p-6 md:p-10 rounded-xl border border-stone-200 shadow-sm prose max-w-none">
+                <div class="text-xs font-bold text-amber-700 tracking-widest uppercase mb-2">BÀI 2 / PHÂN TÍCH TRUNG ĐÔNG & TÌNH BÁO</div>
+                <h1 class="font-serif text-2xl md:text-3xl font-extrabold text-stone-900 leading-tight mb-4">
+                    Thảm Họa Báo Cáo Tình Báo Bị Chính Trị Hóa Và Điểm Nổ Khủng Hoảng Trung Đông
+                </h1>
+                <div class="p-4 bg-stone-100 border-l-4 border-amber-600 text-stone-800 italic text-sm md:text-base mb-6 font-serif">
+                    <strong>Sapo:</strong> Khủng hoảng địa chính trị Trung Đông vạch trần căn bệnh nguy hiểm trong bộ máy an ninh quốc gia: hiện tượng bóp méo thông tin tình báo để phục vụ mục đích truyền thông và chính trị đối nội.
+                </div>
+
+                <div class="space-y-4 text-stone-800 text-sm md:text-base">
+                    <h3>Xung Đột Lợi Ích Cốt Lõi Và Trục Bàn Cờ</h3>
+                    <p>
+                        Theo Andrew Bustamante, Hoa Kỳ hướng tới mục tiêu duy trì trật tự đơn cực và đảm bảo dòng chảy tài nguyên thông qua liên minh với khối Sunni. Ngược lại, Iran theo đuổi việc thiết lập "Vành đai ảnh hưởng Shia" nhằm phá thế cấm vận và bao vây.
+                    </p>
+                    <p>
+                        Israel đóng vai trò là đồn răn đe tiền tiêu của Mỹ. Khi chiến dịch Gaza gây thảm họa nhân đạo và áp lực cô lập ngoại giao, Tel Aviv tìm cách mở rộng xung đột sang Iran để lôi kéo Mỹ can thiệp trực tiếp.
+                    </p>
+
+                    <h3>Căn Bệnh Bóp Méo Thông Tin Tình Báo</h3>
+                    <p>
+                        Bustamante dẫn chứng trường hợp Giám đốc Tình báo Quốc gia Mỹ (DNI) Tulsi Gabbard bị gạt khỏi các phiên báo cáo mật khi nhận định chuyên môn của bà mâu thuẫn với thông điệp chính trị của chính quyền. Tương tự, các báo cáo đánh giá thiệt hại sau không kích từ Cơ quan Tình báo Quốc phòng (DIA) thường bị chỉnh sửa để tạo cảm giác "chiến thắng tuyệt đối" trước công chúng.
+                    </p>
+
+                    <div class="p-5 bg-stone-900 text-white rounded-xl my-6 font-serif">
+                        <p class="text-sm md:text-base italic mb-2">
+                            "Khi chính sách an ninh được xây dựng dựa trên báo cáo tình báo bị bóp méo để phục vụ truyền thông, khoảng cách giữa thực tế chiến trường và nhận thức lãnh đạo sẽ gia tăng, đẩy các bên vào nguy cơ tính toán sai lầm thảm khốc."
+                        </p>
+                        <div class="text-xs text-red-400 font-sans font-bold">— Andrew Bustamante, Cựu sĩ quan CIA</div>
+                    </div>
+
+                    <h3>Kết Luận & Ý Nghĩa Chiến Lược</h3>
+                    <p>
+                        Chính trị hóa tình báo phá hủy van an toàn tự sửa sai của bộ máy an ninh quốc gia, khiến các quyết định quân sự bị chi phối bởi cảm xúc thay vì dữ liệu thực địa.
+                    </p>
+                    <div class="p-4 bg-amber-50 border border-amber-200 rounded-lg text-amber-900 font-medium text-xs md:text-sm">
+                        <strong>❓ Câu hỏi mở:</strong> Làm thế nào bảo vệ tính trung thực của báo cáo tình báo chuyên môn trước áp lực định hướng từ giới lãnh đạo đương nhiệm?
+                    </div>
+                </div>
+            </article>
+
+            <!-- ARTICLE 3 -->
+            <article id="article-3" class="hidden bg-white p-6 md:p-10 rounded-xl border border-stone-200 shadow-sm prose max-w-none">
+                <div class="text-xs font-bold text-red-700 tracking-widest uppercase mb-2">BÀI 3 / HỌC THUYẾT HẠT NHÂN</div>
+                <h1 class="font-serif text-2xl md:text-3xl font-extrabold text-stone-900 leading-tight mb-4">
+                    Cửa Sổ Quyết Định 6 Phút Và Chuỗi Hủy Diệt 72 Phút Hạt Nhân
+                </h1>
+                <div class="p-4 bg-stone-100 border-l-4 border-red-700 text-stone-800 italic text-sm md:text-base mb-6 font-serif">
+                    <strong>Sapo:</strong> Khái niệm "chiến tranh hạt nhân giới hạn" là ảo tưởng kỹ thuật. Nghiên cứu của Annie Jacobsen vạch trần kịch bản tàn khốc: một khi tên lửa ICBM đầu tiên rời bệ phóng, nền văn minh sẽ bị hủy diệt hoàn toàn trong 72 phút.
+                </div>
+
+                <div class="space-y-4 text-stone-800 text-sm md:text-base">
+                    <h3>Áp Lực Quyết Định 6 Phút Của Tổng Thống</h3>
+                    <p>
+                        Khi hệ thống radar phát hiện tên lửa đạn đạo liên lục địa lao tới, Tổng thống Mỹ chỉ có **6 phút** để tiếp nhận báo cáo từ NORAD, mở vali hạt nhân và phát lệnh đáp trả. Do không radar nào phân biệt được tên lửa đang lao tới mang đầu đạn hạt nhân hay quy ước, Tổng thống buộc phải ra quyết định phóng đáp trả toàn diện trước khi các căn cứ chỉ huy bị tiêu diệt.
+                    </p>
+
+                    <h3>Góc Nhìn Từ Hầm Phóng Minuteman III</h3>
+                    <p>
+                        Bustamante – người từng chỉ huy hầm phóng hạt nhân – chia sẻ rằng quy trình phóng được thiết kế để vận hành hoàn toàn cơ học. Khi mệnh lệnh hợp lệ truyền xuống, hai sĩ quan dưới hầm ngầm phải xoay chìa khóa vật lý cùng lúc mà không có cơ hội do dự. Ngoài ra, việc Mỹ đặt vũ khí hạt nhân tại 5 quốc gia NATO châu Âu biến các nước này thành mục tiêu hủy diệt phủ đầu hàng đầu của Nga.
+                    </p>
+
+                    <div class="p-5 bg-red-950 text-white rounded-xl my-6 border-l-4 border-red-500">
+                        <h4 class="text-red-400 font-bold uppercase text-xs mb-1">Xung Điện Từ (EMP) & Mùa Đông Hạt Nhân</h4>
+                        <p class="text-xs leading-relaxed">
+                            Một đòn kích nổ hạt nhân ở tầm cao ngoài khí quyển tạo ra xung EMP làm cháy sạch các mạch bán dẫn và lưới điện toàn khu vực. Chuỗi nổ mặt đất tiếp sau đó đẩy hàng triệu tấn bụi phóng xạ lên tầng bình lưu, chắn ánh sáng mặt trời và làm sụp đổ hệ sinh thái nông nghiệp toàn cầu.
+                        </p>
+                    </div>
+
+                    <h3>Kết Luận & Ý Nghĩa Chiến Lược</h3>
+                    <p>
+                        Sự biến mất của các hiệp ước kiểm soát vũ khí và các kênh ngoại giao kênh hai (track-two) đang đẩy nhân loại vào nguy cơ diệt vong do một sự cố kỹ thuật hoặc báo động giả.
+                    </p>
+                    <div class="p-4 bg-red-50 border border-red-200 rounded-lg text-red-900 font-medium text-xs md:text-sm">
+                        <strong>❓ Câu hỏi mở:</strong> Khi thời gian phản ứng rút ngắn xuống còn 6 phút, liệu chúng ta có đang đặt sinh mệnh Trái Đất vào tay các thuật toán cảnh báo sớm tự động?
+                    </div>
+                </div>
+            </article>
+
+            <!-- ARTICLE 4 -->
+            <article id="article-4" class="hidden bg-white p-6 md:p-10 rounded-xl border border-stone-200 shadow-sm prose max-w-none">
+                <div class="text-xs font-bold text-blue-700 tracking-widest uppercase mb-2">BÀI 4 / ĐỊA KINH TẾ BÁN DẪN & ĐÀI LOAN</div>
+                <h1 class="font-serif text-2xl md:text-3xl font-extrabold text-stone-900 leading-tight mb-4">
+                    Trận Chiến Eo Biển Đài Loan: Bán Dẫn, Đất Hiếm Và Kịch Bản Phong Tỏa Phi Động Năng
+                </h1>
+                <div class="p-4 bg-stone-100 border-l-4 border-blue-600 text-stone-800 italic text-sm md:text-base mb-6 font-serif">
+                    <strong>Sapo:</strong> Xung đột tại châu Á - Thái Bình Dương không nhất thiết bùng nổ bằng trận chiến đổ bộ đường biển. Kịch bản phong tỏa phi động năng và siết chặt nguồn đất hiếm có thể làm sụp đổ ngành công nghiệp quốc phòng phương Tây.
+                </div>
+
+                <div class="space-y-4 text-stone-800 text-sm md:text-base">
+                    <h3>Yếu Tố TSMC Và Điểm Nghẽn Bán Dẫn</h3>
+                    <p>
+                        Sự phụ thuộc tuyệt đối của quân đội phương Tây vào nguồn chip dưới 5 nanometer từ tổ hợp TSMC (Đài Loan) tạo nên điểm nghẽn địa chiến lược cực kỳ yếu hại. Đạo luật CHIPS của Mỹ cần hàng chục năm để có thể thay thế hoàn toàn năng lực này.
+                    </p>
+
+                    <h3>Kịch Bản Phong Tỏa Phi Động Năng</h3>
+                    <p>
+                        Dr. Benjamin Radd nhận định Trung Quốc không cần mạo hiểm triển khai hạm đội đổ bộ vượt eo biển. Thay vào đó, Bắc Kinh có thể kích hoạt đòn bẩy phong tỏa kinh tế và cấm vận đất hiếm – nguyên liệu mà họ đang chi phối hơn 80% khâu tinh chế toàn cầu. Một lệnh cấm vận đất hiếm ngặt nghèo kết hợp kiểm soát hàng hải quanh Đài Loan đủ để làm tê liệt các nhà máy sản xuất vũ khí thông minh của Mỹ mà không cần bắn một phát đạn trực tiếp.
+                    </p>
+
+                    <h3>Kết Luận & Ý Nghĩa Chiến Lược</h3>
+                    <p>
+                        Chiến lược phong tỏa phi động năng giúp bảo vệ nguyên vẹn hạ tầng nhà máy TSMC, đồng thời đẩy phương Tây vào thế tiến lui lưỡng nan về mặt pháp lý quân sự.
+                    </p>
+                    <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg text-blue-900 font-medium text-xs md:text-sm">
+                        <strong>❓ Câu hỏi mở:</strong> Đồng minh phương Tây sẽ đáp trả ra sao nếu một cuộc phong tỏa được thực hiện thuần túy bằng các công cụ cấm vận hành chính và kiểm soát hải chính?
+                    </div>
+                </div>
+            </article>
+
+            <!-- ARTICLE 5 -->
+            <article id="article-5" class="hidden bg-white p-6 md:p-10 rounded-xl border border-stone-200 shadow-sm prose max-w-none">
+                <div class="text-xs font-bold text-stone-600 tracking-widest uppercase mb-2">BÀI 5 / CHIẾN TRANH NHẬN THỨC & TỈ PHÚ</div>
+                <h1 class="font-serif text-2xl md:text-3xl font-extrabold text-stone-900 leading-tight mb-4">
+                    Chiến Tranh Nhận Thức Trong Kỷ Nguyên Hậu Sự Thật Và Ảo Tưởng Hầm Ngầm Tỷ Phú
+                </h1>
+                <div class="p-4 bg-stone-100 border-l-4 border-stone-700 text-stone-800 italic text-sm md:text-base mb-6 font-serif">
+                    <strong>Sapo:</strong> Chiến trường thế kỷ 21 mở rộng trực tiếp vào nhận thức công chúng. Trong khi thuật toán mạng xã hội bị vũ khí hóa để phân cực xã hội, tầng lớp tỷ phú lại chọn cách thoái lui ích kỷ vào các hầm ngầm sinh tồn.
+                </div>
+
+                <div class="space-y-4 text-stone-800 text-sm md:text-base">
+                    <h3>Công Nghiệp Hóa Sự Chia Rẽ "Post-Truth"</h3>
+                    <p>
+                        Benjamin Radd nhận định xã hội đã bước vào kỷ nguyên hậu sự thật, nơi khái niệm sự thật khách quan bị phân mảnh. Các lực lượng tác chiến mạng không cần bịa đặt thông tin mới; họ chỉ cần dùng thuật toán khuếch đại các mâu thuẫn sắc tộc, chính trị có sẵn để làm suy yếu sức mạnh nội tại của đối thủ từ bên trong.
+                    </p>
+
+                    <h3>Ảo Tưởng "Bunker Mentality" Của Tỷ Phú</h3>
+                    <p>
+                        Annie Jacobsen ghi nhận phản ứng của giới tinh hoa tài chính trước nguy cơ khủng hoảng: thay vì tìm giải pháp ngoại giao, họ lập tức hỏi về phương án đào thoát bằng chuyên cơ riêng tới các hầm ngầm tại New Zealand. Đây là tâm lý trốn chạy ảo tưởng, vì trong kịch bản mùa đông hạt nhân kéo dài, không một căn hầm ngầm nào có thể bảo đảm sự sống sót khi hệ sinh thái nông nghiệp toàn cầu sụp đổ.
+                    </p>
+
+                    <div class="p-5 bg-stone-100 border-l-4 border-stone-800 text-stone-900 my-6 font-serif">
+                        <p class="text-sm md:text-base italic mb-1">
+                            "Trong kịch bản diệt vong hạt nhân, căn hầm ngầm sang trọng triệu đô của bạn thực chất chỉ là một chiếc quan tài đắt tiền có máy phát điện dự phòng."
+                        </p>
+                        <div class="text-xs font-sans font-bold text-stone-600">— Annie Jacobsen, Nhà báo điều tra</div>
+                    </div>
+
+                    <h3>Kết Luận & Ý Nghĩa Chiến Lược</h3>
+                    <p>
+                        Sự suy giảm lòng tin xã hội và thái độ trốn chạy của giới tinh hoa là minh chứng cho sự khủng hoảng thể chế nghiêm trọng trong kỷ nguyên số.
+                    </p>
+                    <div class="p-4 bg-stone-100 border border-stone-300 rounded-lg text-stone-900 font-medium text-xs md:text-sm">
+                        <strong>❓ Câu hỏi mở:</strong> Làm sao để khôi phục niềm tin của công chúng vào các thể chế báo chí chính thống trước sự thao túng của thuật toán trí tuệ nhân tạo?
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <!-- ==================== GIAI ĐOẠN 3: MÔ PHỎNG HẠT NHÂN 72 PHÚT ==================== -->
+        <section id="sec-simulator" class="hidden space-y-8">
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-stone-200">
+                <div class="inline-block px-3 py-1 bg-red-800 text-white text-xs font-bold uppercase tracking-wider rounded-full mb-3">
+                    Công Cụ Tương Tác
+                </div>
+                <h2 class="font-serif text-2xl md:text-3xl font-bold text-stone-900 mb-3">
+                    ⏱️ Trình Mô Phỏng Kịch Bản Hủy Diệt Hạt Nhân Trong 72 Phút
+                </h2>
+                <p class="text-stone-700 leading-relaxed text-sm">
+                    Khám phá chuỗi phản ứng dây chuyền không thể đảo ngược từ lúc hệ thống radar phát hiện tên lửa đầu tiên cho đến khi bề mặt Trái Đất bị hủy diệt. Nhấp vào các mốc thời gian bên dưới để xem diễn biến chi tiết.
+                </p>
+            </div>
+
+            <!-- Simulator UI Card -->
+            <div class="bg-stone-900 text-white p-6 md:p-10 rounded-xl shadow-xl">
+                <!-- Timeline Step Buttons -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+                    <button onclick="updateSim(1)" id="sim-btn-1" class="p-3 text-xs md:text-sm font-bold rounded-lg border border-red-600 bg-red-900/60 text-white hover:bg-red-800 transition">
+                        Phút 00 – 15<br><span class="text-[10px] text-stone-300 font-normal">Cảnh Báo & Quyết Định</span>
+                    </button>
+                    <button onclick="updateSim(2)" id="sim-btn-2" class="p-3 text-xs md:text-sm font-bold rounded-lg border border-stone-700 bg-stone-800 text-stone-400 hover:bg-stone-700 transition">
+                        Phút 16 – 35<br><span class="text-[10px] text-stone-300 font-normal">Đòn Phản Công Hạt Nhân</span>
+                    </button>
+                    <button onclick="updateSim(3)" id="sim-btn-3" class="p-3 text-xs md:text-sm font-bold rounded-lg border border-stone-700 bg-stone-800 text-stone-400 hover:bg-stone-700 transition">
+                        Phút 36 – 55<br><span class="text-[10px] text-stone-300 font-normal">Tấn Công EMP & Mạng Điện</span>
+                    </button>
+                    <button onclick="updateSim(4)" id="sim-btn-4" class="p-3 text-xs md:text-sm font-bold rounded-lg border border-stone-700 bg-stone-800 text-stone-400 hover:bg-stone-700 transition">
+                        Phút 56 – 72<br><span class="text-[10px] text-stone-300 font-normal">Hủy Diệt & Bụi Phóng Xạ</span>
+                    </button>
+                </div>
+
+                <!-- Dynamic Content Display Box -->
+                <div class="bg-stone-800 p-6 rounded-lg border border-stone-700 space-y-4">
+                    <div class="flex items-center space-x-2 text-red-400 font-mono text-xs uppercase tracking-widest">
+                        <span>⚠️ Trạng Thái Kịch Bản:</span>
+                        <span id="sim-phase-title" class="font-bold text-white text-sm">Phút 00 – 15: Cảnh Báo Sớm & Cửa Sổ Phán Quyết 6 Phút</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-xs uppercase font-bold text-stone-400 mb-2">Diễn Biến Chỉ Huy & Kỹ Thuật</h4>
+                            <p id="sim-tech-desc" class="text-stone-300 text-xs md:text-sm leading-relaxed">
+                                Vệ tinh hồng ngoại phát hiện nhiệt lượng từ vụ phóng tên lửa ICBM. Radar NORAD xác thực đường bay. Cửa sổ thời gian của Tổng thống bị giới hạn trong 6 phút để mở vali hạt nhân và xác thực mã phát lệnh đáp trả.
+                            </p>
+                        </div>
+                        <div>
+                            <h4 class="text-xs uppercase font-bold text-stone-400 mb-2">Hậu Quả Vật Lý & Hệ Thống</h4>
+                            <p id="sim-impact-desc" class="text-stone-300 text-xs md:text-sm leading-relaxed">
+                                Mã chỉ huy khẩn cấp truyền đi. Do không thể biết đạn nổ mang đầu đạn quy ước hay hạt nhân, quyết định phóng toàn bộ kho tên lửa đáp trả được đưa ra trước khi các căn cứ chỉ hữu bị triệt tiêu.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-stone-400 border-t border-stone-800 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs space-y-2">
+            <p>Tạp Chí Phân Tích Địa Chính Trị Toàn Cầu — Phát triển dựa trên dữ liệu tọa đàm <em>The Diary Of A CEO</em></p>
+            <p class="text-stone-600">Đội ngũ Biên tập Báo chí Strategy & International Affairs © 2026</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic Block -->
+    <script>
+        // Tab switching function
+        function switchTab(tabId) {
+            // Hide all sections
+            document.getElementById('sec-phase1').classList.add('hidden');
+            document.getElementById('sec-phase2').classList.add('hidden');
+            document.getElementById('sec-simulator').classList.add('hidden');
+
+            // Reset navigation styles
+            document.getElementById('nav-phase1').className = "px-3 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition";
+            document.getElementById('nav-phase2').className = "px-3 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition";
+            document.getElementById('nav-simulator').className = "px-3 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition";
+
+            // Activate chosen section
+            if(tabId === 'phase1') {
+                document.getElementById('sec-phase1').classList.remove('hidden');
+                document.getElementById('nav-phase1').className = "px-3 py-2 rounded-md bg-stone-800 text-white font-semibold transition";
+            } else if(tabId === 'phase2') {
+                document.getElementById('sec-phase2').classList.remove('hidden');
+                document.getElementById('nav-phase2').className = "px-3 py-2 rounded-md bg-stone-800 text-white font-semibold transition";
+            } else if(tabId === 'simulator') {
+                document.getElementById('sec-simulator').classList.remove('hidden');
+                document.getElementById('nav-simulator').className = "px-3 py-2 rounded-md bg-stone-800 text-white font-semibold transition";
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Sub-article switcher inside Phase 2
+        function selectArticle(artNum) {
+            for(let i = 1; i <= 5; i++) {
+                document.getElementById(`article-${i}`).classList.add('hidden');
+                const btn = document.getElementById(`art-tab-${i}`);
+                if(btn) {
+                    btn.className = "px-3 py-2 text-xs font-bold rounded-md bg-stone-200 text-stone-700 hover:bg-stone-300 transition";
+                }
+            }
+            const targetArt = document.getElementById(`article-${artNum}`);
+            if(targetArt) {
+                targetArt.classList.remove('hidden');
+            }
+            const activeBtn = document.getElementById(`art-tab-${artNum}`);
+            if(activeBtn) {
+                if(artNum === 1 || artNum === 3) {
+                    activeBtn.className = "px-3 py-2 text-xs font-bold rounded-md bg-red-700 text-white transition";
+                } else if(artNum === 2) {
+                    activeBtn.className = "px-3 py-2 text-xs font-bold rounded-md bg-amber-600 text-white transition";
+                } else if(artNum === 4) {
+                    activeBtn.className = "px-3 py-2 text-xs font-bold rounded-md bg-blue-600 text-white transition";
+                } else {
+                    activeBtn.className = "px-3 py-2 text-xs font-bold rounded-md bg-stone-800 text-white transition";
+                }
+            }
+        }
+
+        // Nuclear Simulator Data
+        const simData = {
+            1: {
+                title: "Phút 00 – 15: Cảnh Báo Sớm & Cửa Sổ Phán Quyết 6 Phút",
+                tech: "Vệ tinh hồng ngoại phát hiện nhiệt lượng vụ phóng ICBM. Radar NORAD xác thực đường bay. Cửa sổ thời gian của Tổng thống bị giới hạn trong 6 phút để mở vali hạt nhân và xác thực mã phóng.",
+                impact: "Mã phản công khẩn cấp truyền đi. Do không thể xác định đạn nổ hạt nhân hay quy ước trước va chạm, quyết định đáp trả toàn diện được đưa ra trước khi các trung tâm chỉ huy bị phá hủy."
+            },
+            2: {
+                title: "Phút 16 – 35: Đòn Phản Công Hạt Nhân & Mở Nắp Hầm Phóng",
+                tech: "Tên lửa Minuteman III tại Mỹ và tàu ngầm chiến lược nhận lệnh. Sĩ quan tra chìa khóa phóng khẩn cấp. Hàng trăm ICBM vút lên không trung vượt tầng khí quyển.",
+                impact: "Đối phương phát hiện đòn phản công và lập tức phóng toàn bộ kho tên lửa dự phòng nhằm tránh bị tiêu diệt trên mặt đất (Chiến lược Use it or Lose it). Hàng nghìn đầu đạn cùng giao thoa trên quỹ đạo."
+            },
+            3: {
+                title: "Phút 36 – 55: Xung Điện Từ EMP & Thiêu Rụi Lưới Điện",
+                tech: "Các đầu đạn bắt đầu đi vào bầu khí quyển. Đòn kích nổ hạt nhân ở tầm cao giải phóng đợt xung điện từ (EMP) cực mạnh tương tác với từ trường Trái Đất.",
+                impact: "Lưới điện, viễn thông, thiết bị bán dẫn và máy chủ dữ liệu trên diện tích hàng triệu km2 bị thiêu rụi tức thì. Toàn bộ nền văn minh rơi vào tình trạng mất điện toàn diện."
+            },
+            4: {
+                title: "Phút 56 – 72: Bề Mặt Bị Hủy Diệt & Mùa Đông Hạt Nhân",
+                tech: "Đầu đạn kích nổ công phá bề mặt các đô thị và căn cứ quân sự. Bụi phóng xạ và hàng triệu tấn muội than bốc thẳng lên tầng bình lưu.",
+                impact: "Hàng trăm triệu người thiệt mạng tức thì. Khói bụi che phủ ánh sáng mặt trời trên toàn cầu, làm sụp đổ nhiệt độ Trái Đất và châm ngòi cho mùa đông hạt nhân tàn phá nông nghiệp."
+            }
+        };
+
+        function updateSim(step) {
+            for(let i = 1; i <= 4; i++) {
+                const btn = document.getElementById(`sim-btn-${i}`);
+                if(btn) {
+                    btn.className = "p-3 text-xs md:text-sm font-bold rounded-lg border border-stone-700 bg-stone-800 text-stone-400 hover:bg-stone-700 transition";
+                }
+            }
+            const activeBtn = document.getElementById(`sim-btn-${step}`);
+            if(activeBtn) {
+                activeBtn.className = "p-3 text-xs md:text-sm font-bold rounded-lg border border-red-600 bg-red-900/60 text-white hover:bg-red-800 transition";
+            }
+
+            document.getElementById('sim-phase-title').innerText = simData[step].title;
+            document.getElementById('sim-tech-desc').innerText = simData[step].tech;
+            document.getElementById('sim-impact-desc').innerText = simData[step].impact;
+        }
+
+        // Initialize Chart.js Horizontal Bar Chart
+        window.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('atlanticChart');
+            if(ctx) {
+                new Chart(ctx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: [
+                            'Sáp nhập Đài Loan bằng vũ lực',
+                            'Sử dụng vũ khí hạt nhân',
+                            'Xung đột trực tiếp Nga - NATO',
+                            'Bùng nổ Chiến tranh thế giới III'
+                        ],
+                        datasets: [{
+                            label: 'Tỷ lệ % dự báo xảy ra',
+                            data: [65, 50, 45, 40],
+                            backgroundColor: [
+                                'rgba(220, 38, 38, 0.85)',
+                                'rgba(217, 119, 6, 0.85)',
+                                'rgba(185, 28, 28, 0.75)',
+                                'rgba(120, 53, 15, 0.75)'
+                            ],
+                            borderColor: [
+                                '#dc2626',
+                                '#d97706',
+                                '#b91c1c',
+                                '#78350f'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.raw + '% chuyên gia dự báo';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    callback: function(value) { return value + '%'; }
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    font: { size: 10 },
+                                    callback: function(value) {
+                                        const label = this.getLabelForValue(value);
+                                        return label.length > 15 ? label.substring(0, 15) + '...' : label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

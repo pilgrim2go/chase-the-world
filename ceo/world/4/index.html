@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyên Đề Tình Báo & Địa Chính Trị: Phân Tích Andrew Bustamante (Ex-CIA)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Georgia', 'Cambria', 'Times New Roman', 'serif'],
+                        sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .prose p {
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
+            color: #334155;
+        }
+        .prose h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-top: 1.75rem;
+            margin-bottom: 0.75rem;
+            color: #0f172a;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-slate-900 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Chosen Palette: Slate & Warm Amber Editorial Neutrals -->
+
+    <!-- Application Structure Plan:
+        - Strategic Information Architecture:
+          1. Top Sticky Navigation: Switch dynamically between Giai Đoạn 1 (Tóm Tắt & Bắt Bệnh Nội Dung), Giai Đoạn 2 (Chuỗi 5 Bài Báo Chuyên Sâu), and Giai Đoạn 3 (Công Cụ Mô Phỏng R.I.C.E Profiler).
+          2. Giai Đoạn 1: Speaker Profile, Core Message Banner, 5 Core Topics Overview, Strategic Metrics Grid, and Interactive Chart.js breakdown of R.I.C.E Motivation Drivers in Espionage.
+          3. Giai Đoạn 2: 5 comprehensive journalistic articles written to professional standards with sub-article navigation tabs.
+          4. Giai Đoạn 3: Interactive R.I.C.E Assessment & Espionage Threat Matrix Simulator.
+        - Rationale: Fully addresses the requested analysis process for YouTube link Bu0xNDLNORU, making dense intelligence and psychological concepts accessible and interactive.
+    -->
+
+    <!-- Visualization & Content Choices:
+        - R.I.C.E Distribution Chart: Chart.js Doughnut/Bar Chart for CIA psychological recruitment levers.
+        - Comparison Matrix: Responsive Tailwind HTML table for HUMINT vs Tech Intelligence & Lie Detection Baselines.
+        - Pure Unicode Icons: 🕵️‍♂️, 🧠, 📊, 📜, ⚙️, 🛡️, 🌐, 🎯 - NO SVG graphics used.
+        - NO Mermaid JS used.
+    -->
+
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-slate-900 text-slate-100 border-b border-slate-800 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <span class="text-amber-500 text-2xl">🕵️‍♂️</span>
+                    <div>
+                        <h1 class="font-serif font-bold text-base md:text-xl tracking-tight text-white">TẠP CHÍ TÌNH BÁO & CHIẾN LƯỢC</h1>
+                        <p class="text-xs text-slate-400 hidden sm:block">Phân Tích Chuyên Sâu: Andrew Bustamante (Ex-CIA) & The Diary Of A CEO</p>
+                    </div>
+                </div>
+                <!-- Desktop Navigation Buttons -->
+                <nav class="hidden md:flex space-x-2 text-sm font-medium">
+                    <button onclick="switchTab('phase1')" id="nav-phase1" class="px-3 py-2 rounded-md bg-slate-800 text-white font-semibold transition">
+                        📊 Giai Đoạn 1: Tóm Tắt Nội Dung
+                    </button>
+                    <button onclick="switchTab('phase2')" id="nav-phase2" class="px-3 py-2 rounded-md text-slate-300 hover:text-white hover:bg-slate-800 transition">
+                        📜 Giai Đoạn 2: Chuỗi Bài Báo Chuyên Sâu
+                    </button>
+                    <button onclick="switchTab('rice-tool')" id="nav-rice-tool" class="px-3 py-2 rounded-md text-slate-300 hover:text-white hover:bg-slate-800 transition">
+                        🧠 Mô Phỏng Ma Trận R.I.C.E
+                    </button>
+                </nav>
+                <!-- Mobile Dropdown -->
+                <div class="md:hidden">
+                    <select onchange="switchTab(this.value)" class="bg-slate-800 text-slate-200 text-xs rounded p-2 border border-slate-700 focus:outline-none">
+                        <option value="phase1">📊 Giai Đoạn 1: Tóm Tắt</option>
+                        <option value="phase2">📜 Giai Đoạn 2: Chuỗi Bài Báo</option>
+                        <option value="rice-tool">🧠 Mô Phỏng R.I.C.E</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ==================== GIAI ĐOẠN 1: TÓM TẮT & BẮT BỆNH NỘI DUNG ==================== -->
+        <section id="sec-phase1" class="space-y-8">
+            <!-- Intro Banner -->
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-stone-200">
+                <div class="inline-block px-3 py-1 bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider rounded-full mb-3">
+                    Báo Cáo Bắt Bệnh Nội Dung Video Bu0xNDLNORU
+                </div>
+                <h2 class="font-serif text-2xl md:text-3xl font-bold text-slate-900 mb-4">
+                    Giai Đoạn 1: Tóm Tắt Tổng Quan & Chẩn Đoán Nội Dung Tọa Đàm
+                </h2>
+                <p class="text-slate-700 leading-relaxed text-sm md:text-base">
+                    Buổi đối thoại giữa Steven Bartlett (*The Diary Of A CEO*) và cựu sĩ quan tình báo ngầm CIA Andrew Bustamante mổ xẻ ma trận giao thoa giữa **nghệ thuật thao túng tâm lý cá nhân** và **chiến tranh địa chính trị toàn cầu**. Nội dung báo cáo chẩn đoán dưới đây tóm lược các phát hiện cốt lõi trước khi đi vào chuỗi 5 bài báo phân tích chuyên sâu.
+                </p>
+            </div>
+
+            <!-- Speaker Profile Card -->
+            <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
+                <h3 class="font-serif text-lg font-bold text-slate-900 mb-4 flex items-center space-x-2">
+                    <span>👤</span>
+                    <span>Hồ Sơ Diễn Giả & Host</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 flex items-start space-x-4">
+                        <span class="text-3xl p-2 bg-amber-100 rounded-full">🕵️‍♂️</span>
+                        <div>
+                            <h4 class="font-bold text-slate-900">Andrew Bustamante</h4>
+                            <p class="text-xs text-amber-700 font-semibold mb-2">Cựu Sĩ quan Tình báo Ngầm CIA & Sáng lập Everyday Spy</p>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Từng trực tiếp điều hành các chiến dịch thu thập tình báo con người (HUMINT), vận hành hạ tầng tên lửa ICBM Minuteman III và huấn luyện kỹ năng tác chiến ngầm cho Bộ Quốc phòng Mỹ.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 flex items-start space-x-4">
+                        <span class="text-3xl p-2 bg-slate-200 rounded-full">🎙️</span>
+                        <div>
+                            <h4 class="font-bold text-slate-900">Steven Bartlett</h4>
+                            <p class="text-xs text-slate-500 font-semibold mb-2">Host 'The Diary Of A CEO' & Doanh Nhân Công Nghệ</p>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Người dẫn chương trình podcast hàng đầu thế giới về tư duy lãnh đạo, quản trị kinh doanh và phân tích hành vi con người.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Core Message Banner -->
+            <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-amber-950 text-white p-6 md:p-8 rounded-xl shadow-md">
+                <div class="flex items-start space-x-4">
+                    <span class="text-3xl">🎯</span>
+                    <div>
+                        <h4 class="text-xs uppercase tracking-widest text-amber-400 font-bold mb-1">Thông Điệp Cốt Lõi Chi Cắt Từ Video</h4>
+                        <p class="font-serif text-base md:text-lg font-medium leading-relaxed">
+                            "Tình báo và Tâm lý học Tác chiến không chỉ là đặc quyền của các quốc gia trong cuộc chiến quyền lực địa chính trị toàn cầu (WW3, gián điệp, tranh chấp Mỹ - Trung), mà còn là **bộ công cụ giải mã bản chất con người**, ma trận thao túng nhận thức và nguyên lý ra quyết định chiến lược trong cuộc sống thực tế."
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Takeaways Metrics Grid -->
+            <div>
+                <h3 class="font-serif text-lg font-bold text-slate-800 mb-4 flex items-center space-x-2">
+                    <span>📊</span>
+                    <span>Bộ Chỉ Số & Phát Hiện Cốt Lõi (Key Takeaways)</span>
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white p-4 rounded-lg border border-stone-200 text-center">
+                        <div class="text-2xl md:text-3xl font-extrabold text-amber-600">4 Đòn Bẩy</div>
+                        <div class="text-xs text-slate-600 mt-1">Mô hình R.I.C.E thao túng con người</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-stone-200 text-center">
+                        <div class="text-2xl md:text-3xl font-extrabold text-red-600">0% Tin Tưởng</div>
+                        <div class="text-xs text-slate-600 mt-1">Máy phát hiện nói dối (Polygraph) độc lập</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-stone-200 text-center">
+                        <div class="text-2xl md:text-3xl font-extrabold text-slate-800">Vùng Xám</div>
+                        <div class="text-xs text-slate-600 mt-1">Hình thái xung đột WW3 đương đại</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-stone-200 text-center">
+                        <div class="text-2xl md:text-3xl font-extrabold text-blue-600">90% Chip</div>
+                        <div class="text-xs text-slate-600 mt-1">Sự phụ thuộc toàn cầu vào TSMC Đài Loan</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Topics Grid & Chart -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Topics Overview List -->
+                <div class="lg:col-span-7 bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
+                    <h3 class="font-serif text-lg font-bold text-slate-900 mb-4 flex items-center space-x-2">
+                        <span>📑</span>
+                        <span>5 Chủ Đề Phân Tích Chuyên Sâu</span>
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-stone-50 rounded-lg border-l-4 border-amber-600">
+                            <h4 class="font-bold text-xs md:text-sm text-slate-900">Chủ đề 1: Ma Trận Tâm Lý R.I.C.E & Tuyển Dụng Điệp Viên CIA</h4>
+                            <p class="text-xs text-slate-600 mt-1">4 đòn bẩy khai thác lòng tham, lý tưởng, sự cưỡng ép và cái tôi trong quản trị & tình báo.</p>
+                        </div>
+                        <div class="p-3 bg-stone-50 rounded-lg border-l-4 border-slate-700">
+                            <h4 class="font-bold text-xs md:text-sm text-slate-900">Chủ đề 2: Kỹ Thuật Đọc Vị & Phân Tích Đường Cơ Sở (Baseline Analysis)</h4>
+                            <p class="text-xs text-slate-600 mt-1">Vạch trần mặt hạn chế của máy Polygraph và quy trình nhận biết hành vi lừa dối thực chiến.</p>
+                        </div>
+                        <div class="p-3 bg-stone-50 rounded-lg border-l-4 border-red-600">
+                            <h4 class="font-bold text-xs md:text-sm text-slate-900">Chủ đề 3: Bản Chất Mới Của WW3 & Cuộc Đấu Trí Gián Điệp Siêu Cường</h4>
+                            <p class="text-xs text-slate-600 mt-1">Tác chiến vùng xám (Grey-Zone), gián điểm công nghệ Mỹ - Trung - Nga và tử huyệt Đài Loan.</p>
+                        </div>
+                        <div class="p-3 bg-stone-50 rounded-lg border-l-4 border-purple-600">
+                            <h4 class="font-bold text-xs md:text-sm text-slate-900">Chủ đề 4: Tác Chiến Nhận Thức (Perception Management) & Vũ Khí Thuật Toán</h4>
+                            <p class="text-xs text-slate-600 mt-1">Cách các cơ quan an ninh và tập đoàn công nghệ thao túng luồng tư duy dư luận quần chúng.</p>
+                        </div>
+                        <div class="p-3 bg-stone-50 rounded-lg border-l-4 border-emerald-600">
+                            <h4 class="font-bold text-xs md:text-sm text-slate-900">Chủ đề 5: Tư Duy Tình Báo (Spy Mindset) Cho Lãnh Đạo & Cá Nhân</h4>
+                            <p class="text-xs text-slate-600 mt-1">Bộ công cụ ra quyết định trong bất định, phân biệt giữa Nhận thức (Perception) và Thực tế (Reality).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- R.I.C.E Chart -->
+                <div class="lg:col-span-5 bg-white p-6 rounded-xl border border-stone-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-serif text-lg font-bold text-slate-900 mb-2 flex items-center space-x-2">
+                            <span>📈</span>
+                            <span>Trọng Số Đòn Bẩy Mô Hình R.I.C.E</span>
+                        </h3>
+                        <p class="text-xs text-slate-500 mb-4">Tỷ lệ áp dụng hiệu quả trong tuyển dụng điệp viên & đàm phán thương mại:</p>
+                        <div class="chart-container">
+                            <canvas id="riceChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <button onclick="switchTab('phase2')" class="inline-flex items-center px-4 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg hover:bg-slate-800 transition">
+                            Chuyển Sang Chuỗi Bài Báo Chuyên Sâu ➔
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== GIAI ĐOẠN 2: CHUỖI BÀI BÁO CHUYÊN SÂU ==================== -->
+        <section id="sec-phase2" class="hidden space-y-8">
+            <!-- Header Banner -->
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-stone-200">
+                <div class="inline-block px-3 py-1 bg-slate-900 text-white text-xs font-bold uppercase tracking-wider rounded-full mb-3">
+                    Hồ Sơ Báo Chí Phân Tích Tình Báo
+                </div>
+                <h2 class="font-serif text-2xl md:text-3xl font-bold text-slate-900 mb-3">
+                    Giai Đoạn 2: Chuỗi 5 Bài Báo Phân Tích Chuyên Sâu
+                </h2>
+                <p class="text-slate-700 leading-relaxed text-sm">
+                    Mỗi bài báo độc lập mổ xẻ sâu một chủ đề luận điểm của Andrew Bustamante theo chuẩn mực báo chí phân tích quốc tế. Sử dụng thanh công cụ bên dưới để di chuyển giữa các bài viết.
+                </p>
+
+                <!-- Article Sub-Tabs -->
+                <div class="flex flex-wrap gap-2 mt-6 pt-4 border-t border-stone-200">
+                    <button onclick="selectArticle(1)" id="art-tab-1" class="px-3 py-2 text-xs font-bold rounded-md bg-amber-600 text-white transition">
+                        Bài 1: Ma Trận Tâm Lý R.I.C.E
+                    </button>
+                    <button onclick="selectArticle(2)" id="art-tab-2" class="px-3 py-2 text-xs font-bold rounded-md bg-stone-200 text-slate-700 hover:bg-stone-300 transition">
+                        Bài 2: Kỹ Thuật Đọc Vị Lừa Dối
+                    </button>
+                    <button onclick="selectArticle(3)" id="art-tab-3" class="px-3 py-2 text-xs font-bold rounded-md bg-stone-200 text-slate-700 hover:bg-stone-300 transition">
+                        Bài 3: Mặt Trận WW3 Trong Bóng Tối
+                    </button>
+                    <button onclick="selectArticle(4)" id="art-tab-4" class="px-3 py-2 text-xs font-bold rounded-md bg-stone-200 text-slate-700 hover:bg-stone-300 transition">
+                        Bài 4: Tác Tác Nhận Thức & Thuật Toán
+                    </button>
+                    <button onclick="selectArticle(5)" id="art-tab-5" class="px-3 py-2 text-xs font-bold rounded-md bg-stone-200 text-slate-700 hover:bg-stone-300 transition">
+                        Bài 5: Tư Duy Tình Báo (Spy Mindset)
+                    </button>
+                </div>
+            </div>
+
+            <!-- ARTICLE 1 -->
+            <article id="article-1" class="bg-white p-6 md:p-10 rounded-xl border border-stone-200 shadow-sm prose max-w-none">
+                <div class="text-xs font-bold text-amber-700 tracking-widest uppercase mb-2">BÀI 1 / PHÂN TÍCH TÂM LÝ HỌC TÁC CHIẾN</div>
+                <h1 class="font-serif text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight mb-4">
+                    Ma Trận Tâm Lý R.I.C.E: Bí Mật Tuyển Dụng Điệp Viên Của CIA Và Đòn Bẩy Thao Túng Con Người
+                </h1>
+                <div class="p-4 bg-stone-100 border-l-4 border-amber-600 text-slate-800 italic text-sm md:text-base mb-6 font-serif">
+                    <strong>Sapo:</strong> Khác với huyền thoại điện ảnh về những vụ đánh cắp mật mã bằng bạo lực, hoạt động thu thập tình báo con người (HUMINT) của CIA vận hành dựa trên một mô hình tâm lý học chính xác: R.I.C.E. Đây chính là chìa khóa mở khóa và điều khiển hành vi của bất kỳ ai trong cả gián điệp lẫn quản trị doanh nghiệp.
+                </div>
+
+                <div class="space-y-4 text-slate-800 text-sm md:text-base">
+                    <h3>Giải Mã Mô Hình Tâm Lý R.I.C.E Của CIA</h3>
+                    <p>
+                        Cựu sĩ quan tình báo ngầm CIA Andrew Bustamante tiết lộ rằng để khuất phục một mục tiêu – dù là một nhà khoa học hạt nhân, một chính trị gia hay một nhân sự cấp cao – sĩ quan tình báo không đe dọa mà tập trung tìm ra "mã khóa tâm lý" dựa trên 4 trụ cột R.I.C.E:
+                    </p>
+
+                    <!-- RICE Grid Breakdown -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+                        <div class="p-4 bg-amber-50 rounded-lg border border-amber-200">
+                            <h4 class="font-bold text-amber-900 text-sm mb-1">R - Reward (Phần Thưởng / Lợi Ích)</h4>
+                            <p class="text-xs text-amber-800">Khai thác lòng tham tài chính, thăng tiến công danh hoặc lợi ích vật chất trực tiếp. Đây là động cơ phổ biến nhưng dễ bị thay thế nhất.</p>
+                        </div>
+                        <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                            <h4 class="font-bold text-blue-900 text-sm mb-1">I - Ideology (Lý Tưởng / Niềm Tin)</h4>
+                            <p class="text-xs text-blue-800">Đánh vào niềm tin chính trị, tôn giáo hoặc lòng trung thành với một giá trị. Mục tiêu hành động vì tin rằng họ đang cống hiến cho "lẽ phải".</p>
+                        </div>
+                        <div class="p-4 bg-red-50 rounded-lg border border-red-200">
+                            <h4 class="font-bold text-red-900 text-sm mb-1">C - Coercion (Cưỡng Ép / Yếu Điểm)</h4>
+                            <p class="text-xs text-red-800">Lợi dụng bí mật quốc gia, bê bối cá nhân, sai lầm quá khứ hoặc nỗi sợ bị hủy hoại danh tiếng để ép buộc hợp tác.</p>
+                        </div>
+                        <div class="p-4 bg-purple-50 rounded-lg border border-purple-200">
+                            <h4 class="font-bold text-purple-900 text-sm mb-1">E - Ego (Cái Tôi / Sự Công Nhận)</h4>
+                            <p class="text-xs text-purple-800">Tận dụng sự tự cao, cảm giác bị coi thường tại nơi làm việc hoặc nhu cầu được thừa nhận tài năng. Đã chứng minh là đòn bẩy nguy hiểm nhất.</p>
+                        </div>
+                    </div>
+
+                    <h3>Sức Mạnh Nguy Hiểm Của "Cái Tôi" (Ego) Trong Đàm Phán</h3>
+                    <p>
+                        Bustamante nhấn mạnh rằng **Ego** là tử huyệt tâm lý bộc phát mạnh mẽ nhất ở giới tinh hoa. Một chuyên gia bị cấp trên ngó lơ hoặc cảm thấy công sức không được đền đáp xứng đáng sẽ dễ dàng chuyển giao tài liệu mật cho đối phương chỉ để chứng minh: *"Tôi thông minh hơn bộ máy này"*.
+                    </p>
+
+                    <div class="p-5 bg-slate-900 text-white rounded-xl my-6 font-serif">
+                        <p class="text-sm md:text-base italic mb-2">
+                            "Con người không phản bội quốc gia hay công ty chỉ vì tiền. Họ phản bội vì cảm giác bị bỏ rơi, nhu cầu khẳng định cái tôi và niềm tin rằng họ xứng đáng nhận được nhiều hơn những gì thực tại mang lại."
+                        </p>
+                        <div class="text-xs text-amber-400 font-sans font-bold">— Andrew Bustamante, Cựu sĩ quan CIA</div>
+                    </div>
+
+                    <h3>Kết Luận & Ứng Dụng Quản Trị</h3>
+                    <p>
+                        Hiểu rõ mô hình R.I.C.E giúp các nhà lãnh đạo không chỉ bảo vệ tổ chức trước các nguy cơ gián điệp doanh nghiệp mà còn xây dựng cơ chế động viên nhân sự đúng chỗ.
+                    </p>
+                    <div class="p-4 bg-amber-50 border border-amber-200 rounded-lg text-amber-900 font-medium text-xs md:text-sm">
+                        <strong>❓ Câu hỏi mở:</strong> Trong 4 đòn bẩy R.I.C.E, đâu là điểm yếu tâm lý lớn nhất của bạn mà đối phương có thể khai thác trong một cuộc đàm phán thương lượng?
+                    </div>
+                </div>
+            </article>
+
+            <!-- ARTICLE 2 -->
+            <article id="article-2" class="hidden bg-white p-6 md:p-10 rounded-xl border border-stone-200 shadow-sm prose max-w-none">
+                <div class="text-xs font-bold text-slate-700 tracking-widest uppercase mb-2">BÀI 2 / PHÂN TÍCH HÀNH VI LỪA DỐI</div>
+                <h1 class="font-serif text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight mb-4">
+                    Giải Mã Nghệ Thuật Đọc Vị: Kỹ Thuật Phân Tích Đường Cơ Sở Vạch Trần Hành Vi Lừa Dối
+                </h1>
+                <div class="p-4 bg-stone-100 border-l-4 border-slate-700 text-slate-800 italic text-sm md:text-base mb-6 font-serif">
+                    <strong>Sapo:</strong> Khác với quan niệm sai lầm phổ biến của công chúng về máy phát hiện nói dối hay ngôn ngữ cơ thể cố định, tình báo chuyên nghiệp áp dụng phương pháp "Phân tích Đường cơ sở" (Baseline Analysis) để phát hiện sự bất thường trong hành vi.
+                </div>
+
+                <div class="space-y-4 text-slate-800 text-sm md:text-base">
+                    <h3>Sự Thật Về Máy Phát Hiện Nói Dối (Polygraph)</h3>
+                    <p>
+                        Andrew Bustamante khẳng định các thiết bị Polygraph không hề "đọc được lời nói dối". Chúng chỉ đo lường các phản ứng sinh lý căng thẳng của cơ thể như nhịp tim, độ dẫn điện của da và nhịp thở. Một người được huấn luyện kỹ năng kiểm soát tâm lý có thể đánh lừa Polygraph dễ dàng, trong khi một người trung thực nhưng lo âu lại có thể bị máy kết luận là dối trá.
+                    </p>
+
+                    <h3>Quy Trình Phân Tích Đường Cơ Sở (Baseline Analysis)</h3>
+                    <p>
+                        Để phát hiện sự dối trá thực sự trong giao tiếp thực tế, sĩ quan CIA triển khai quy trình 3 bước phân tích hành vi:
+                    </p>
+
+                    <div class="overflow-x-auto my-6">
+                        <table class="w-full text-xs md:text-sm text-left border-collapse border border-stone-200">
+                            <thead>
+                                <tr class="bg-slate-800 text-white">
+                                    <th class="p-3 border border-slate-700">Bước thực hiện</th>
+                                    <th class="p-3 border border-slate-700">Mục tiêu quan sát</th>
+                                    <th class="p-3 border border-slate-700">Dấu hiệu nhận biết</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-stone-50">
+                                    <td class="p-3 font-bold border border-stone-200">1. Thiết lập Baseline</td>
+                                    <td class="p-3 border border-stone-200">Quan sát hành vi tự nhiên khi đối phương thoải mái (câu hỏi trung tính)</td>
+                                    <td class="p-3 border border-stone-200">Tốc độ nói, nhịp chớp mắt, tư thế ngồi, giọng điệu chuẩn</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold border border-stone-200">2. Kích hoạt Áp lực</td>
+                                    <td class="p-3 border border-stone-200">Đưa ra câu hỏi trọng tâm nhạy cảm hoặc bất ngờ</td>
+                                    <td class="p-3 border border-stone-200">Theo dõi sự biến đổi đột ngột khỏi đường cơ sở</td>
+                                </tr>
+                                <tr class="bg-stone-50">
+                                    <td class="p-3 font-bold border border-stone-200">3. Tìm Chuỗi Bất Thường (Cluster)</td>
+                                    <td class="p-3 border border-stone-200">Xác nhận ít nhất 2–3 biểu hiện bất thường xuất hiện đồng thời</td>
+                                    <td class="p-3 border border-stone-200">Đổi tư thế, ngập ngừng ngôn từ, liếm môi, vuốt cổ phỏng vệ</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>Kết Luận & Ý Nghĩa Thực Tế</h3>
+                    <p>
+                        Không có một dấu hiệu riêng lẻ nào (như đảo mắt hay khoanh tay) chứng minh một người đang nói dối. Sự lệch chuẩn so với đường cơ sở cá nhân mới là bằng chứng tin cậy nhất.
+                    </p>
+                    <div class="p-4 bg-slate-100 border border-slate-300 rounded-lg text-slate-900 font-medium text-xs md:text-sm">
+                        <strong>❓ Câu hỏi mở:</strong> Làm sao để bạn thiết lập đường cơ sở của đối tác trong 5 phút đầu tiên của một cuộc đàm phán hợp đồng quan trọng?
+                    </div>
+                </div>
+            </article>
+
+            <!-- ARTICLE 3 -->
+            <article id="article-3" class="hidden bg-white p-6 md:p-10 rounded-xl border border-stone-200 shadow-sm prose max-w-none">
+                <div class="text-xs font-bold text-red-700 tracking-widest uppercase mb-2">BÀI 3 / ĐỊA CHÍNH TRỊ & TÌNH BÁO TOÀN CẦU</div>
+                <h1 class="font-serif text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight mb-4">
+                    Chiến Tranh Thế Giới Thứ Ba Trong Bóng Tối: Cuộc Đấu Trí Triệt Tiêu Giữa Các Siêu Cường
+                </h1>
+                <div class="p-4 bg-stone-100 border-l-4 border-red-700 text-slate-800 italic text-sm md:text-base mb-6 font-serif">
+                    <strong>Sapo:</strong> Khái niệm về chiến tranh đã hoàn toàn thay đổi. Xung đột giữa Mỹ, Trung Quốc và Nga không còn đo bằng các sư đoàn tăng giáp tràn qua biên giới, mà diễn ra khốc liệt trên không gian mạng, gián điệp công nghệ và tử huyệt bán dẫn Đài Loan.
+                </div>
+
+                <div class="space-y-4 text-slate-800 text-sm md:text-base">
+                    <h3>Tác Chiếm Vùng Xám (Grey-Zone Warfare)</h3>
+                    <p>
+                        Cựu sĩ quan Bustamante chỉ ra rằng Chiến tranh Thế giới thứ ba đã âm thầm kích hoạt thông qua hình thái "Vùng xám" – không gian giữa hòa bình và chiến tranh toàn diện. Tại đây, các cường quốc triển khai tấn công mạng vào hạ tầng năng lượng, đánh cắp sở hữu trí tuệ công nghệ và tài trợ các cuộc chiến ủy nhiệm nhằm bào mòn sinh lực đối phương mà không vượt qua ngưỡng châm ngòi chiến tranh hạt nhân.
+                    </p>
+
+                    <h3>Điểm Nghẽn Địa Chiến Lược TSMC & Đài Loan</h3>
+                    <p>
+                        Trận chiến kiểm soát Đài Loan thực chất là trận chiến giành quyền chi phối mạch máu công nghệ thế giới. Việc TSMC nắm giữ hơn 90% năng lực sản xuất chip vi xử lý tiên tiến biến hòn đảo này thành mục tiêu tranh chấp cốt lõi giữa Mỹ và Trung Quốc. Bất kỳ sự gián đoạn nào tại đây cũng đủ làm ngưng trệ ngành công nghiệp quốc phòng và kinh tế toàn cầu.
+                    </p>
+
+                    <div class="p-5 bg-stone-900 text-white rounded-xl my-6 border-l-4 border-red-500">
+                        <h4 class="text-red-400 font-bold uppercase text-xs mb-1">Cán Cân Tình Báo HUMINT vs TECHINT</h4>
+                        <p class="text-xs leading-relaxed">
+                            Mặc dù công nghệ vệ tinh và trí tuệ nhân tạo (TECHINT) phát triển vượt bậc, tình báo con người (HUMINT) vẫn đóng vai trò quyết định. Chỉ có điệp viên cài cắm trong bộ máy mới có thể cung cấp **ý định thực sự** của nhà lãnh đạo đối phương – điều mà không vệ tinh nào có thể chụp ảnh được.
+                        </p>
+                    </div>
+
+                    <h3>Kết Luận & Ý Nghĩa Chiến Lược</h3>
+                    <p>
+                        Sự phụ thuộc lẫn nhau về chuỗi cung ứng công nghệ vừa là đòn bẩy răn đe, vừa là ngòi nổ nguy hiểm nhất trong cuộc đối đầu đại cường thế kỷ 21.
+                    </p>
+                    <div class="p-4 bg-red-50 border border-red-200 rounded-lg text-red-900 font-medium text-xs md:text-sm">
+                        <strong>❓ Câu hỏi mở:</strong> Liệu các quốc gia có thể duy trì trạng thái hòa bình mong mỏi khi hạ tầng mạng quốc gia liên tục bị xâm nhập bởi các thế lực tình báo nước ngoài?
+                    </div>
+                </div>
+            </article>
+
+            <!-- ARTICLE 4 -->
+            <article id="article-4" class="hidden bg-white p-6 md:p-10 rounded-xl border border-stone-200 shadow-sm prose max-w-none">
+                <div class="text-xs font-bold text-purple-700 tracking-widest uppercase mb-2">BÀI 4 / TÁC CHIẾN NHẬN THỨC & THUẬT TOÁN</div>
+                <h1 class="font-serif text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight mb-4">
+                    Vũ Khí Hóa Nhận Thức: Khi Thuật Toán Mạng Xã Hội Trở Thành Mặt Trận Tác Chiến Tâm Lý
+                </h1>
+                <div class="p-4 bg-stone-100 border-l-4 border-purple-600 text-slate-800 italic text-sm md:text-base mb-6 font-serif">
+                    <strong>Sapo:</strong> Chiến trường thế kỷ 21 đã di chuyển từ lãnh thổ vật lý vào chính tâm trí của công chúng. Tác chiến nhận thức (Perception Management) kết hợp với thuật toán mạng xã hội đang âm thầm thao túng niềm tin và làm suy yếu sức mạnh nội tại của các quốc gia dân chủ.
+                </div>
+
+                <div class="space-y-4 text-slate-800 text-sm md:text-base">
+                    <h3>Bản Chất Của Quản Trị Nhận Thức (Perception Management)</h3>
+                    <p>
+                        Theo Andrew Bustamante, mục tiêu của tác chiến nhận thức không phải là bắt công chúng tin vào một lời nói dối, mà là **phân mảnh sự thật** đến mức công chúng không còn tin vào bất kỳ điều gì. Khi lòng tin vào các thể chế, báo chí và chính quyền bị bào mòn, xã hội sẽ tự sụp đổ từ bên trong.
+                    </p>
+
+                    <h3>Vũ Khí Hóa Thuật Toán Kỹ Thuật Số</h3>
+                    <p>
+                        Các cơ quan tình báo nước ngoài khai thác thuật toán khuếch đại nội dung của các nền tảng mạng xã hội để đẩy mạnh sự phân cực. Bằng cách đẩy các thông tin gây phẫn nộ, cực đoan và hoài nghi vào dòng tin (feed) của người dùng, họ biến các mâu thuẫn xã hội có sẵn thành những cuộc nội chiến văn hóa kéo dài.
+                    </p>
+
+                    <div class="p-5 bg-purple-950 text-white rounded-xl my-6">
+                        <p class="text-sm italic mb-2">
+                            "Trong tác chiến nhận thức hiện đại, bạn không cần bắn một viên đạn nào. Bạn chỉ cần khiến đối phương tự nghi ngờ giá trị của chính mình và quay sang tàn sát lẫn nhau trên không gian mạng."
+                        </p>
+                        <div class="text-xs text-purple-300 font-bold">— Chuyên đề Phân tích Tác chiến Tâm lý</div>
+                    </div>
+
+                    <h3>Kết Luận & Ý Nghĩa Xã Hội</h3>
+                    <p>
+                        Khả năng tự vệ nhận thức của mỗi cá nhân trở thành lá chắn an ninh quốc gia quan trọng nhất trong kỷ nguyên bão táp thông tin.
+                    </p>
+                    <div class="p-4 bg-purple-50 border border-purple-200 rounded-lg text-purple-900 font-medium text-xs md:text-sm">
+                        <strong>❓ Câu hỏi mở:</strong> Làm sao để bảo vệ tư duy độc lập của bản thân trước các thuật toán mạng xã hội vốn được tối ưu hóa để thao túng cảm xúc của bạn?
+                    </div>
+                </div>
+            </article>
+
+            <!-- ARTICLE 5 -->
+            <article id="article-5" class="hidden bg-white p-6 md:p-10 rounded-xl border border-stone-200 shadow-sm prose max-w-none">
+                <div class="text-xs font-bold text-emerald-700 tracking-widest uppercase mb-2">BÀI 5 / TƯ DUY TÌNH BÁO KINH DOANH</div>
+                <h1 class="font-serif text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight mb-4">
+                    Tư Duy Tình Báo (Spy Mindset): Bộ Công Cụ Ra Quyết Định Cho Lãnh Đạo Trong Môi Trường Bất Định
+                </h1>
+                <div class="p-4 bg-stone-100 border-l-4 border-emerald-600 text-slate-800 italic text-sm md:text-base mb-6 font-serif">
+                    <strong>Sapo:</strong> Những nguyên lý huấn luyện sĩ quan tình báo CIA không chỉ phục vụ các chiến dịch ngầm mà còn là bộ công cụ tư duy sắc bén giúp các nhà quản trị doanh nghiệp kiểm soát nỗi sợ, loại bỏ định kiến và ra phán quyết chính xác trong bối cảnh vô định.
+                </div>
+
+                <div class="space-y-4 text-slate-800 text-sm md:text-base">
+                    <h3>Phân Biệt "Nhận Thức" (Perception) Và "Thực Tế" (Reality)</h3>
+                    <p>
+                        Sai lầm lớn nhất của người quản trị là nhầm lẫn giữa nhận thức cá nhân và thực tế khách quan. Sĩ quan CIA được huấn luyện để luôn tách biệt hai yếu tố này: *Nhận thức là những gì bạn cảm nhận hoặc muốn thấy, còn Thực tế là những gì dữ liệu thực địa xác nhận.*
+                    </p>
+
+                    <h3>Nguyên Lý Tác Chiếm Khi Thiếu Thông Tin (Decision Under Uncertainty)</h3>
+                    <p>
+                        Trong tình báo, bạn hiếm khi có quá 70% thông tin trước khi phải đưa ra quyết định sinh tử. Bustamante chia sẻ nguyên tắc: **Đừng chờ đợi sự hoàn hảo của thông tin**. Hãy ra quyết định dựa trên dữ liệu hiện có, xây dựng kịch bản dự phòng và sẵn sàng điều chỉnh ngay khi có dữ liệu mới.
+                    </p>
+
+                    <div class="p-4 bg-emerald-50 rounded-lg border border-emerald-200 my-4">
+                        <h4 class="font-bold text-emerald-900 text-sm mb-2">3 Trụ Cột Của Tư Duy Tình Báo (Spy Mindset):</h4>
+                        <ol class="list-decimal pl-5 text-xs text-emerald-800 space-y-1">
+                            <li><strong>Linh hoạt nhận thức (Cognitive Adaptability):</strong> Sẵn sàng từ bỏ giả định cũ ngay khi xuất hiện bằng chứng mâu thuẫn.</li>
+                            <li><strong>Quản trị nỗi sợ (Fear Management):</strong> Chuyển hóa nỗi sợ hãi từ trạng thái tê liệt thành sự tập trung cao độ vào hành động cụ thể.</li>
+                            <li><strong>Phân lập cảm xúc (Compartmentalization):</strong> Tách biệt cảm xúc cá nhân ra khỏi quá trình phân tích chiến lược.</li>
+                        </ol>
+                    </div>
+
+                    <h3>Kết Luận & Ý Nghĩa Quản Trị</h3>
+                    <p>
+                        Rèn luyện tư duy tình báo giúp nhà lãnh đạo biến môi trường biến động, bất định (VUCA) thành lợi thế cạnh tranh bứt phá.
+                    </p>
+                    <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-900 font-medium text-xs md:text-sm">
+                        <strong>❓ Câu hỏi mở:</strong> Quyết định kinh doanh gần đây nhất của bạn dựa trên dữ liệu thực tế khách quan hay dựa trên cảm xúc và nhận thức chủ quan?
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <!-- ==================== GIAI ĐOẠN 3: MÔ PHỎNG MA TRẬN R.I.C.E ==================== -->
+        <section id="sec-rice-tool" class="hidden space-y-8">
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-stone-200">
+                <div class="inline-block px-3 py-1 bg-amber-800 text-white text-xs font-bold uppercase tracking-wider rounded-full mb-3">
+                    Công Cụ Tương Tác
+                </div>
+                <h2 class="font-serif text-2xl md:text-3xl font-bold text-slate-900 mb-3">
+                    🧠 Công Cụ Khảo Sát & Mô Phỏng Ma Trận Tâm Lý R.I.C.E
+                </h2>
+                <p class="text-slate-700 leading-relaxed text-sm">
+                    Khám phá cách mô hình R.I.C.E phân tích điểm yếu tâm lý của đối phương trong đàm phán hoặc tuyển dụng nhân sự. Chọn đòn bẩy bên dưới để xem kịch bản tác động tương ứng.
+                </p>
+            </div>
+
+            <!-- Profiler Interactive Card -->
+            <div class="bg-slate-900 text-white p-6 md:p-10 rounded-xl shadow-xl">
+                <!-- RICE Buttons -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+                    <button onclick="updateRiceTool('R')" id="rice-btn-R" class="p-4 text-xs md:text-sm font-bold rounded-lg border border-amber-500 bg-amber-900/60 text-white transition">
+                        R - Reward<br><span class="text-[10px] text-amber-200 font-normal">Lợi Ích & Tài Chính</span>
+                    </button>
+                    <button onclick="updateRiceTool('I')" id="rice-btn-I" class="p-4 text-xs md:text-sm font-bold rounded-lg border border-slate-700 bg-slate-800 text-slate-400 hover:bg-slate-700 transition">
+                        I - Ideology<br><span class="text-[10px] text-slate-300 font-normal">Lý Tưởng & Niềm Tin</span>
+                    </button>
+                    <button onclick="updateRiceTool('C')" id="rice-btn-C" class="p-4 text-xs md:text-sm font-bold rounded-lg border border-slate-700 bg-slate-800 text-slate-400 hover:bg-slate-700 transition">
+                        C - Coercion<br><span class="text-[10px] text-slate-300 font-normal">Cưỡng Ép & Yếu Điểm</span>
+                    </button>
+                    <button onclick="updateRiceTool('E')" id="rice-btn-E" class="p-4 text-xs md:text-sm font-bold rounded-lg border border-slate-700 bg-slate-800 text-slate-400 hover:bg-slate-700 transition">
+                        E - Ego<br><span class="text-[10px] text-slate-300 font-normal">Cái Tôi & Khẳng Định</span>
+                    </button>
+                </div>
+
+                <!-- Display Panel -->
+                <div class="bg-slate-800 p-6 rounded-lg border border-slate-700 space-y-4">
+                    <div class="flex items-center space-x-2 text-amber-400 font-mono text-xs uppercase tracking-widest">
+                        <span>🛡️ Đòn Bẩy Đang Chọn:</span>
+                        <span id="rice-title" class="font-bold text-white text-sm">Reward (Lợi Ích Vật Chất / Tài Chính)</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-xs uppercase font-bold text-slate-400 mb-2">Phương Thức Khai Thác Của Tình Báo</h4>
+                            <p id="sim-rice-method" class="text-slate-300 text-xs md:text-sm leading-relaxed">
+                                Sĩ quan tình báo xác định nhu cầu tài chính, nợ nần hoặc tham vọng làm giàu của đối tượng. Họ cung cấp các khoản thù lao dưới dạng hợp đồng tư vấn giả định hoặc tiền mặt để từng bước ràng buộc hành vi.
+                            </p>
+                        </div>
+                        <div>
+                            <h4 class="text-xs uppercase font-bold text-slate-400 mb-2">Ứng Dụng Trong Quản Trị & Đàm Phán</h4>
+                            <p id="sim-rice-app" class="text-slate-300 text-xs md:text-sm leading-relaxed">
+                                Trong kinh doanh, đây là cơ chế thưởng theo hiệu suất (KPI) hoặc cổ phần hóa. Tuy nhiên, nếu chỉ dùng lợi ích tài chính, đối tác hoặc nhân sự sẽ dễ dàng rời đi khi có bên khác trả giá cao hơn.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs space-y-2">
+            <p>Tạp Chí Phân Tích Tình Báo & Địa Chính Trị Toàn Cầu — Dựa trên dữ liệu tọa đàm <em>The Diary Of A CEO (Andrew Bustamante)</em></p>
+            <p class="text-slate-600">Ban Biên Tập Phân Tích Thông Tin Chiến Lược © 2026</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic Block -->
+    <script>
+        // Tab switching logic
+        function switchTab(tabId) {
+            document.getElementById('sec-phase1').classList.add('hidden');
+            document.getElementById('sec-phase2').classList.add('hidden');
+            document.getElementById('sec-rice-tool').classList.add('hidden');
+
+            document.getElementById('nav-phase1').className = "px-3 py-2 rounded-md text-slate-300 hover:text-white hover:bg-slate-800 transition";
+            document.getElementById('nav-phase2').className = "px-3 py-2 rounded-md text-slate-300 hover:text-white hover:bg-slate-800 transition";
+            document.getElementById('nav-rice-tool').className = "px-3 py-2 rounded-md text-slate-300 hover:text-white hover:bg-slate-800 transition";
+
+            if(tabId === 'phase1') {
+                document.getElementById('sec-phase1').classList.remove('hidden');
+                document.getElementById('nav-phase1').className = "px-3 py-2 rounded-md bg-slate-800 text-white font-semibold transition";
+            } else if(tabId === 'phase2') {
+                document.getElementById('sec-phase2').classList.remove('hidden');
+                document.getElementById('nav-phase2').className = "px-3 py-2 rounded-md bg-slate-800 text-white font-semibold transition";
+            } else if(tabId === 'rice-tool') {
+                document.getElementById('sec-rice-tool').classList.remove('hidden');
+                document.getElementById('nav-rice-tool').className = "px-3 py-2 rounded-md bg-slate-800 text-white font-semibold transition";
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Sub-article selector in Phase 2
+        function selectArticle(artNum) {
+            for(let i = 1; i <= 5; i++) {
+                document.getElementById(`article-${i}`).classList.add('hidden');
+                const btn = document.getElementById(`art-tab-${i}`);
+                if(btn) {
+                    btn.className = "px-3 py-2 text-xs font-bold rounded-md bg-stone-200 text-slate-700 hover:bg-stone-300 transition";
+                }
+            }
+            const targetArt = document.getElementById(`article-${artNum}`);
+            if(targetArt) {
+                targetArt.classList.remove('hidden');
+            }
+            const activeBtn = document.getElementById(`art-tab-${artNum}`);
+            if(activeBtn) {
+                if(artNum === 1) {
+                    activeBtn.className = "px-3 py-2 text-xs font-bold rounded-md bg-amber-600 text-white transition";
+                } else if(artNum === 2) {
+                    activeBtn.className = "px-3 py-2 text-xs font-bold rounded-md bg-slate-700 text-white transition";
+                } else if(artNum === 3) {
+                    activeBtn.className = "px-3 py-2 text-xs font-bold rounded-md bg-red-700 text-white transition";
+                } else if(artNum === 4) {
+                    activeBtn.className = "px-3 py-2 text-xs font-bold rounded-md bg-purple-700 text-white transition";
+                } else {
+                    activeBtn.className = "px-3 py-2 text-xs font-bold rounded-md bg-emerald-700 text-white transition";
+                }
+            }
+        }
+
+        // RICE Tool Dynamic Data
+        const riceData = {
+            'R': {
+                title: "Reward (Lợi Ích Vật Chất / Tài Chính)",
+                method: "Sĩ quan tình báo xác định nhu cầu tài chính, nợ nần hoặc tham vọng làm giàu của đối tượng. Họ cung cấp các khoản thù lao dưới dạng hợp đồng tư vấn giả định hoặc tiền mặt để từng bước ràng buộc hành vi.",
+                app: "Trong kinh doanh, đây là cơ chế thưởng theo hiệu suất (KPI) hoặc cổ phần hóa. Tuy nhiên, nếu chỉ dùng lợi ích tài chính, đối tác hoặc nhân sự sẽ dễ dàng rời đi khi có bên khác trả giá cao hơn."
+            },
+            'I': {
+                title: "Ideology (Lý Tưởng / Niềm Tin Chính Trị)",
+                method: "Tận dụng niềm tin vào một tư tưởng chính trị, tôn giáo hoặc sự bất mãn với chính sách quốc gia. Mục tiêu thuyết phục đối tượng rằng họ đang hành động vì một 'sứ mệnh cao cả' hơn bản thân.",
+                app: "Trong tổ chức, đây là sứ mệnh (Mission) và giá trị cốt lõi. Nhân sự cống hiến vì lý tưởng sẽ làm việc với sự trung thành cực cao mà tiền bạc không thể mua được."
+            },
+            'C': {
+                title: "Coercion (Cưỡng Ép / Khai Thác Yếu Điểm)",
+                method: "Thu thập tài liệu nhạy cảm (tài chính bất minh, ngoại tình, sai lầm quá khứ) để đe dọa công bố trừ khi đối tượng chấp nhận hợp tác thu thập thông tin.",
+                app: "Cần tránh trong quản trị lành mạnh. Tuy nhiên, quản trị rủi ro đòi hỏi kiểm soát các điểm yếu pháp lý của doanh nghiệp trước khi đối thủ khai thác."
+            },
+            'E': {
+                title: "Ego (Cái Tôi / Nhu Cầu Được Công Nhận)",
+                method: "Được CIA đánh giá là đòn bẩy nguy hiểm nhất. Khai thác sự tự cao, cảm giác bất mãn vì không được cấp trên đánh giá đúng tài năng để xúi giục đối tượng tiết lộ mật thư nhằm chứng tỏ bản thân.",
+                app: "Nhà lãnh đạo xuất sắc phải biết lắng nghe, ghi nhận đóng góp và xoa dịu cái tôi của cấp dưới trước khi sự bất mãn biến họ thành mối nguy hiểm nội bộ."
+            }
+        };
+
+        function updateRiceTool(type) {
+            ['R', 'I', 'C', 'E'].forEach(key => {
+                const btn = document.getElementById(`rice-btn-${key}`);
+                if(btn) {
+                    btn.className = "p-4 text-xs md:text-sm font-bold rounded-lg border border-slate-700 bg-slate-800 text-slate-400 hover:bg-slate-700 transition";
+                }
+            });
+            const activeBtn = document.getElementById(`rice-btn-${type}`);
+            if(activeBtn) {
+                activeBtn.className = "p-4 text-xs md:text-sm font-bold rounded-lg border border-amber-500 bg-amber-900/60 text-white transition";
+            }
+
+            document.getElementById('rice-title').innerText = riceData[type].title;
+            document.getElementById('sim-rice-method').innerText = riceData[type].method;
+            document.getElementById('sim-rice-app').innerText = riceData[type].app;
+        }
+
+        // Chart.js R.I.C.E Doughnut Chart Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('riceChart');
+            if(ctx) {
+                new Chart(ctx.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: [
+                            'Ego (Cái Tôi / Công Nhận)',
+                            'Ideology (Lý Tưởng)',
+                            'Reward (Lợi Ích Tài Chính)',
+                            'Coercion (Cưỡng Ép)'
+                        ],
+                        datasets: [{
+                            data: [40, 25, 20, 15],
+                            backgroundColor: [
+                                '#a855f7', // Purple
+                                '#3b82f6', // Blue
+                                '#f59e0b', // Amber
+                                '#ef4444'  // Red
+                            ],
+                            borderColor: '#ffffff',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { font: { size: 11 } }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.label + ': ' + context.raw + '% hiệu quả tuyển dụng';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

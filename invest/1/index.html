@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cathie Wood & ARK Invest: Phân Tích Điểm Uốn Công Nghệ & Luận Điểm Đầu Tư</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#2563eb',
+                            600: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        },
+                        amberGold: {
+                            500: '#d97706',
+                            600: '#b45309',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 680px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 340px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 380px;
+            }
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-blue-100 selection:text-blue-900">
+
+    <!-- Mandatory Required Placeholder Comments -->
+    <!-- Chosen Palette: Slate & Warm Amber Innovation - A clean light slate background (#f8fafc) paired with deep navy structure elements (#1e3a8a), vibrant blue accents (#2563eb), and warm amber highlights (#d97706) for key financial projections and data visual distinction. -->
+    <!-- Application Structure Plan: Designed as a 6-module interactive intelligence dashboard rather than a linear text document. 1. Executive Summary & Top Metrics Bar (immediate macro context). 2. Convergence Matrix & Wright's Law Cost Dynamics (interactive technology platform map with dynamic cost reduction curves). 3. Interactive Tesla & Robotaxi Valuation Simulator (allows readers to test Cathie Wood's $2,600 share price target by adjusting per-mile fare and market adoption rates). 4. AI Value Chain Migration & Optimus Robotics (visual comparison of Hardware vs Software margin shifts). 5. Bitcoin $1.5M & Genomic Medicine deep dives. 6. Content Audit & Fact-Check Matrix (crucial journalistic layer separating backed data from personal bias and conflict of interest). 7. Article Publishing Pipeline (preview drafts for content strategy). This non-linear thematic navigation maximizes analytical clarity and decision-making utility. -->
+    <!-- Visualization & Content Choices: 
+        1. Wright's Law Cost Reduction -> Interactive Line Chart (Chart.js) -> User toggles platforms to see cost curves -> Demonstrates compounding cost drops -> Chart.js Canvas.
+        2. Tesla Valuation Breakdown -> Doughnut Chart (Chart.js) -> Hovering highlights Robotaxi vs EV vs Energy -> Shows 90% reliance on Robotaxi.
+        3. Tesla Share Price Calculator -> Interactive Sliders & JS Math Engine -> Dynamic recalculation -> User tests sensitivity of $2,600 price target.
+        4. AI Value Chain Shift -> Stacked Bar Chart (Chart.js) -> Multi-year trajectory of Compute vs Application revenue -> Visualizes Nvidia to Palantir value shift.
+        5. Content Audit Matrix -> Filterable HTML Grid with Status Badges -> User filters by Data-Backed, Speculative, Conflicts, or Counter-Arguments -> Provides objective balance.
+        Confirming: NO SVG graphics used, NO Mermaid JS used.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- TOP HEADER -->
+    <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div class="flex items-center space-x-3">
+                <span class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-blue-600 text-white font-black text-xl tracking-wider">ARK</span>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight text-white leading-snug">Hồ Sơ Tương Tác: Điểm Uốn Công Nghệ & Báo Cáo Phân Tích ARK Invest</h1>
+                    <p class="text-xs text-slate-400">Dựa trên cuộc đối thoại giữa Cathie Wood & Steven Bartlett (*The Diary Of A CEO* • 101 phút)</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 self-start md:self-auto">
+                <span class="bg-blue-900/80 text-blue-300 text-xs px-2.5 py-1 rounded-full border border-blue-700/50 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Phân tích Chuyên sâu 2026
+                </span>
+                <a href="https://www.youtube.com/watch?v=ZznpMh0DegE" target="_blank" rel="noopener" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1">
+                    <span>Xem Podcast Gốc</span> ↗
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- METRICS OVERVIEW BAR -->
+    <section class="bg-white border-b border-slate-200 py-4 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4">
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/80 hover:border-blue-300 transition cursor-pointer" onclick="switchTab('tab-convergence')">
+                    <div class="text-xs text-slate-500 font-medium uppercase tracking-wider">Hội tụ Công nghệ</div>
+                    <div class="text-xl font-extrabold text-blue-900 mt-0.5">5 Nền Tảng</div>
+                    <div class="text-[11px] text-emerald-600 font-semibold mt-1">AI, Pin, Robot, Chain, Gen</div>
+                </div>
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/80 hover:border-blue-300 transition cursor-pointer" onclick="switchTab('tab-tesla')">
+                    <div class="text-xs text-slate-500 font-medium uppercase tracking-wider">Mục tiêu Định giá Tesla</div>
+                    <div class="text-xl font-extrabold text-blue-900 mt-0.5">$2.600 <span class="text-xs font-normal text-slate-500">/ cổ phiếu</span></div>
+                    <div class="text-[11px] text-amber-600 font-semibold mt-1">90% Giá trị từ Robotaxi</div>
+                </div>
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/80 hover:border-blue-300 transition cursor-pointer" onclick="switchTab('tab-tesla')">
+                    <div class="text-xs text-slate-500 font-medium uppercase tracking-wider">Thị trường Robotaxi</div>
+                    <div class="text-xl font-extrabold text-blue-900 mt-0.5">$10.000 Tỷ</div>
+                    <div class="text-[11px] text-slate-600 mt-1">Giảm cước xuống $0.25/dặm</div>
+                </div>
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/80 hover:border-blue-300 transition cursor-pointer" onclick="switchTab('tab-ai-software')">
+                    <div class="text-xs text-slate-500 font-medium uppercase tracking-wider">Robot Optimus</div>
+                    <div class="text-xl font-extrabold text-blue-900 mt-0.5">$26.000 Tỷ</div>
+                    <div class="text-[11px] text-slate-600 mt-1">Tự động hóa lao động chân tay</div>
+                </div>
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/80 hover:border-blue-300 transition cursor-pointer" onclick="switchTab('tab-bitcoin')">
+                    <div class="text-xs text-slate-500 font-medium uppercase tracking-wider">Dự báo Bitcoin 2030</div>
+                    <div class="text-xl font-extrabold text-amber-600 mt-0.5">$1.500.000</div>
+                    <div class="text-[11px] text-slate-600 mt-1">Bảo hộ chống lạm phát fiat</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN NAVIGATION TABS -->
+    <nav class="bg-slate-100 border-b border-slate-200 sticky top-[61px] z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex space-x-1 sm:space-x-2 overflow-x-auto py-2 scrollbar-none text-xs sm:text-sm font-medium">
+                <button onclick="switchTab('tab-convergence')" id="btn-tab-convergence" class="tab-btn px-3.5 py-2 rounded-lg transition whitespace-nowrap bg-blue-600 text-white font-semibold shadow-sm">
+                    🌐 1. Hội Tụ 5 Nền Tảng
+                </button>
+                <button onclick="switchTab('tab-tesla')" id="btn-tab-tesla" class="tab-btn px-3.5 py-2 rounded-lg transition whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-200/70">
+                    🚗 2. Tesla & Giả Lập Robotaxi
+                </button>
+                <button onclick="switchTab('tab-ai-software')" id="btn-tab-ai-software" class="tab-btn px-3.5 py-2 rounded-lg transition whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-200/70">
+                    🔄 3. Nvidia ➔ Palantir & Optimus
+                </button>
+                <button onclick="switchTab('tab-bitcoin')" id="btn-tab-bitcoin" class="tab-btn px-3.5 py-2 rounded-lg transition whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-200/70">
+                    ₿ 4. Bitcoin & Y Học Gen
+                </button>
+                <button onclick="switchTab('tab-audit')" id="btn-tab-audit" class="tab-btn px-3.5 py-2 rounded-lg transition whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-200/70">
+                    ⚖️ 5. Bắt Bệnh & Fact-Check
+                </button>
+                <button onclick="switchTab('tab-articles')" id="btn-tab-articles" class="tab-btn px-3.5 py-2 rounded-lg transition whitespace-nowrap text-slate-600 hover:text-slate-900 hover:bg-slate-200/70">
+                    📰 6. Chuỗi Bài Đề Xuất
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+
+        <!-- ================= TAB 1: CONVERGENCE & WRIGHT'S LAW ================= -->
+        <section id="tab-convergence" class="tab-content space-y-6">
+            <!-- Introductory Section Paragraph -->
+            <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-2.5 py-1 rounded">Chủ đề 1 • [05:12 - 18:45]</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-2">Sự Hội Tụ Đồng Thời 5 Nền Tảng Công Nghệ & Định Luật Wright</h2>
+                <p class="text-slate-600 text-sm sm:text-base leading-relaxed mt-2">
+                    Nền kinh tế toàn cầu đang đứng trước một điểm uốn lịch sử chưa từng có. Khác với các cuộc cách mạng công nghiệp trong quá khứ vốn chỉ vận hành dựa trên một động lực đơn lẻ (như máy hơi nước, điện thoại hay Internet), thời đại hiện nay witnessed sự hội tụ đồng thời của <strong>5 nền tảng công nghệ đổi mới</strong>: Trí tuệ nhân tạo (AI), Lưu trữ năng lượng, Robot học, Chuỗi khối (Blockchain) và Đa hệ gen (Genomics). Các công nghệ này tuân theo <em>Định luật Wright</em>—chi phí đơn vị giảm theo tỷ lệ cố định mỗi khi sản lượng tích lũy tăng gấp đôi—tạo ra phản ứng dây chuyền làm bùng nổ năng suất toàn cầu.
+                </p>
+            </div>
+
+            <!-- Grid Layout for Convergence Explorer -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Platform Selector Interactive List -->
+                <div class="lg:col-span-5 space-y-3">
+                    <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <span>⚡ Khám phá 5 Động Lực Hội Tụ</span>
+                        <span class="text-xs font-normal text-slate-500">(Bấm để xem chi tiết & tác động)</span>
+                    </h3>
+
+                    <div id="platform-cards" class="space-y-2.5">
+                        <!-- Dynamic render via JS -->
+                    </div>
+                </div>
+
+                <!-- Detail View & Chart Container -->
+                <div class="lg:col-span-7 flex flex-col gap-6">
+                    <!-- Selected Platform Card -->
+                    <div id="platform-detail-box" class="bg-blue-900 text-white p-5 sm:p-6 rounded-2xl shadow-md border border-blue-800 flex-grow">
+                        <!-- Content updated by JS -->
+                    </div>
+
+                    <!-- Wright's Law Chart Block -->
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-sm sm:text-base">Mô phỏng Giảm Chi Phí Theo Định Luật Wright</h4>
+                                <p class="text-xs text-slate-500">Mối quan hệ giữa sản lượng tích lũy (Cumulative Output) & chi phí đơn vị</p>
+                            </div>
+                            <span class="text-[11px] bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md font-mono">Cost Drops ~15%-40% per doubling</span>
+                        </div>
+
+                        <div class="chart-container">
+                            <canvas id="wrightsLawChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Apple Incumbent Threat Deep-Dive -->
+            <div class="bg-amber-50 border border-amber-200/80 rounded-2xl p-5 sm:p-6">
+                <div class="flex items-start gap-3">
+                    <span class="text-2xl">⚠️</span>
+                    <div>
+                        <h4 class="font-bold text-amber-950 text-base sm:text-lg">Cảnh Báo Cho Gã Khổng Lồ Đương Nhiệm: "Bẫy Bò Sữa" Của Apple</h4>
+                        <p class="text-amber-900/90 text-sm leading-relaxed mt-1">
+                            Cathie Wood chỉ ra rằng Apple đang gặp nguy cơ lớn khi phụ thuộc quá nhiều vào chu kỳ nâng cấp phần cứng khép kín (iPhone hardware cycles). Nếu không làm chủ được lớp <strong>AI Agent tự chủ</strong> và chỉ tập trung bảo vệ hệ sinh thái đóng App Store, Apple nguy cơ biến thành "bò sữa tiền mặt" (cash cow) tăng trưởng chậm của một kỷ nguyên đã qua. Dòng tiền thặng dư đang chuyển hướng sang các nền tảng ứng dụng tích hợp AI linh hoạt hơn.
+                        </p>
+                        <blockquote class="mt-3 border-l-4 border-amber-500 pl-3 italic text-xs sm:text-sm text-amber-900 font-medium">
+                            "Traditional giants that rely solely on hardware upgrade cycles risk becoming cash cows of a bygone era." <span class="font-bold font-sans non-italic text-amber-950">[12:30] — Cathie Wood</span>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: TESLA & ROBOTAXI SIMULATOR ================= -->
+        <section id="tab-tesla" class="tab-content space-y-6 hidden">
+            <!-- Introductory Section Paragraph -->
+            <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-2.5 py-1 rounded">Chủ đề 2 • [22:10 - 38:15]</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-2">Mạng Lưới Taxi Tự Hành $10.000 Tỷ USD & Luận Điểm Định Giá Tesla $2.600</h2>
+                <p class="text-slate-600 text-sm sm:text-base leading-relaxed mt-2">
+                    Mức giá mục tiêu **$2.600/cổ phiếu** của ARK Invest dành cho Tesla trong vòng 5 năm tới không dựa trên doanh số bán xe điện truyền thống, mà đặt cược 90% giá trị vào mạng lưới **Robotaxi tự hành**. Bằng cách hội tụ ba nền tảng công nghệ: Trí tuệ nhân tạo (Full Self-Driving), Pin lưu trữ năng lượng và Xe điện, Tesla được dự báo sẽ giảm chi phí di chuyển mỗi dặm từ **$2.00–$4.00** (xe taxi truyền thống/Uber) xuống chỉ còn **$0.25/dặm**, biến ô tô từ tài sản tiêu sản thành cỗ máy sinh dòng tiền tự động.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Interactive Valuation Calculator -->
+                <div class="lg:col-span-6 bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                            <h3 class="font-bold text-slate-900 text-base">🧮 Giả Lập Định Giá Cổ Phiếu Tesla (ARK Model)</h3>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-0.5 rounded-full font-semibold">Công cụ tương tác</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2">Thay đổi các tham số dưới đây để xem tác động trực tiếp tới Giá mục tiêu và Doanh thu mạng lưới Robotaxi:</p>
+
+                        <!-- Sliders -->
+                        <div class="space-y-5 mt-5">
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                                    <label for="slider-fare">Giá cước di chuyển mỗi dặm (Per-mile Fare):</label>
+                                    <span id="val-fare" class="text-blue-600 font-bold">$0.25 / dặm</span>
+                                </div>
+                                <input type="range" id="slider-fare" min="0.15" max="1.50" step="0.05" value="0.25" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600" oninput="updateTeslaCalc()">
+                                <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                                    <span>$0.15 (Siêu rẻ)</span>
+                                    <span>$0.25 (ARK Base)</span>
+                                    <span>$1.50 (Uber/Taxi hiện tại)</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                                    <label for="slider-fleet">Quy mô đội xe Robotaxi hoạt động (Tỷ dặm/năm):</label>
+                                    <span id="val-fleet" class="text-blue-600 font-bold">120 Tỷ dặm</span>
+                                </div>
+                                <input type="range" id="slider-fleet" min="20" max="300" step="10" value="120" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600" oninput="updateTeslaCalc()">
+                                <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                                    <span>20B dặm (Ban đầu)</span>
+                                    <span>120B dặm (ARK 2029 Target)</span>
+                                    <span>300B dặm (Toàn cầu)</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                                    <label for="slider-take-rate">Tỷ lệ chia sẻ doanh thu của Tesla (Take Rate):</label>
+                                    <span id="val-take-rate" class="text-blue-600 font-bold">50%</span>
+                                </div>
+                                <input type="range" id="slider-take-rate" min="20" max="80" step="5" value="50" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600" oninput="updateTeslaCalc()">
+                                <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                                    <span>20% (Thấp)</span>
+                                    <span>50% (Tiêu chuẩn ARK)</span>
+                                    <span>80% (Độc quyền cao)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calculated Output Display Box -->
+                    <div class="mt-6 bg-slate-900 text-white p-4 sm:p-5 rounded-xl space-y-3">
+                        <div class="grid grid-cols-2 gap-4 text-center border-b border-slate-800 pb-3">
+                            <div>
+                                <div class="text-[11px] text-slate-400 font-medium">Doanh thu Mạng lưới/năm</div>
+                                <div id="calc-net-revenue" class="text-xl sm:text-2xl font-black text-amber-400 mt-0.5">$30.0 Tỷ</div>
+                            </div>
+                            <div>
+                                <div class="text-[11px] text-slate-400 font-medium">Định giá Cổ phiếu Ước tính</div>
+                                <div id="calc-share-price" class="text-xl sm:text-2xl font-black text-emerald-400 mt-0.5">$2.600</div>
+                            </div>
+                        </div>
+                        <p id="calc-status-note" class="text-xs text-slate-300 italic text-center">
+                            Kịch bản cơ sở của ARK: Giúp Tesla đạt Vốn hóa ~8.000 Tỷ USD vào năm 2029.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Tesla Valuation Composition Chart & Key Quotes -->
+                <div class="lg:col-span-6 flex flex-col gap-6">
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex-grow">
+                        <h4 class="font-bold text-slate-900 text-sm sm:text-base mb-1">Cấu Trúc Định Giá Tesla $2.600 Theo ARK Invest</h4>
+                        <p class="text-xs text-slate-500 mb-3">Tỷ trọng các mảng kinh doanh đóng góp vào giá trị trị giá vốn hóa năm 2029</p>
+
+                        <div class="chart-container">
+                            <canvas id="teslaDoughnutChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Key Quote Card -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 sm:p-5">
+                        <div class="text-xs font-bold text-blue-800 uppercase tracking-wider mb-1">Trích dẫn đắt giá [28:15]</div>
+                        <blockquote class="text-slate-800 text-sm font-medium italic leading-relaxed">
+                            "Autonomous taxi networks are the biggest AI project in the world today, driving cost per mile down to 25 cents and opening an $8 to $10 trillion global revenue opportunity."
+                        </blockquote>
+                        <div class="mt-2 text-right text-xs font-bold text-blue-900">— Cathie Wood</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: AI VALUE CHAIN & OPTIMUS ================= -->
+        <section id="tab-ai-software" class="tab-content space-y-6 hidden">
+            <!-- Introductory Section Paragraph -->
+            <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-2.5 py-1 rounded">Chủ đề 3 & 4 • [40:00 - 1:08:20]</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-2">Sự Dịch Chuyển Chuỗi Giá Trị AI & Kỷ Nguyên Robot Hình Người (Optimus)</h2>
+                <p class="text-slate-600 text-sm sm:text-base leading-relaxed mt-2">
+                    Trong làn sóng AI đầu tiên, phần lớn dòng vốn tập trung vào tầng hạ tầng bán dẫn thô (Nvidia). Tuy nhiên, Cathie Wood nhận định biên lợi nhuận của hạ tầng phần cứng sẽ đối mặt với áp lực thu hẹp khi các trung tâm dữ liệu hoàn thành giai đoạn lắp đặt. Giá trị thặng dư kinh tế bền vững đang dịch chuyển mạnh mẽ sang **lớp phần mềm ứng dụng doanh nghiệp** (như Palantir, Shopify)—nơi sở hữu dữ liệu thực địa độc quyền. Song song đó, robot hình người (như Optimus) đang mở ra thị trường tự động hóa lao động chân tay trị giá tới **$26.000 Tỷ USD**.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Hardware vs Software Shift Chart -->
+                <div class="lg:col-span-7 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-bold text-slate-900 text-sm sm:text-base">Dự Báo Tỷ Trọng Giá Trị: Phần Cứng (Nvidia) vs Phần Mềm (Palantir)</h3>
+                        <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">2023 - 2030 Projections</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mb-4">Sự luân chuyển dòng vốn từ nhà cung cấp chip hạ tầng sang các phần mềm khai thác dữ liệu độc quyền.</p>
+
+                    <div class="chart-container">
+                        <canvas id="aiShiftChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Comparison Table & Optimus Highlights -->
+                <div class="lg:col-span-5 flex flex-col gap-4">
+                    <!-- Hardware vs Software Logic Comparison -->
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex-grow">
+                        <h4 class="font-bold text-slate-900 text-sm border-b border-slate-100 pb-2 mb-3">So Sánh Luận Điểm Phân Bổ Tài Sản</h4>
+                        
+                        <div class="space-y-3 text-xs">
+                            <div class="p-3 rounded-lg bg-slate-50 border border-slate-200">
+                                <div class="font-bold text-slate-800 text-sm flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                                    Bán Dẫn & Hạ Tầng (Nvidia)
+                                </div>
+                                <p class="text-slate-600 mt-1 leading-normal">
+                                    Đã đạt đỉnh biên lợi nhuận ngắn hạn. Khi khách hàng hoàn thành xây dựng hạ tầng GPU, chu kỳ mua sắm sẽ chững lại, áp lực cạnh tranh giá xuất hiện.
+                                </p>
+                            </div>
+
+                            <div class="p-3 rounded-lg bg-blue-50 border border-blue-200">
+                                <div class="font-bold text-blue-900 text-sm flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                                    Phần Mềm Doanh Nghiệp (Palantir)
+                                </div>
+                                <p class="text-blue-950 mt-1 leading-normal">
+                                    Sở hữu dữ liệu vận hành quy trình kinh doanh thực tế. Tạo ra doanh thu bền vững gấp 8x - 20x so với chi phí phần cứng ban đầu.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Optimus Robot Macro Card -->
+                    <div class="bg-gradient-to-br from-slate-900 to-blue-950 text-white p-5 rounded-2xl shadow-sm">
+                        <div class="text-xs font-bold text-blue-400 uppercase tracking-widest mb-1">Thị Trường $26.000 Tỷ USD</div>
+                        <h4 class="text-lg font-bold">Robot Hình Người Optimus</h4>
+                        <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+                            Giải pháp căn cơ cho cuộc khủng hoảng suy giảm lực lượng lao động toàn cầu. Robot Optimus sẽ làm thay các công việc chân tay nguy hiểm, lặp đi lặp lại trong sản xuất và kho vận với chi phí vận hành cực thấp.
+                        </p>
+                        <blockquote class="mt-3 text-[11px] border-l-2 border-amber-400 pl-2 italic text-slate-200">
+                            "Humanoid robots will automate physical labor, creating a $26 trillion revenue opportunity as population growth slows." [45:10]
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: BITCOIN & GENOMICS ================= -->
+        <section id="tab-bitcoin" class="tab-content space-y-6 hidden">
+            <!-- Introductory Section Paragraph -->
+            <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-2.5 py-1 rounded">Chủ đề 5 & 6 • [1:10:00 - 1:38:15]</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-2">Bitcoin $1,5 Triệu USD & Y Học Thuật Toán Đa Hệ Gen (CRISPR)</h2>
+                <p class="text-slate-600 text-sm sm:text-base leading-relaxed mt-2">
+                    Bên cạnh AI và Robot, hai trụ cột công nghệ đột phá còn lại trong danh mục của ARK bao gồm **Hạ tầng Tài chính Số (Bitcoin)** và **Y học Thuật toán (CRISPR & Gen)**. Bitcoin được coi là hệ thống tiền tệ kỹ thuật số dựa trên quy tắc bất biến đầu tiên trong lịch sử, đóng vai trò lá chắn bảo vệ tài sản chống lại sự xói mòn sức mua của tiền pháp định. Trong khi đó, việc kết hợp AI với công nghệ chỉnh sửa gen CRISPR đang chuyển dịch y tế từ điều trị triệu chứng bị động sang chữa dứt điểm căn nguyên bệnh tật.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Bitcoin Scenario Card & Chart -->
+                <div class="lg:col-span-6 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold text-slate-900 text-base">₿ Các Kịch Bản Định Giá Bitcoin 2030 (ARK Model)</h3>
+                            <span class="bg-amber-100 text-amber-800 text-xs px-2.5 py-0.5 rounded-full font-bold">Mục tiêu $1.5M</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-4">Các mức giá mục tiêu dựa trên tỷ lệ phân bổ của các tổ chức tài chính toàn cầu.</p>
+
+                        <div class="chart-container">
+                            <canvas id="bitcoinChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-950">
+                        <strong>Luận điểm cốt lõi [1:15:30]:</strong> "Bitcoin is the first global, rules-based monetary system in history, acting as a hedge against fiat debasement." Với nguồn cung cố định 21 triệu đồng, Bitcoin hoạt động độc lập khỏi chính sách can thiệp của các ngân hàng trung ương.
+                    </div>
+                </div>
+
+                <!-- Genomic Medicine & CRISPR Pathway -->
+                <div class="lg:col-span-6 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold text-slate-900 text-base">🧬 Y Học Thuật Toán & Công Nghệ CRISPR</h3>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-0.5 rounded-full font-bold">Chữa Dứt Điểm</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-3">Sự dịch chuyển từ y tế phản ứng (Reactive) sang chữa tận gốc bệnh di truyền nhờ AI + Gen.</p>
+
+                        <div class="space-y-3 mt-4">
+                            <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200">
+                                <div class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs flex-shrink-0">1</div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-xs">Giải Trình Tự Gen Giá Rẻ</h4>
+                                    <p class="text-slate-600 text-[11px] mt-0.5">Chi phí giải trình tự bộ gen người giảm từ hàng triệu USD xuống chỉ còn vài trăm USD nhờ Định luật Wright.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200">
+                                <div class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs flex-shrink-0">2</div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-xs">Chẩn Đoán Sớm Qua Sinh Thiết Lỏng (Tempus AI)</h4>
+                                    <p class="text-slate-600 text-[11px] mt-0.5">Mô hình AI phân tích hàng nghìn mẫu máu để phát hiện mầm mống ung thư ở giai đoạn sơ khai nhất.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3 p-3 rounded-xl bg-emerald-50 border border-emerald-200">
+                                <div class="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">3</div>
+                                <div>
+                                    <h4 class="font-bold text-emerald-950 text-xs">Chỉnh Sửa Gen CRISPR Chữa Tận Gốc</h4>
+                                    <p class="text-emerald-900 text-[11px] mt-0.5">Thương mại hóa các liệu pháp mã hóa ADN để chữa dứt điểm bệnh hiểm nghèo chỉ trong 1 lần điều trị.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <blockquote class="mt-4 border-l-4 border-emerald-500 pl-3 text-xs italic text-slate-700">
+                        "By combining AI with genomic sequencing, we can shift healthcare from reactive treatment to curative intervention." [1:31:00]
+                    </blockquote>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 5: CONTENT AUDIT & FACT-CHECK MATRIX ================= -->
+        <section id="tab-audit" class="tab-content space-y-6 hidden">
+            <!-- Introductory Section Paragraph -->
+            <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-xs font-bold text-amber-600 uppercase tracking-widest bg-amber-50 px-2.5 py-1 rounded">Bắt Bệnh Nội Dung & Kiểm Chứng Tranh Cãi</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-2">Báo Cáo Bắt Bệnh Nội Dung (Content Audit & Fact-Check)</h2>
+                <p class="text-slate-600 text-sm sm:text-base leading-relaxed mt-2">
+                    Để đảm bảo nguyên tắc báo chí **"Chính xác trước, sắc bén sau, hay cuối cùng"**, phần này phân tích độc lập các tuyên bố của Cathie Wood. Chúng tôi phân tách rõ ràng giữa: dữ liệu thực chứng có căn cứ, giả định định giá mang tính cá nhân, xung đột lợi ích tiềm ẩn (khi ARK nắm giữ lượng lớn cổ phiếu Tesla, Palantir, Coinbase) và những lỗ hổng lập luận quan trọng (như ảnh hưởng của môi trường lãi suất cao kéo dài và đợt sụt giảm tài sản AUM của ARKK).
+                </p>
+            </div>
+
+            <!-- Audit Filter Buttons -->
+            <div class="flex flex-wrap gap-2 text-xs font-medium">
+                <button onclick="filterAudit('all')" class="audit-btn bg-slate-900 text-white px-3 py-1.5 rounded-lg active-audit">Tất cả (6)</button>
+                <button onclick="filterAudit('fact')" class="audit-btn bg-slate-100 text-slate-700 hover:bg-slate-200 px-3 py-1.5 rounded-lg">✅ Dữ liệu thực chứng</button>
+                <button onclick="filterAudit('speculative')" class="audit-btn bg-slate-100 text-slate-700 hover:bg-slate-200 px-3 py-1.5 rounded-lg">🔮 Giả định / Cá nhân</button>
+                <button onclick="filterAudit('conflict')" class="audit-btn bg-slate-100 text-slate-700 hover:bg-slate-200 px-3 py-1.5 rounded-lg">⚠️ Xung đột lợi ích</button>
+                <button onclick="filterAudit('flaw')" class="audit-btn bg-slate-100 text-slate-700 hover:bg-slate-200 px-3 py-1.5 rounded-lg">🚨 Lỗ hổng / Né tránh</button>
+            </div>
+
+            <!-- Audit Grid Container -->
+            <div id="audit-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Card 1 -->
+                <div class="audit-card fact bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="bg-emerald-100 text-emerald-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">✅ Dữ liệu thực chứng</span>
+                        <span class="text-xs text-slate-400 font-mono">[08:15]</span>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-sm">Định luật Wright & Tốc độ giảm chi phí</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Tốc độ giảm giá thành sản xuất pin Lithium-ion, chi phí giải trình tự gen và chi phí tính toán GPU giảm theo đường cong sản lượng là dữ liệu lịch sử đã được kiểm chứng bằng thực nghiệm.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="audit-card speculative bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="bg-purple-100 text-purple-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">🔮 Giả định / Dự báo</span>
+                        <span class="text-xs text-slate-400 font-mono">[28:15]</span>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-sm">Tesla $2.600 & Robotaxi $10.000 Tỷ USD</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Đặt 90% định giá Tesla vào mạng lưới Robotaxi chưa được phê duyệt pháp lý toàn diện (Cấp độ 4/5) bị Wall Street coi là thiếu biên an toàn cao. Đây là kịch bản dự báo tối ưu, không phải cam kết.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="audit-card conflict bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">⚠️ Xung đột lợi ích</span>
+                        <span class="text-xs text-slate-400 font-mono">Toàn bộ tập</span>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-sm">Nắm giữ khối lượng lớn cổ phiếu mục tiêu</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Cathie Wood và Quỹ ARK Invest sở hữu lượng cổ phiếu trị giá hàng trăm triệu USD ở Tesla, Palantir, Coinbase, CRISPR Therapeutics. Truyền thông triển vọng 15x–20x trực tiếp hỗ trợ dòng vốn quỹ ARKK.
+                    </p>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="audit-card flaw bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="bg-red-100 text-red-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">🚨 Lỗ hổng lập luận</span>
+                        <span class="text-xs text-slate-400 font-mono">Né tránh</span>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-sm">Tác động của Môi trường Lãi suất Cao (Higher for Longer)</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Diễn giả hoàn toàn bỏ qua tác động tiêu cực của lãi suất cao duy trì kéo dài. Lãi suất cao là "kẻ thù" lớn nhất của định giá cổ phiếu công nghệ tăng trưởng dựa trên dòng tiền tương lai xa.
+                    </p>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="audit-card flaw bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="bg-red-100 text-red-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">🚨 Né tránh rủi ro</span>
+                        <span class="text-xs text-slate-400 font-mono">ARKK History</span>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-sm">Hiệu suất và sự sụt giảm tài sản (AUM) Quỹ ARKK</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Diễn giả không nhắc tới sự bốc hơi tài sản nghiêm trọng của quỹ ARKK từ đỉnh năm 2021 đến 2024 khi thị trường quay lưng với các công nghệ chưa có lợi nhuận ngắn hạn.
+                    </p>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="audit-card speculative bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="bg-purple-100 text-purple-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">🔮 Giả định / Dự báo</span>
+                        <span class="text-xs text-slate-400 font-mono">[1:15:30]</span>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-sm">Bitcoin $1,5 Triệu USD vào năm 2030</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Giả định yêu cầu các ngân hàng trung ương và quỹ hưu trí dành 5%–10% danh mục cho Bitcoin. Việc phê duyệt ETF là bước tiến lớn nhưng tỷ lệ phân bổ của các tổ chức thận trọng vẫn cần kiểm chứng.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 6: ARTICLE PUBLISHING PIPELINE ================= -->
+        <section id="tab-articles" class="tab-content space-y-6 hidden">
+            <!-- Introductory Section Paragraph -->
+            <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-2.5 py-1 rounded">Giai Đoạn 2 • Xuất Bản Báo Chí</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-2">Đề Xuất Chuỗi Bài Báo Chuyên Sâu (Article Pipeline)</h2>
+                <p class="text-slate-600 text-sm sm:text-base leading-relaxed mt-2">
+                    Dựa trên thông tin phân tích từ podcast, chúng tôi biên soạn **3 bài viết chuyên sâu** đạt tiêu chuẩn báo chí kinh tế - công nghệ hàng đầu. Mỗi bài có một góc tiếp cận (angle) độc lập, đánh trúng các nỗi băn khoăn lớn nhất của độc giả đi làm, nhà đầu tư và quản trị doanh nghiệp tại Việt Nam.
+                </p>
+            </div>
+
+            <!-- Article Selector Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div onclick="previewArticle(1)" id="card-art-1" class="art-card bg-white p-5 rounded-2xl border-2 border-blue-600 shadow-sm cursor-pointer transition hover:border-blue-700">
+                    <span class="bg-blue-100 text-blue-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Bài 1 • Đề xuất viết trước</span>
+                    <h3 class="font-bold text-slate-900 text-sm mt-2 leading-snug">Cathie Wood: Vì sao dòng vốn thông minh rời Nvidia để tìm đến lớp phần mềm AI?</h3>
+                    <p class="text-xs text-slate-500 mt-2 line-clamp-2">Góc nhìn Quản trị & Phân bổ tài sản: Bẫy an toàn phần cứng và đỉnh sóng chip bán dẫn.</p>
+                </div>
+
+                <div onclick="previewArticle(2)" id="card-art-2" class="art-card bg-white p-5 rounded-2xl border border-slate-200 shadow-sm cursor-pointer transition hover:border-blue-600">
+                    <span class="bg-slate-100 text-slate-700 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Bài 2</span>
+                    <h3 class="font-bold text-slate-900 text-sm mt-2 leading-snug">Cú đặt cược Tesla $2.600: Mạng lưới Robotaxi $10.000 tỷ USD hay giấc mơ viễn vông?</h3>
+                    <p class="text-xs text-slate-500 mt-2 line-clamp-2">Góc nhìn Tự động hóa & Xe điện: Giải mã bài toán chi phí di chuyển $0.25/dặm.</p>
+                </div>
+
+                <div onclick="previewArticle(3)" id="card-art-3" class="art-card bg-white p-5 rounded-2xl border border-slate-200 shadow-sm cursor-pointer transition hover:border-blue-600">
+                    <span class="bg-slate-100 text-slate-700 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Bài 3</span>
+                    <h3 class="font-bold text-slate-900 text-sm mt-2 leading-snug">Bitcoin $1,5 triệu vào năm 2030: Luận điểm tài chính hay chiêu trò tiếp thị niềm tin?</h3>
+                    <p class="text-xs text-slate-500 mt-2 line-clamp-2">Góc nhìn Tài chính Tiền tệ: Lá chắn bảo hộ tài sản trước nguy cơ xói mòn tiền pháp định.</p>
+                </div>
+            </div>
+
+            <!-- Article Preview Box -->
+            <div id="article-preview-container" class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+                <!-- Dynamic Content Loaded by JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                <div class="flex items-center space-x-2">
+                    <span class="font-black text-white text-base">ARK INVEST ANALYSIS DASHBOARD</span>
+                    <span class="text-slate-600">|</span>
+                    <span>Biên soạn bởi Chuyên gia Phân tích Nội dung</span>
+                </div>
+                <div>Nguồn dữ liệu: YouTube Podcast ID <code class="bg-slate-800 text-blue-400 px-1.5 py-0.5 rounded">ZznpMh0DegE</code></div>
+            </div>
+            <p class="text-slate-500 text-[11px] leading-relaxed">
+                * Tuyên bố miễn trừ trách nhiệm: Toàn bộ thông tin trên trang tương tác này được tổng hợp từ phát biểu của khách mời Cathie Wood trong chương trình The Diary Of A CEO. Đây là tài liệu phục vụ nghiên cứu thông tin và phân tích báo chí, không cấu thành lời khuyên đầu tư tài chính.
+            </p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Data Store for 5 Technological Convergence Platforms
+        const platformsData = [
+            {
+                id: 'ai',
+                title: 'Trí Tuệ Nhân Tạo (AI)',
+                icon: '🤖',
+                summary: 'Hệ thần kinh trung ương của mọi nền tảng tự động hóa.',
+                description: 'AI là hạt nhân kết nối cả 4 nền tảng còn lại. Chi phí huấn luyện mô hình giảm 75% mỗi năm theo Định luật Wright, giúp chuyển đổi dữ liệu thô thành các Agent tự chủ thực hiện công việc phức tạp.',
+                quote: 'AI is the catalyst that accelerates the cost decline in genomics, robotics, and energy storage simultaneously.',
+                timestamp: '[06:30]',
+                keyImpact: 'Thúc đẩy phần mềm ứng dụng tích hợp dữ liệu độc quyền thay vì chỉ mua phần cứng thô.'
+            },
+            {
+                id: 'energy',
+                title: 'Lưu Trữ Năng Lượng (Pin)',
+                icon: '🔋',
+                summary: 'Động cơ hạ chi phí vận hành phương tiện di chuyển.',
+                description: 'Chi phí pin Lithium-ion và LFP giảm giúp xe điện đạt điểm hòa vốn chi phí sở hữu (TCO) rẻ hơn xe xăng, mở đường cho hạ tầng Taxi tự hành vận hành liên tục 24/7.',
+                quote: 'Battery cost decline is the single most predictable Wrights Law curve over the last two decades.',
+                timestamp: '[10:15]',
+                keyImpact: 'Giảm cước phí di chuyển xuống $0.25/dặm, biến giao thông thành dịch vụ sinh lời.'
+            },
+            {
+                id: 'robotics',
+                title: 'Robot Học & Optimus',
+                icon: '🦾',
+                summary: 'Giải pháp cho suy giảm lực lượng lao động toàn cầu.',
+                description: 'Sự kết hợp giữa AI thị giác máy tính và cơ khí chính xác tạo ra Robot hình người Optimus. Thị trường tự động hóa lao động chân tay có quy mô lên tới $26.000 Tỷ USD.',
+                quote: 'Humanoid robots will automate physical labor, creating a $26 trillion revenue opportunity.',
+                timestamp: '[45:10]',
+                keyImpact: 'Bù đắp sự thiếu hụt nhân công trong sản xuất và dịch vụ hậu cần.'
+            },
+            {
+                id: 'blockchain',
+                title: 'Chuỗi Khối (Blockchain)',
+                icon: '🔗',
+                summary: 'Hệ thống tài chính kỹ thuật số dựa trên quy tắc bất biến.',
+                description: 'Bitcoin và các đồng Stablecoin (USDC) đóng vai trò hạ tầng thanh toán kỹ thuật số mới, bảo vệ tài sản trước sự mất giá của tiền pháp định và giảm phí giao dịch xuyên biên giới.',
+                quote: 'Bitcoin is the first global, rules-based monetary system in history.',
+                timestamp: '[1:15:30]',
+                keyImpact: 'Xây dựng đường ray thanh toán kỹ thuật số phi tập trung, minh bạch.'
+            },
+            {
+                id: 'genomics',
+                title: 'Đa Hệ Gen & CRISPR',
+                icon: '🧬',
+                summary: 'Dịch chuyển từ điều trị triệu chứng sang chữa dứt điểm.',
+                description: 'Chi phí giải trình tự gen giảm nhanh hơn định luật Moore, kết hợp với AI chẩn đoán sơ bộ qua sinh thiết lỏng giúp điều trị triệt để các bệnh di truyền nan y.',
+                quote: 'We can shift healthcare from reactive treatment to curative intervention.',
+                timestamp: '[1:31:00]',
+                keyImpact: 'Tăng tuổi thọ kỳ vọng và tiết kiệm hàng nghìn tỷ USD chi phí y tế toàn cầu.'
+            }
+        ];
+
+        // Global Chart Instances
+        let wrightsChart, teslaChart, aiChart, btcChart;
+
+        // TAB NAVIGATION SYSTEM
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            
+            // Show target tab
+            const target = document.getElementById(tabId);
+            if (target) target.classList.remove('hidden');
+
+            // Update tab button styles
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white', 'font-semibold', 'shadow-sm');
+                btn.classList.add('text-slate-600', 'hover:text-slate-900', 'hover:bg-slate-200/70');
+            });
+
+            const activeBtn = document.getElementById('btn-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-600', 'hover:text-slate-900', 'hover:bg-slate-200/70');
+                activeBtn.classList.add('bg-blue-600', 'text-white', 'font-semibold', 'shadow-sm');
+            }
+
+            // Trigger chart resize / update on tab switch to prevent layout collapse
+            setTimeout(() => {
+                if (tabId === 'tab-convergence' && wrightsChart) wrightsChart.resize();
+                if (tabId === 'tab-tesla' && teslaChart) teslaChart.resize();
+                if (tabId === 'tab-ai-software' && aiChart) aiChart.resize();
+                if (tabId === 'tab-bitcoin' && btcChart) btcChart.resize();
+            }, 50);
+        }
+
+        // PLATFORM INTERACTIVE RENDERER (TAB 1)
+        function renderPlatformCards() {
+            const container = document.getElementById('platform-cards');
+            container.innerHTML = '';
+
+            platformsData.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = `p-3.5 rounded-xl border cursor-pointer transition flex items-center justify-between ${index === 0 ? 'bg-blue-50 border-blue-400 text-blue-950 font-bold' : 'bg-white border-slate-200 hover:border-blue-300 text-slate-800'}`;
+                card.onclick = () => selectPlatform(item.id, card);
+                card.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="text-xl">${item.icon}</span>
+                        <div>
+                            <div class="text-xs font-bold">${item.title}</div>
+                            <div class="text-[11px] text-slate-500 font-normal line-clamp-1">${item.summary}</div>
+                        </div>
+                    </div>
+                    <span class="text-xs text-blue-600 font-semibold">Chi tiết ➔</span>
+                `;
+                container.appendChild(card);
+            });
+
+            // Select initial platform
+            selectPlatform(platformsData[0].id, container.firstChild);
+        }
+
+        function selectPlatform(id, elementNode) {
+            // Highlight selected card
+            document.querySelectorAll('#platform-cards > div').forEach(card => {
+                card.className = 'p-3.5 rounded-xl border cursor-pointer transition flex items-center justify-between bg-white border-slate-200 hover:border-blue-300 text-slate-800';
+            });
+            if (elementNode) {
+                elementNode.className = 'p-3.5 rounded-xl border cursor-pointer transition flex items-center justify-between bg-blue-50 border-blue-400 text-blue-950 font-bold shadow-sm';
+            }
+
+            const item = platformsData.find(p => p.id === id);
+            if (!item) return;
+
+            const detailBox = document.getElementById('platform-detail-box');
+            detailBox.innerHTML = `
+                <div class="flex items-center justify-between border-b border-blue-800 pb-3">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-2xl">${item.icon}</span>
+                        <h4 class="text-lg font-bold text-white">${item.title}</h4>
+                    </div>
+                    <span class="text-xs bg-blue-800 text-blue-200 px-2 py-1 rounded font-mono">${item.timestamp}</span>
+                </div>
+                <div class="mt-3 space-y-3">
+                    <p class="text-xs sm:text-sm text-blue-100 leading-relaxed">${item.description}</p>
+                    <div class="bg-blue-950/60 p-3 rounded-lg border border-blue-800">
+                        <div class="text-[11px] text-amber-400 font-bold uppercase tracking-wider">Trích dẫn đắt giá:</div>
+                        <blockquote class="text-xs italic text-slate-200 mt-0.5">"${item.quote}"</blockquote>
+                    </div>
+                    <div class="text-xs text-emerald-300 font-medium">
+                        <strong>Tác động cốt lõi:</strong> ${item.keyImpact}
+                    </div>
+                </div>
+            `;
+        }
+
+        // TESLA CALCULATOR LOGIC (TAB 2)
+        function updateTeslaCalc() {
+            const fare = parseFloat(document.getElementById('slider-fare').value);
+            const fleet = parseFloat(document.getElementById('slider-fleet').value);
+            const takeRate = parseFloat(document.getElementById('slider-take-rate').value) / 100;
+
+            document.getElementById('val-fare').innerText = `$${fare.toFixed(2)} / dặm`;
+            document.getElementById('val-fleet').innerText = `${fleet} Tỷ dặm`;
+            document.getElementById('val-take-rate').innerText = `${(takeRate * 100).toFixed(0)}%`;
+
+            // Revenue calculation = Fleet dặm * Fare * Take Rate
+            const netRevenueBillions = fleet * fare * takeRate;
+            
+            // Base ARK target calculation ratio
+            // Base scenario: $0.25 fare, 120B miles, 50% take rate -> $15B net rev -> ~$2,600 target share price
+            const calculatedSharePrice = Math.round((netRevenueBillions / 15) * 2600);
+
+            document.getElementById('calc-net-revenue').innerText = `$${netRevenueBillions.toFixed(1)} Tỷ USD`;
+            document.getElementById('calc-share-price').innerText = `$${calculatedSharePrice.toLocaleString('vi-VN')}`;
+
+            const note = document.getElementById('calc-status-note');
+            if (calculatedSharePrice >= 2600) {
+                note.innerText = "Kịch bản tối ưu: Đạt hoặc vượt định giá mục tiêu $2.600 của ARK Invest.";
+                note.className = "text-xs text-emerald-300 italic text-center font-medium";
+            } else {
+                note.innerText = "Kịch bản thận trọng: Định giá thấp hơn mô hình cơ sở của ARK Invest.";
+                note.className = "text-xs text-amber-300 italic text-center font-medium";
+            }
+        }
+
+        // AUDIT FILTER LOGIC (TAB 5)
+        function filterAudit(category) {
+            const cards = document.querySelectorAll('.audit-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.classList.contains(category)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            // Button styling
+            document.querySelectorAll('.audit-btn').forEach(btn => {
+                btn.classList.remove('bg-slate-900', 'text-white');
+                btn.classList.add('bg-slate-100', 'text-slate-700');
+            });
+            event.target.classList.remove('bg-slate-100', 'text-slate-700');
+            event.target.classList.add('bg-slate-900', 'text-white');
+        }
+
+        // ARTICLE PREVIEW SYSTEM (TAB 6)
+        const articlesContent = {
+            1: {
+                title: 'Cathie Wood: Vì sao dòng vốn thông minh đang rời Nvidia và Apple để tìm đến lớp ứng dụng AI?',
+                badge: 'Bài 1 • Góc nhìn Quản trị & Phân bổ Tài sản',
+                sapo: 'Sau giai đoạn bùng nổ hạ tầng bán dẫn thô, dòng tiền thặng dư trên thị trường tài chính đang bắt đầu dịch chuyển từ những gã khổng lồ phần cứng như Nvidia hay Apple sang các doanh nghiệp phần mềm làm chủ dữ liệu thực địa như Palantir.',
+                sections: [
+                    {
+                        heading: '1. "Bẫy thành công" của Apple và nguy cơ trở thành bò sữa tiền mặt',
+                        content: 'Trong hơn một thập kỷ, Apple đã xây dựng nên một đế chế phần cứng khép kín vô cùng vững chắc xung quanh chiếc iPhone. Tuy nhiên, theo Giám đốc Đầu tư Cathie Wood của ARK Invest, chính sự phụ thuộc quá lớn vào chu kỳ nâng cấp thiết bị bán lẻ đang biến Apple thành ví dụ điển hình của "bẫy thành công". Nếu không làm chủ được hệ sinh thái AI Agent tự chủ, gã khổng lồ xứ Cupertino nguy cơ biến thành cỗ máy in tiền tăng trưởng chậm của một kỷ nguyên đã qua.'
+                    },
+                    {
+                        heading: '2. Đỉnh sóng chip bán dẫn: Khi hạ tầng thô hết dư địa bứt phá biên lợi nhuận',
+                        content: 'Nvidia đã có những năm tháng tăng trưởng thần kỳ khi tất cả các đại gia công nghệ lao vào cuộc đua vũ trang trung tâm dữ liệu. Tuy nhiên, quy luật kinh tế cho thấy khi việc lắp đặt hạ tầng thô đạt điểm bão hòa, áp lực cạnh tranh giá sẽ xuất hiện. Dòng vốn đầu tư thông minh đang chuyển hướng sang lớp phần mềm doanh nghiệp—nơi có khả năng tạo ra doanh thu gấp 8x - 20x chi phí mua sắm chip ban đầu.'
+                    },
+                    {
+                        heading: '3. Palantir & Shopify: Sức mạnh của dữ liệu thực địa độc quyền',
+                        content: 'Tại sao những cái tên như Palantir hay Shopify lại trở thành tâm điểm trong danh mục mới của ARK? Câu trả lời nằm ở "dữ liệu thực địa" (proprietary operational data). AI không thể phát huy sức mạnh nếu thiếu dữ liệu vận hành thực tế của doanh nghiệp. Những công ty phần mềm làm chủ được luồng dữ liệu này sẽ nắm giữ lợi thế cạnh tranh bất khả xâm phạm.'
+                    }
+                ],
+                pullQuote: 'Value creation is moving from raw compute infrastructure to software applications that harness proprietary data.',
+                quoteSign: '[1:02:15] — Cathie Wood',
+                counterpoint: 'Góc nhìn phản biện: Giới phân tích Wall Street chỉ ra rằng phần lớn các doanh nghiệp phần mềm AI hiện vẫn đang trong giai đoạn thử nghiệm và chưa chứng minh được biên lợi nhuận thực tế đủ bù đắp chi phí đỏ cho điện toán đám mây.'
+            },
+            2: {
+                title: 'Cú đặt cược Tesla $2.600: Mạng lưới Robotaxi $10.000 tỷ USD hay giấc mơ viễn vông?',
+                badge: 'Bài 2 • Góc nhìn Tự động hóa & Xe Điện',
+                sapo: 'Đằng sau con số định giá mục tiêu $2.600/cổ phiếu gây sốc của ARK Invest dành cho Tesla là bài toán kinh tế di chuyển tự hành trị giá $10.000 tỷ USD, nơi cước phí di chuyển được hạ xuống chỉ còn $0.25/dặm.',
+                sections: [
+                    {
+                        heading: '1. Tesla không phải công ty xe điện, đó là dự án AI tự hành lớn nhất thế giới',
+                        content: 'Việc đánh giá Tesla đơn thuần qua số lượng xe giao hàng mỗi quý là một sai lầm phổ biến của các nhà phân tích truyền thống. Cathie Wood khẳng định Tesla thực chất là dự án hội tụ AI, pin và robot tự hành lớn nhất hiện nay. 90% giá trị doanh nghiệp trong mô hình định giá $2.600 đến từ mạng lưới Taxi tự hành Robotaxi.'
+                    },
+                    {
+                        heading: '2. Bài toán cước phí $0.25/dặm và sự biến đổi của chiếc xe cá nhân',
+                        content: 'Hiện nay, chi phí di chuyển trung bình bằng Uber hoặc xe cá nhân tại Mỹ dao động từ $2.00–$4.00/dặm. Bằng việc loại bỏ chi phí tài xế và tối ưu hóa vận hành xe điện 24/7, Robotaxi có thể kéo cước phí xuống $0.25/dặm. Chiếc xe ô tô từ một tài sản tiêu sản nằm nằm trong bãi đỗ 95% thời gian sẽ biến thành cỗ máy sinh dòng tiền thụ động cho chủ sở hữu.'
+                    }
+                ],
+                pullQuote: 'Autonomous taxi networks are the biggest AI project in the world today, driving cost per mile down to 25 cents.',
+                quoteSign: '[28:15] — Cathie Wood',
+                counterpoint: 'Góc nhìn phản biện: Rào cản pháp lý tại Mỹ và Châu Âu đối với xe tự hành Cấp độ 4/5 vẫn còn rất nghiêm ngặt. Sự cố an toàn đơn lẻ có thể trì hoãn việc thương mại hóa Robotaxi thêm nhiều năm.'
+            },
+            3: {
+                title: 'Bitcoin $1,5 triệu USD vào năm 2030: Luận điểm tài chính hay chiêu trò tiếp thị niềm tin của ARK?',
+                badge: 'Bài 3 • Góc nhìn Tài chính Tiền tệ',
+                sapo: 'Mức giá dự báo $1,5 triệu USD cho mỗi đồng Bitcoin vào năm 2030 dựa trên luận điểm Bitcoin là hệ thống tiền tệ kỹ thuật số dựa trên quy tắc bất biến đầu tiên trong lịch sử nhân loại.',
+                sections: [
+                    {
+                        heading: '1. Hệ thống tiền tệ dựa trên quy tắc bất biến (Rules-based monetary system)',
+                        content: 'Khác với tiền pháp định (Fiat) có thể bị in thêm vô hạn bởi các Ngân hàng Trung ương dẫn đến lạm phát và xói mòn sức mua, Bitcoin hoạt động dựa trên thuật toán cố định 21 triệu đồng. Tính chất minh bạch, phi tập trung và không thể can thiệp biến Bitcoin thành công cụ bảo vệ tài sản hàng đầu.'
+                    },
+                    {
+                        heading: '2. Sự xâm nhập của dòng vốn tổ chức qua Spot ETF',
+                        content: 'Sự phê duyệt của SEC đối với các quỹ Bitcoin Spot ETF đã mở ra đường ray cho các quỹ hưu trí và tập đoàn tài chính phân bổ từ 1% đến 5% tài sản vào tiền số. Đây chính là động lực thanh khoản thúc đẩy mô hình giá tăng trưởng bứt phá trong chu kỳ 5 năm tới.'
+                    }
+                ],
+                pullQuote: 'Bitcoin is the first global, rules-based monetary system in history, acting as a hedge against fiat debasement.',
+                quoteSign: '[1:15:30] — Cathie Wood',
+                counterpoint: 'Góc nhìn phản biện: Rủi ro quản lý chính sách và sự biến động biên độ giá cực lớn vẫn là trở ngại ngăn cản Bitcoin trở thành phương tiện thanh toán phổ thông hàng ngày.'
+            }
+        };
+
+        function previewArticle(artId) {
+            // Highlight selected card
+            document.querySelectorAll('.art-card').forEach(c => {
+                c.classList.remove('border-2', 'border-blue-600');
+                c.classList.add('border', 'border-slate-200');
+            });
+            const selCard = document.getElementById('card-art-' + artId);
+            if (selCard) {
+                selCard.classList.remove('border', 'border-slate-200');
+                selCard.classList.add('border-2', 'border-blue-600');
+            }
+
+            const data = articlesContent[artId];
+            if (!data) return;
+
+            const container = document.getElementById('article-preview-container');
+            
+            let sectionsHTML = data.sections.map(s => `
+                <div class="space-y-1.5">
+                    <h4 class="font-bold text-slate-900 text-base">${s.heading}</h4>
+                    <p class="text-slate-700 text-sm leading-relaxed">${s.content}</p>
+                </div>
+            `).join('');
+
+            container.innerHTML = `
+                <div class="border-b border-slate-200 pb-4">
+                    <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-1 rounded-full">${data.badge}</span>
+                    <h3 class="text-xl sm:text-2xl font-bold text-slate-900 mt-2">${data.title}</h3>
+                    <p class="text-slate-600 text-sm sm:text-base font-medium mt-3 italic bg-slate-50 p-3.5 rounded-xl border-l-4 border-blue-600">
+                        "${data.sapo}"
+                    </p>
+                </div>
+
+                <div class="space-y-5">
+                    ${sectionsHTML}
+                </div>
+
+                <blockquote class="bg-blue-900 text-white p-4 sm:p-5 rounded-xl border-l-4 border-amber-400">
+                    <p class="text-sm italic font-medium">"${data.pullQuote}"</p>
+                    <div class="text-xs text-amber-300 font-bold mt-2 text-right">${data.quoteSign}</div>
+                </blockquote>
+
+                <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl text-xs text-amber-950">
+                    <strong class="font-bold text-amber-900">⚖️ Khởi tạo góc nhìn đa chiều (Góc nhìn khác):</strong>
+                    <p class="mt-1 leading-relaxed">${data.counterpoint}</p>
+                </div>
+            `;
+        }
+
+        // CHART CREATION HELPER FUNCTIONS (CHART.JS)
+        function initCharts() {
+            // Label wrapping logic for Chart.js
+            const formatLabel = (str, maxLen = 16) => {
+                if (str.length <= maxLen) return str;
+                const words = str.split(' ');
+                let lines = [];
+                let currentLine = '';
+                words.forEach(word => {
+                    if ((currentLine + word).length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = word + ' ';
+                    } else {
+                        currentLine += word + ' ';
+                    }
+                });
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            // 1. Wright's Law Chart (Tab 1)
+            const ctx1 = document.getElementById('wrightsLawChart').getContext('2d');
+            wrightsChart = new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: ['2018', '2020', '2022', '2024', '2026 (P)', '2028 (P)'],
+                    datasets: [
+                        {
+                            label: 'Chi phí Pin Li-ion ($/kWh)',
+                            data: [180, 137, 110, 85, 62, 45],
+                            borderColor: '#2563eb',
+                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                            borderWidth: 2.5,
+                            fill: true,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Chi phí Giải trình Gen ($/Mẫu)',
+                            data: [1000, 600, 300, 150, 80, 40],
+                            borderColor: '#059669',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } },
+                        tooltip: {
+                            callbacks: {
+                                title: (items) => 'Năm ' + items[0].label
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { title: { display: true, text: 'Chi phí Đơn vị ($)', font: { size: 11 } } }
+                    }
+                }
+            });
+
+            // 2. Tesla Valuation Doughnut Chart (Tab 2)
+            const ctx2 = document.getElementById('teslaDoughnutChart').getContext('2d');
+            teslaChart = new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Mạng lưới Robotaxi', 'Bán Xe Điện (EV)', 'Lưu Trữ Năng Lượng', 'Khác / Optimus'],
+                    datasets: [{
+                        data: [88, 7, 3, 2],
+                        backgroundColor: ['#2563eb', '#cbd5e1', '#d97706', '#10b981'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => ` ${context.label}: ${context.raw}% giá trị vốn hóa`
+                            }
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+
+            // 3. AI Value Chain Shift Chart (Tab 3)
+            const ctx3 = document.getElementById('aiShiftChart').getContext('2d');
+            aiChart = new Chart(ctx3, {
+                type: 'bar',
+                data: {
+                    labels: ['2023', '2024', '2025 (E)', '2027 (P)', '2030 (P)'],
+                    datasets: [
+                        {
+                            label: 'Phần Cứng & Bán Dẫn (Nvidia)',
+                            data: [70, 65, 45, 30, 15],
+                            backgroundColor: '#94a3b8'
+                        },
+                        {
+                            label: 'Phần Mềm & Tích Hợp Dữ Liệu (Palantir)',
+                            data: [30, 35, 55, 70, 85],
+                            backgroundColor: '#2563eb'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { stacked: true },
+                        y: { stacked: true, max: 100, title: { display: true, text: 'Tỷ Trọng Doanh Thu (%)' } }
+                    },
+                    plugins: {
+                        legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } }
+                    }
+                }
+            });
+
+            // 4. Bitcoin Scenarios Bar Chart (Tab 4)
+            const ctx4 = document.getElementById('bitcoinChart').getContext('2d');
+            btcChart = new Chart(ctx4, {
+                type: 'bar',
+                data: {
+                    labels: ['Kịch bản Thận trọng (Bear)', 'Kịch bản Cơ sở (Base)', 'Kịch bản Bứt phá (Bull - ARK Target)'],
+                    datasets: [{
+                        label: 'Giá Bitcoin Dự Báo 2030 ($)',
+                        data: [300000, 650000, 1500000],
+                        backgroundColor: ['#cbd5e1', '#f59e0b', '#d97706'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => ` Dự báo: $${context.raw.toLocaleString('en-US')}`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { 
+                            ticks: {
+                                callback: (val) => '$' + (val / 1000) + 'k'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // INITIALIZATION ON DOM READY
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPlatformCards();
+            initCharts();
+            previewArticle(1);
+        });
+    </script>
+</body>
+</html>

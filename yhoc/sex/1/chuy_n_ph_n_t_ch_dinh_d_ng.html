@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo Cáo Chuyên Sâu: Cơ Chế Sinh Hóa Thuần Chay 5 Năm</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        },
+                        accent: {
+                            amber: '#d97706',
+                            rose: '#e11d48',
+                            indigo: '#4f46e5',
+                            slate: '#334155'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Georgia', 'Cambria', 'serif'],
+                        sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Embedded CSS for Chart Containers and Custom Scrollbars */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 620px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 310px;
+            max-height: 380px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .tab-btn.active {
+            border-bottom-color: #16a34a;
+            color: #15803d;
+            font-weight: 700;
+            background-color: #f0fdf4;
+        }
+        .article-content p {
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
+            color: #334155;
+            text-align: justify;
+        }
+        .article-content blockquote {
+            border-left: 4px solid #16a34a;
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: #475569;
+            background-color: #f8fafc;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+        /* Custom scrollbar for smooth content reading */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<!-- Chosen Palette: Slate Neutral with Warm Amber & Emerald Accents (Clean Editorial Theme) -->
+<!-- Application Structure Plan:
+     1. Executive Header & Video Dossier: Quick summary of the video source (Hiểu Cơ Thể), main message, and key takeaways card list.
+     2. Interactive Dashboard Navigation: 6 main thematic tabs representing the 6 deep-dive journalism articles.
+     3. Article Reader & Data Hub: Dynamic display of structured news articles (Headline, Sapo, Main Analysis, Citations, Conclusions) paired with interactive Chart.js visualizations for each biological milestone.
+     4. Interactive Biochemical Calculators:
+        - Phytate:Zinc Molar Ratio Calculator (determines zinc bioavailability based on plant food intake).
+        - Leucine & MPS Threshold Checker (helps users estimate protein synthesis threshold fulfillment).
+     5. Methodological Rationale: Single interactive page structure with dynamic tab switching to allow non-linear, intuitive exploration without clutter or excessive vertical scrolling.
+-->
+<!-- Visualization & Content Choices:
+     - Topic 1: Microbiome & Insulin Sensitivity -> Key metrics card + Donut Chart (SCFA composition).
+     - Topic 2: Vitamin B12 Depletion Progression -> Line Chart showing B12 stores vs Methylmalonic Acid (MMA) levels over 5 years.
+     - Topic 3: ALA to EPA/DHA Conversion Limits -> Grouped Bar Chart comparing ALA conversion rate in males vs females.
+     - Topic 4: Fracture Risk & EPIC-Oxford Data -> Horizontal Bar Chart of Hazard Ratios across dietary groups.
+     - Topic 5: Phytate:Zinc Molar Ratio & Hypothyroidism -> Interactive Calculator + Bioavailability Gauge Chart.
+     - Topic 6: Clinical Intervention & Culinary Chemistry -> Interactive protocol matrix and actionable summary.
+-->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-brand-100 selection:text-brand-900">
+
+    <!-- TOP HEADER / JOURNALISTIC BRANDING -->
+    <header class="bg-slate-900 text-white border-b-4 border-brand-500 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row justify-between items-center gap-2">
+            <div class="flex items-center space-x-3">
+                <span class="bg-brand-500 text-white font-bold px-2.5 py-1 rounded text-xs uppercase tracking-wider">Báo Cáo Y Khoa</span>
+                <h1 class="text-lg md:text-xl font-bold tracking-tight text-slate-100">
+                    Sự Thật Sinh Hóa: Ăn Thuần Chay Dài Hạn Sau 5 Năm
+                </h1>
+            </div>
+            <div class="text-xs text-slate-400 flex items-center space-x-4">
+                <span>Nguồn: Kênh <i>Hiểu Cơ Thể</i></span>
+                <span>•</span>
+                <span>Phân Tích Chuyên Sâu</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- SECTION 1: GIAI ĐOẠN 1 - TÓM TẮT & BẮT BỆNH NỘI DUNG (EXECUTIVE DOSSIER) -->
+        <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8">
+            <div class="border-b border-slate-200 pb-5 mb-6 flex flex-col md:flex-row justify-between md:items-center gap-4">
+                <div>
+                    <span class="text-xs font-semibold text-brand-700 uppercase tracking-widest bg-brand-50 px-2.5 py-1 rounded-full border border-brand-200">Giai Đoạn 1: Hồ Sơ Phân Tích Nhanh</span>
+                    <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900 mt-2">
+                        Tóm Tắt & Bắt Bệnh Nội Dung Video
+                    </h2>
+                </div>
+                <div class="bg-slate-100 p-3 rounded-lg text-xs text-slate-600 space-y-1">
+                    <p><b>Diễn giả / Kênh:</b> Hiểu Cơ Thể</p>
+                    <p><b>Chủ đề chính:</b> Sự phân ly giữa lợi ích chuyển hóa tức thời và tổn thương sinh hóa âm thầm sau 5 năm thuần chay</p>
+                    <p><b>Đối tượng:</b> Người thực hành ăn chay, chuyên gia dinh dưỡng, y sĩ lâm sàng</p>
+                </div>
+            </div>
+
+            <!-- Core Message Banner -->
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg mb-8">
+                <div class="flex items-start">
+                    <span class="text-amber-600 font-bold text-xl mr-3">💡</span>
+                    <div>
+                        <h3 class="font-bold text-amber-900 text-sm uppercase tracking-wide">Thông Điệp Cốt Lõi</h3>
+                        <p class="text-amber-800 text-sm mt-1 leading-relaxed">
+                            Mốc 5 năm đại diện cho ngưỡng cạn kiệt kho dự trữ vi chất nội sinh (đặc biệt là B12, DHA, Kẽm và Canxi). "Tuần trăng mật" sức khỏe trong 1-2 năm đầu nhờ chất xơ và giảm chất béo bão hòa thường tạo ra sự tự tin giả tạo, che giấu các thoái hóa tủy sống, mất mật độ xương và suy giáp chức năng đang diễn ra thầm lặng.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Takeaways Grid -->
+            <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center">
+                <span class="w-2 h-2 bg-brand-500 rounded-full mr-2"></span>
+                6 Điểm Mấu Chốt (Key Takeaways)
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 hover:border-brand-500 transition duration-200">
+                    <div class="text-brand-700 font-bold text-xs uppercase mb-1">01. Tái Cấu Trúc Vi Sinh Ruột</div>
+                    <h4 class="font-bold text-slate-900 text-sm mb-2">"Tuần Trăng Mật" Tiêu Hóa</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Axit béo chuỗi ngắn (SCFA: Butyrate, Propionate) tăng mạnh, cải thiện màng niêm mạc ruột, hạ cholesterol và tăng độ nhạy insulin trong năm đầu.
+                    </p>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 hover:border-amber-500 transition duration-200">
+                    <div class="text-amber-700 font-bold text-xs uppercase mb-1">02. Thảm Họa B12 Thầm Lặng</div>
+                    <h4 class="font-bold text-slate-900 text-sm mb-2">Cạn Kiệt Dự Trữ Gan Sau 5 Năm</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Kho dự trữ 2-5mg B12 tại gan cạn kiệt hoàn toàn. Axit Methylmalonic (MMA) tích tụ phá hủy bao myelin, nguy cơ thoái hóa kết hợp bán cấp tủy sống.
+                    </p>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 hover:border-indigo-500 transition duration-200">
+                    <div class="text-indigo-700 font-bold text-xs uppercase mb-1">03. Nút Thắt Chuyển Hóa DHA</div>
+                    <h4 class="font-bold text-slate-900 text-sm mb-2">Rào Cản Enzyme $\Delta^6$-desaturase</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Tỷ lệ chuyển đổi ALA thực vật sang DHA thành phẩm dưới 0.1% ở nam và <9% ở nữ. Suy giảm tính lỏng màng synap gây sương mù não.
+                    </p>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 hover:border-rose-500 transition duration-200">
+                    <div class="text-rose-700 font-bold text-xs uppercase mb-1">04. Nguy Cơ Gãy Xương Tăng 131%</div>
+                    <h4 class="font-bold text-slate-900 text-sm mb-2">Bằng Chứng Dịch Tễ EPIC-Oxford</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Thiếu Canxi, D3 và K2 làm Osteocalcin không thể carboxyl hóa để gắn khoáng vào xương. Tỷ số gãy hông ở người thuần chay đạt HR = 2.31.
+                    </p>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 hover:border-amber-500 transition duration-200">
+                    <div class="text-amber-700 font-bold text-xs uppercase mb-1">05. Axit Phytic & Nạn Đói Kẽm</div>
+                    <h4 class="font-bold text-slate-900 text-sm mb-2">Suy Giáp Chức Năng Dưới Lâm Sàng</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Tỷ số $[Phytate]:[Zinc] > 15$ vô hiệu hóa kẽm, cản trở enzyme Deiodinase chuyển $T_4$ thành $T_3$, gây rụng tóc, lạnh đầu chi và hạ chuyển hóa.
+                    </p>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 hover:border-brand-500 transition duration-200">
+                    <div class="text-brand-700 font-bold text-xs uppercase mb-1">06. Phác Đồ Can Thiệp Chuẩn</div>
+                    <h4 class="font-bold text-slate-900 text-sm mb-2">Ứng Dụng Hóa Sinh Ẩm Thực</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Bổ sung Methylcobalamin, DHA vi tảo, Kẽm Bisglycinate; áp dụng kỹ thuật ngâm warm-water, ủ mầm và lên men sourdough để triệt tiêu Phytate.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: GIAI ĐOẠN 2 - TRIỂN KHAI CHUỖI BÀI BÁO CHUYÊN SÂU (INTERACTIVE ARTICLE HUB) -->
+        <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <!-- Section Header -->
+            <div class="p-6 md:p-8 bg-slate-900 text-white border-b border-slate-800">
+                <span class="text-xs font-semibold text-brand-400 uppercase tracking-widest">Giai Đoạn 2: Tòa Soạn Báo Chí Chuyên Sâu</span>
+                <h2 class="text-2xl md:text-3xl font-serif font-bold mt-1">
+                    Chuỗi Bài Báo Phân Tích Theo Lộ Trình Chuyển Hóa
+                </h2>
+                <p class="text-slate-400 text-xs md:text-sm mt-2">
+                    Nhấp vào các Kỳ chuyên đề bên dưới để khám phá nội dung phân tích chi tiết, số liệu lâm sàng và biểu đồ minh họa tương ứng.
+                </p>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="flex overflow-x-auto border-b border-slate-200 bg-slate-100 p-2 gap-2" id="articleTabs">
+                <button onclick="switchTab('ky1')" id="tab-ky1" class="tab-btn active px-4 py-3 rounded-lg text-xs md:text-sm font-medium whitespace-nowrap transition duration-150 flex items-center space-x-2">
+                    <span>🌱 Kỳ 1: Tối Ưu Đường Ruột</span>
+                </button>
+                <button onclick="switchTab('ky2')" id="tab-ky2" class="tab-btn px-4 py-3 rounded-lg text-xs md:text-sm font-medium whitespace-nowrap transition duration-150 flex items-center space-x-2">
+                    <span>🧠 Kỳ 2: Suy Thoái B12</span>
+                </button>
+                <button onclick="switchTab('ky3')" id="tab-ky3" class="tab-btn px-4 py-3 rounded-lg text-xs md:text-sm font-medium whitespace-nowrap transition duration-150 flex items-center space-x-2">
+                    <span>⚡ Kỳ 3: Rào Cản ALA/DHA</span>
+                </button>
+                <button onclick="switchTab('ky4')" id="tab-ky4" class="tab-btn px-4 py-3 rounded-lg text-xs md:text-sm font-medium whitespace-nowrap transition duration-150 flex items-center space-x-2">
+                    <span>🦴 Kỳ 4: Rủi Ro Gãy Xương</span>
+                </button>
+                <button onclick="switchTab('ky5')" id="tab-ky5" class="tab-btn px-4 py-3 rounded-lg text-xs md:text-sm font-medium whitespace-nowrap transition duration-150 flex items-center space-x-2">
+                    <span>🧪 Kỳ 5: Phytate & Tuyến Giáp</span>
+                </button>
+                <button onclick="switchTab('ky6')" id="tab-ky6" class="tab-btn px-4 py-3 rounded-lg text-xs md:text-sm font-medium whitespace-nowrap transition duration-150 flex items-center space-x-2">
+                    <span>🛡️ Kỳ 6: Phác Đồ Sinh Hóa</span>
+                </button>
+            </div>
+
+            <!-- ARTICLE CONTENT CONTAINER -->
+            <div class="p-6 md:p-8">
+
+                <!-- KỲ 1 CONTENT -->
+                <article id="content-ky1" class="article-panel space-y-6">
+                    <div class="border-b border-slate-200 pb-4">
+                        <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">Kỳ 1 • Tiêu Hóa & Chuyển Hóa</span>
+                        <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900 mt-1">
+                            "Tuần Trăng Mật Chuyển Hóa" Và Cạm Bẫy Nhận Thức Trong Năm Đầu Ăn Thuần Chay
+                        </h2>
+                        <p class="text-base text-slate-600 font-medium italic mt-2 bg-slate-50 p-3 rounded border-l-2 border-brand-500">
+                            <b>Sapo:</b> Sự trỗi dậy của hệ vi khuẩn đại tràng cùng việc giảm tải chất béo bão hòa tạo nên một làn sóng cải thiện sinh học ngoạn mục trong 12 tháng đầu, nhưng chính sự dễ chịu này lại là khởi đầu cho rào cản nhận thức chủ quan.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2 article-content">
+                            <p>
+                                Sự chuyển dịch đột ngột từ chế độ ăn giàu chất béo bão hòa động vật sang khẩu phần thuần thực vật trong năm đầu tiên kích thích một đợt tái cấu trúc quy mô lớn tại hệ vi sinh vật đường ruột. Khi lượng polysaccharide phi tinh bột gia tăng, quần thể vi khuẩn kỵ khí thuộc ngành <i>Bacteroidetes</i>, điển hình là các chi <i>Prevotella</i> và <i>Bifidobacterium</i>, phát triển lấn át các chủng vi khuẩn phân giải protein động vật và axit mật.
+                            </p>
+                            <p>
+                                Quá trình lên men các chất xơ hòa tan tại đại tràng tạo ra lượng lớn các axit béo chuỗi ngắn (SCFA) bao gồm Acetate, Propionate và Butyrate. Butyrate đóng vai trò là cơ chất năng lượng chính cho tế bào biểu mô đại tràng, điều hòa biểu hiện của protein Claudin và Occludin, giúp hàn gắn hàng rào niêm mạc và ngăn ngừa tình trạng rò rỉ nội độc tố lipopolysaccharide (LPS).
+                            </p>
+
+                            <blockquote>
+                                "Việc loại bỏ hoàn toàn mỡ động vật ngoại sinh dẫn đến hiện tượng điều hòa tăng thụ thể LDL trên màng tế bào gan, đẩy nhanh quá trình thanh thải LDL-C và nâng cao độ nhạy insulin toàn thân."
+                            </blockquote>
+
+                            <p>
+                                Ở cấp độ tế bào cơ xương, việc sụt giảm lipid nội bào giúp giải phóng chuỗi truyền tín hiệu insulin: enzyme IRS-1 không còn bị ức chế, cho phép các túi vận chuyển GLUT-4 hòa nhập vào màng sinh chất một cách trơn tru. Kết quả là chỉ số đường huyết lúc đói và HbA1c giảm rõ rệt, mang lại trạng thái thể chất sung mãn.
+                            </p>
+                            <p>
+                                <b>Nghịch lý lâm sàng:</b> Những dấu hiệu tích cực trên bảng bilan lipid và đường huyết tạo ra một "bức tường sương mù". Người thực hành tin rằng cơ thể hoàn toàn tự chủ dinh dưỡng mà không hay biết rằng các kho dự trữ vi chất sâu bên trong đang bắt đầu bị huy động để bù đắp cho sự thiếu hụt ngoại sinh.
+                            </p>
+
+                            <div class="bg-slate-100 p-4 rounded-lg mt-6">
+                                <h4 class="font-bold text-slate-900 text-sm">Ý Nghĩa Lâm Sàng & Câu Hỏi Mở:</h4>
+                                <p class="text-xs text-slate-600 mt-1">
+                                    Liệu chúng ta có nên coi các chỉ số mỡ máu và đường huyết đẹp trong năm đầu là bằng chứng cho sự bền vững lâu dài, hay chỉ là phản ứng thích ứng ngắn hạn của cơ thể trước sự thay đổi đột ngột của chế độ ăn?
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Side Interactive Chart -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-sm mb-1 text-center">Phân Bố Sản Phẩm Lên Men SCFA</h3>
+                                <p class="text-xs text-slate-500 text-center mb-4">Tỷ lệ các Axit Béo Chuỗi Ngắn sản sinh tại đại tràng</p>
+                                <div class="chart-container">
+                                    <canvas id="chartSCFA"></canvas>
+                                </div>
+                            </div>
+                            <div class="text-xs text-slate-500 bg-white p-3 rounded border border-slate-200 mt-4">
+                                📌 <b>Ghi chú:</b> Butyrate nuôi dưỡng tế bào ruột, Propionate điều hòa tổng hợp glucose tại gan, Acetate tham gia chuyển hóa năng lượng toàn thân.
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- KỲ 2 CONTENT -->
+                <article id="content-ky2" class="article-panel hidden space-y-6">
+                    <div class="border-b border-slate-200 pb-4">
+                        <span class="text-xs font-bold text-amber-600 uppercase tracking-wider">Kỳ 2 • Thần Kinh & Huyết Học</span>
+                        <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900 mt-1">
+                            Kịch Bản Cạn Kiệt B12 Sau 5 Năm: Khi Bao Myelin Bị Phá Hủy Âm Thầm
+                        </h2>
+                        <p class="text-base text-slate-600 font-medium italic mt-2 bg-amber-50 p-3 rounded border-l-2 border-amber-500">
+                            <b>Sapo:</b> Với kho dự trữ 2-5mg tại gan, cơ thể có thể che giấu tình trạng thiếu Vitamin B12 suốt nhiều năm. Nhưng khi rào cản này sụp đổ, sự tích tụ Axit Methylmalonic sẽ tấn công trực tiếp vào hệ thần kinh trung ương.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2 article-content">
+                            <p>
+                                Vitamin B12 (Cobalamin) là vi chất thiết yếu phụ thuộc hoàn toàn vào chuỗi sinh tổng hợp của vi khuẩn. Cơ thể người bảo vệ trạng thái cân bằng này bằng một kho dự trữ lớn tại mô gan dao động từ $2.000$ đến $5.000\ \mu\text{g}$, trong khi lượng đào thải sinh lý chỉ xấp xỉ $1 - 2\ \mu\text{g/ngày}$. Chu trình gan - ruột tái hấp thu B12 qua thụ thể Cubam ở hồi tràng giúp kéo dài thời gian đệm từ 3 đến 5 năm.
+                            </p>
+                            <p>
+                                Tuy nhiên, khi bước sang năm thứ 5 không bổ sung vi chất, kho dự trữ cạn kiệt hoàn toàn. Trong tế bào, B12 là đồng enzyme cho phản ứng Methylmalonyl-CoA Mutase tại ty thể. Sự đình trệ phản ứng này khiến Axit Methylmalonic (MMA) tích tụ đột biến.
+                            </p>
+
+                            <blockquote>
+                                "MMA dư thừa ức chế cạnh tranh con đường tổng hợp lipid, buộc tế bào thần kinh gắn các axit béo mạch nhánh bất thường vào bao Myelin, làm sụp đổ tính ổn định cơ học và khả năng cách điện của sợi trục."
+                            </blockquote>
+
+                            <p>
+                                Hậu quả là hội chứng <b>Thoái hóa kết hợp bán cấp tủy sống (Subacute Combined Degeneration)</b> bộc phát: tê bì dị cảm đối xứng đầu chi, mất cảm giác sâu, thất điều vận động và sa sút nhận thức tiến triển.
+                            </p>
+                            <p>
+                                <b>Bẫy chẩn đoán:</b> Xét nghiệm B12 toàn phần thường cho kết quả bình thường giả tạo do đo lường cả dạng Holohaptocorrin trơ hoặc các chất đồng đẳng giả (<i>pseudo-B12</i>) từ rong biển. Chỉ số Holotranscobalamin (Holo-TC) và MMA mới là tiêu chuẩn vàng xét nghiệm.
+                            </p>
+                        </div>
+
+                        <!-- Side Chart B12 Timeline -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-sm mb-1 text-center">Động Học Cạn Kiệt B12 & Tăng MMA</h3>
+                                <p class="text-xs text-slate-500 text-center mb-4">Mô phỏng diễn tiến từ Năm 1 đến Năm 5+</p>
+                                <div class="chart-container">
+                                    <canvas id="chartB12"></canvas>
+                                </div>
+                            </div>
+                            <div class="text-xs text-slate-500 bg-white p-3 rounded border border-slate-200 mt-4">
+                                ⚠️ <b>Cảnh báo:</b> Khi MMA vượt ngưỡng $0.27\ \mu\text{mol/L}$, tổn thương vỏ myelin bắt đầu diễn ra ngay cả khi chưa có triệu chứng thiếu máu hồng cầu to.
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- KỲ 3 CONTENT -->
+                <article id="content-ky3" class="article-panel hidden space-y-6">
+                    <div class="border-b border-slate-200 pb-4">
+                        <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Kỳ 3 • Sinh Hóa Não Bộ</span>
+                        <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900 mt-1">
+                            Rào Cản Chuyển Hóa ALA - DHA: Vì Sao Não Bộ Người Ăn Chay Thiếu "Nhiên Liệu"
+                        </h2>
+                        <p class="text-base text-slate-600 font-medium italic mt-2 bg-indigo-50 p-3 rounded border-l-2 border-indigo-500">
+                            <b>Sapo:</b> Khoảng 60% trọng lượng khô của não là lipid. Việc trông cậy vào hạt lanh hay óc chó để tổng hợp DHA gặp phải nút thắt cổ chai enzyme nghiêm trọng, đe dọa tính dẻo synap thần kinh.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2 article-content">
+                            <p>
+                                DHA (Docosahexaenoic Acid, 22:6 n-3) chiếm hơn 50% tổng lượng axit béo không bão hòa đa tại màng synap nơ-ron. DHA quy định độ lỏng màng sinh chất, giúp các thụ thể thần kinh xoay trở và giải phóng chất truyền dẫn trơn tru. Chế độ ăn thuần chay hoàn toàn thiếu vắng EPA/DHA định hình sẵn, buộc cơ thể tự tổng hợp từ ALA (Alpha-Linolenic Acid).
+                            </p>
+                            <p>
+                                Tuy nhiên, con đường này vấp phải nút thắt cổ chai sinh học: enzyme $\Delta^6$-desaturase ($FADS2$) bị phân tán ái lực bởi lượng lớn Axit Linoleic ($LA, n-6$) từ dầu thực vật phổ thông.
+                            </p>
+
+                            <blockquote>
+                                "Thực nghiệm đồng vị phóng xạ cho thấy hiệu suất tổng hợp DHA từ ALA chỉ đạt dưới 0.1% ở nam giới và 4-9% ở phụ nữ. Dung nạp >10g ALA mỗi ngày vẫn không làm tăng DHA mô."
+                            </blockquote>
+
+                            <p>
+                                Sự thiếu hụt DHA kéo dài buộc màng nơ-ron thay thế bằng các axit béo kém linh động hơn. Điều này làm chậm quá trình tái thu hồi phối tử thụ thể Dopamine D2 và Serotonin, dẫn đến hội chứng "sương mù brain fog", giảm khả năng tập trung sâu và tăng nguy cơ rối loạn khí sắc.
+                            </p>
+                        </div>
+
+                        <!-- Side Chart ALA Conversion -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-sm mb-1 text-center">Tỷ Lệ Chuyển Đổi ALA Sang EPA & DHA (%)</h3>
+                                <p class="text-xs text-slate-500 text-center mb-4">So sánh hiệu suất sinh học giữa Nam và Nữ</p>
+                                <div class="chart-container">
+                                    <canvas id="chartDHA"></canvas>
+                                </div>
+                            </div>
+                            <div class="text-xs text-slate-500 bg-white p-3 rounded border border-slate-200 mt-4">
+                                💡 <b>Lưu ý:</b> Phụ nữ có tỷ lệ chuyển đổi nhỉnh hơn nhờ sự kích thích phiên mã của Estrogen, nhưng vẫn không đủ bù đắp nhu cầu tối ưu của não bộ.
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- KỲ 4 CONTENT -->
+                <article id="content-ky4" class="article-panel hidden space-y-6">
+                    <div class="border-b border-slate-200 pb-4">
+                        <span class="text-xs font-bold text-rose-600 uppercase tracking-wider">Kỳ 4 • Cơ Xương Khớp & Dịch Tễ</span>
+                        <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900 mt-1">
+                            Khủng Hoảng Mật Độ Xương Và Teo Cơ Vi Thể: Góc Nhìn Từ Dữ Liệu EPIC-Oxford
+                        </h2>
+                        <p class="text-base text-slate-600 font-medium italic mt-2 bg-rose-50 p-3 rounded border-l-2 border-rose-500">
+                            <b>Sapo:</b> Phân tích theo dõi 55.000 đối tượng suốt 17.6 năm chứng minh nguy cơ gãy xương hông ở người thuần chay cao gấp 2.31 lần. Nguyên nhân bắt nguồn từ sự thiếu hụt bộ ba Ca-D3-K2 và hiện tượng không đạt ngưỡng Leucine.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2 article-content">
+                            <p>
+                                Nghiên cứu tiến cứu EPIC-Oxford ghi nhận người ăn thuần chay có tỷ số nguy cơ gãy xương hông $HR = 2.31\ (95\%\ CI:\ 1.66 - 3.22)$, tương đương $14.9$ ca gãy xương dư thừa trên $1.000$ người trong $10$ năm. Lượng canxi tiêu thụ trung bình ở nhóm này chỉ đạt $591\ \text{mg/ngày}$, thấp hơn nhiều so với ngưỡng an toàn sinh lý.
+                            </p>
+                            <p>
+                                Khi Canxi tự do giảm, tuyến cận giáp tăng tiết PTH để rút khoáng từ xương vào máu. Quá trình này càng trầm trọng do thiếu Vitamin K2 (MK-7) – cofactor xúc tác carboxyl hóa Osteocalcin. Osteocalcin không carboxyl hóa không thể cắm tinh thể Hydroxyapatite vào khung xương, khiến canxi tự do đi lắng đọng tại vách mạch máu.
+                            </p>
+
+                            <blockquote>
+                                "Quá trình tổng hợp protein cơ bắp (MPS) đòi hỏi nồng độ Leucine nội bào đạt 'ngưỡng Leucine' 2.5 - 3.0g/bữa. Hầu hết protein thực vật đều thiếu Leucine hoặc có chỉ số DIAAS thấp, dẫn đến dị hóa cơ thể kéo dài."
+                            </blockquote>
+
+                            <p>
+                                Việc không vượt qua ngưỡng Leucine định kỳ khiến thể tích sợi cơ sụt giảm dần, làm giảm mật độ cơ nạc và suy giảm tốc độ chuyển hóa cơ bản sau 5 năm.
+                            </p>
+                        </div>
+
+                        <!-- Side Chart EPIC Oxford Hazard Ratios -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-sm mb-1 text-center">Nguy Cơ Gãy Xương Hông (Hazard Ratio)</h3>
+                                <p class="text-xs text-slate-500 text-center mb-4">Dữ liệu theo dõi 17.6 năm (EPIC-Oxford)</p>
+                                <div class="chart-container">
+                                    <canvas id="chartFracture"></canvas>
+                                </div>
+                            </div>
+                            <div class="text-xs text-slate-500 bg-white p-3 rounded border border-slate-200 mt-4">
+                                📊 <b>Đối chứng:</b> Người ăn thịt thông thường có HR = 1.00. Người ăn thuần chay có nguy cơ gãy hông tăng cao nhất trong các nhóm chế độ ăn.
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- KỲ 5 CONTENT -->
+                <article id="content-ky5" class="article-panel hidden space-y-6">
+                    <div class="border-b border-slate-200 pb-4">
+                        <span class="text-xs font-bold text-amber-600 uppercase tracking-wider">Kỳ 5 • Nội Tiết Tuyến Giáp</span>
+                        <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900 mt-1">
+                            Axit Phytic Và "Nạn Đói Kẽm": Căn Nguyên Kích Hoạt Suy Giáp Chức Năng
+                        </h2>
+                        <p class="text-base text-slate-600 font-medium italic mt-2 bg-amber-50 p-3 rounded border-l-2 border-amber-500">
+                            <b>Sapo:</b> Tỷ số Phytate:Kẽm vượt ngưỡng an toàn trong ngũ cốc thô làm vô hiệu hóa khả năng hấp thu Kẽm, trực tiếp cản trở quá trình chuyển hóa prohormone T4 thành hormone T3 hoạt tính.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2 article-content">
+                            <p>
+                                Axit Phytic (Phytate) tích điện âm cực mạnh ở pH ruột, nhanh chóng chelate hóa các ion kim loại $Zn^{2+}, Fe^{2+}, Ca^{2+}$ thành phức hợp không hòa tan. WHO và IZiNCG chuẩn hóa tỷ số mol $[Phytate]:[Zinc]$ để đánh giá sinh khả dụng:
+                            </p>
+                            <p class="font-mono text-xs bg-slate-100 p-2 rounded text-center my-3">
+                                Tỷ số Mol = [Phytate (mg) / 660.08] / [Kẽm (mg) / 65.38]
+                            </p>
+                            <p>
+                                Khi tỷ số này vượt quá $15$, sinh khả dụng của kẽm giảm xuống dưới $15\%$. Khẩu phần ăn chay thô thường đẩy tỷ số lên tới $20 - 40$, gây thiếu hụt kẽm tế bào mạn tính.
+                            </p>
+
+                            <blockquote>
+                                "Kẽm là cofactor thiết yếu duy trì hoạt tính enzyme Iodothyronine Deiodinase. Thiếu kẽm khiến T4 không thể biến thành T3 hoạt tính mà bị chuyển hóa thành Reverse T3 (rT3) trơ."
+                            </blockquote>
+
+                            <p>
+                                Trạng thái này đẩy cơ thể vào <b>Suy giáp chức năng dưới lâm sàng</b>: giảm thân nhiệt ngoại vi, lạnh tay chân, tóc rụng lan tỏa, da khô tróc và mệt mỏi mạn tính.
+                            </p>
+                        </div>
+
+                        <!-- Side Interactive Phytate Gauge/Info -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-sm mb-1 text-center">Sinh Khả Dụng Kẽm Theo Tỷ Số Phytate:Zinc</h3>
+                                <p class="text-xs text-slate-500 text-center mb-4">Tỷ lệ hấp thu kẽm thực tế tại tế bào ruột</p>
+                                <div class="chart-container">
+                                    <canvas id="chartZinc"></canvas>
+                                </div>
+                            </div>
+                            <div class="text-xs text-slate-500 bg-white p-3 rounded border border-slate-200 mt-4">
+                                🧪 <b>Mục tiêu:</b> Giảm tỷ số $[Phytate]:[Zinc]$ xuống dưới 5 để đạt tỷ lệ hấp thu kẽm tối đa (~50%).
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- KỲ 6 CONTENT -->
+                <article id="content-ky6" class="article-panel hidden space-y-6">
+                    <div class="border-b border-slate-200 pb-4">
+                        <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">Kỳ 6 • Can Thiệp & Kỹ Thuật Ẩm Thực</span>
+                        <h2 class="text-2xl md:text-3xl font-serif font-bold text-slate-900 mt-1">
+                            Phác Đồ Bổ Sung Vi Chất Và Kỹ Thuật Chế Biến Thực Vật Dưới Góc Nhìn Sinh Hóa
+                        </h2>
+                        <p class="text-base text-slate-600 font-medium italic mt-2 bg-brand-50 p-3 rounded border-l-2 border-brand-500">
+                            <b>Sapo:</b> Ăn chay khoa học không phải là loại bỏ hoàn toàn can thiệp, mà là ứng dụng sinh hóa học để tối ưu hóa khả năng hấp thu vi chất và kích hoạt enzyme thủy phân phytate.
+                        </p>
+                    </div>
+
+                    <div class="article-content space-y-4">
+                        <p>
+                            Để khắc phục triệt để các rủi ro sinh hóa sau 5 năm, người thực hành thuần chay cần áp dụng phác đồ can thiệp song song giữa bổ sung dạng bào chế sinh khả dụng cao và kỹ thuật chế biến ẩm thực hóa sinh.
+                        </p>
+
+                        <!-- Matrix Table -->
+                        <div class="overflow-x-auto my-6">
+                            <table class="w-full text-left border-collapse text-xs md:text-sm">
+                                <thead>
+                                    <tr class="bg-slate-900 text-white">
+                                        <th class="p-3 font-semibold">Vi Chất</th>
+                                        <th class="p-3 font-semibold">Dạng Bào Chế Khuyên Dùng</th>
+                                        <th class="p-3 font-semibold">Cơ Chế Tác Động</th>
+                                        <th class="p-3 font-semibold">Kỹ Thuật Chế Biến Đi Kèm</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 bg-slate-50">
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-900">Vitamin B12</td>
+                                        <td class="p-3">Methylcobalamin + Adenosylcobalamin (ngậm)</td>
+                                        <td class="p-3">Cung cấp trực tiếp cofactor hoạt tính cho bào tương & ty thể</td>
+                                        <td class="p-3">Thực phẩm tăng cường vi chất có kiểm định</td>
+                                    </tr>
+                                    <tr class="bg-white">
+                                        <td class="p-3 font-bold text-slate-900">Omega-3 (DHA)</td>
+                                        <td class="p-3">Dầu chiết xuất Vi tảo biển (<i>Schizochytrium</i>)</td>
+                                        <td class="p-3">Bỏ qua nút thắt $\Delta^6$-desaturase, tái cấu trúc màng synap</td>
+                                        <td class="p-3">Hạn chế dầu n-6 (dầu đậu nành, hướng dương)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-900">Khung Xương (Ca-D3-K2)</td>
+                                        <td class="p-3">Calcium Citrate + D3 (địa y) + MK-7</td>
+                                        <td class="p-3">Carboxyl hóa Osteocalcin để cố định Canxi vào xương</td>
+                                        <td class="p-3">Đậu phụ kết tủa bằng muối Canxi, Natto</td>
+                                    </tr>
+                                    <tr class="bg-white">
+                                        <td class="p-3 font-bold text-slate-900">Kẽm Hóa Trị 2</td>
+                                        <td class="p-3">Kẽm Bisglycinate Chelate</td>
+                                        <td class="p-3">Vòng chelate hữu cơ bảo vệ Kẽm khỏi Axit Phytic</td>
+                                        <td class="p-3">Ngâm nước ấm $45-55^\circ\text{C}$, ủ mầm 48h</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-900">Protein & Leucine</td>
+                                        <td class="p-3">Đạm cô lập Đậu Hà Lan / Đậu nành + Leucine</td>
+                                        <td class="p-3">Đạt ngưỡng 3.0g Leucine/bữa để kích hoạt mTORC1</td>
+                                        <td class="p-3">Phối hợp Ngũ cốc + Cây họ đậu trong ngày</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 class="text-lg font-bold text-slate-900 mt-6">Kỹ Thuật Triệt Triệt Phytate Bằng Enzyme Nội Sinh</h3>
+                        <p>
+                            Enzyme <b>Phytase</b> tồn tại tiềm sinh trong vỏ hạt có thể được kích hoạt bằng phương pháp ngâm nước ấm ($45-55^\circ\text{C}$) trong môi trường axit nhẹ (thêm giấm táo hoặc nước chanh) từ 12–24 giờ, giúp phân cắt 30–50% lượng phytate. Phương pháp ủ nảy mầm trong 48 giờ hoặc lên men bột chua (<i>Sourdough</i>) giúp hạ pH xuống 4.5–5.5, loại bỏ tới 70–80% chất kháng dinh dưỡng này.
+                        </p>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- SECTION 3: INTERACTIVE BIOCHEMICAL TOOLS & CALCULATORS -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <!-- Tool 1: Phytate to Zinc Calculator -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div class="flex items-center space-x-2 mb-4">
+                    <span class="bg-amber-100 text-amber-800 p-2 rounded-lg text-lg">🧪</span>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-base">Công Cụ Tính Tỷ Số Mol Phytate : Zinc</h3>
+                        <p class="text-xs text-slate-500">Đánh giá sinh khả dụng hấp thu kẽm khẩu phần</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-medium text-slate-700 mb-1">Hàm lượng Phytate nạp (mg/ngày):</label>
+                        <input type="number" id="inputPhytate" value="1800" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                        <span class="text-slate-400 text-[10px]">Ví dụ: 100g ngũ cốc thô + đậu chứa ~1500-2000mg Phytate</span>
+                    </div>
+
+                    <div>
+                        <label class="block font-medium text-slate-700 mb-1">Hàm lượng Kẽm nạp (mg/ngày):</label>
+                        <input type="number" id="inputZinc" value="10" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                        <span class="text-slate-400 text-[10px]">Nhu cầu khuyến nghị trung bình: 8-11mg Kẽm</span>
+                    </div>
+
+                    <button onclick="calculatePhytateZinc()" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 rounded transition duration-150">
+                        Tính Tỷ Số & Đánh Giá Hấp Thu
+                    </button>
+
+                    <div id="phytateResult" class="p-3 bg-slate-50 rounded border border-slate-200 text-slate-800 space-y-1">
+                        <p><b>Tỷ số Mol Calc:</b> <span id="resRatio" class="font-mono font-bold text-amber-700">--</span></p>
+                        <p><b>Mức Hấp Thu Dự Đoán:</b> <span id="resBio" class="font-bold">--</span></p>
+                        <p id="resAdvice" class="text-[11px] text-slate-600 italic mt-1">Nhấn nút để thực hiện tính toán.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tool 2: Leucine & MPS Threshold Checker -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div class="flex items-center space-x-2 mb-4">
+                    <span class="bg-brand-100 text-brand-800 p-2 rounded-lg text-lg">🧬</span>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-base">Kiểm Tra Ngưỡng Leucine & Tổng Hợp Cơ (MPS)</h3>
+                        <p class="text-xs text-slate-500">Kích hoạt con đường tín hiệu mTORC1</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-medium text-slate-700 mb-1">Nguồn Protein Chính Trong Bữa Ăn:</label>
+                        <select id="selectProtein" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            <option value="soy_isolate">Đạm Đậu Nành Cô Lập (Soy Protein Isolate) - 30g</option>
+                            <option value="pea_protein">Đạm Đậu Hà Lan (Pea Protein) - 30g</option>
+                            <option value="whole_beans">Đậu Đen / Đậu Đỏ Luộc - 150g</option>
+                            <option value="brown_rice">Cơm Gạo Lứt / Yến Mạch - 200g</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-medium text-slate-700 mb-1">Khối Lượng Khẩu Phần (Grams):</label>
+                        <input type="number" id="inputGram" value="30" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+
+                    <button onclick="checkLeucine()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2 rounded transition duration-150">
+                        Kiểm Tra Ngưỡng mTORC1
+                    </button>
+
+                    <div id="leucineResult" class="p-3 bg-slate-50 rounded border border-slate-200 text-slate-800 space-y-1">
+                        <p><b>Lượng Leucine Ước Tính:</b> <span id="resLeucine" class="font-mono font-bold text-brand-700">--</span></p>
+                        <p><b>Trạng Thái Ngưỡng mTORC1:</b> <span id="resMtor" class="font-bold">--</span></p>
+                        <p id="resLeucineAdvice" class="text-[11px] text-slate-600 italic mt-1">Nhấn nút để thực hiện kiểm tra.</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
+            <p class="text-slate-300 font-semibold">Báo Cáo Phân Tích Chuyên Sâu • Chuyển Hóa Thuần Chay Dài Hạn Sau 5 Năm</p>
+            <p class="max-w-3xl mx-auto text-slate-500">
+                Nội dung được tổng hợp và phân tích dựa trên video "Ăn Chay 5 Năm Đang Hủy Hoại Bạn? Sự Thật Sốc!" từ kênh Hiểu Cơ Thể, kết hợp các dữ liệu nghiên cứu tiến cứu từ EPIC-Oxford, WHO và IZiNCG.
+            </p>
+            <p class="text-slate-600">© 2026 Chuyên Đề Y Khoa & Dinh Dưỡng Chuyển Hóa. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC & CHART INTERACTION -->
+    <script>
+        // Global variables for charts
+        let chartSCFA, chartB12, chartDHA, chartFracture, chartZinc;
+
+        // Initialize Charts when DOM is loaded
+        document.addEventListener("DOMContentLoaded", function () {
+            initCharts();
+            calculatePhytateZinc();
+            checkLeucine();
+        });
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            // Hide all panels
+            document.querySelectorAll('.article-panel').forEach(panel => {
+                panel.classList.add('hidden');
+            });
+            // Remove active class from buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show current panel & activate current button
+            document.getElementById('content-' + tabId).classList.remove('hidden');
+            document.getElementById('tab-' + tabId).classList.add('active');
+        }
+
+        // Initialize All Chart.js Instances
+        function initCharts() {
+            // Chart 1: SCFA Distribution (Donut Chart)
+            const ctxSCFA = document.getElementById('chartSCFA').getContext('2d');
+            chartSCFA = new Chart(ctxSCFA, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Acetate (60%)', 'Propionate (20%)', 'Butyrate (20%)'],
+                    datasets: [{
+                        data: [60, 20, 20],
+                        backgroundColor: ['#16a34a', '#3b82f6', '#f59e0b'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': Cơ chất phục vụ năng lượng & chuyển hóa';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Chart 2: B12 Depletion vs MMA Increase (Line Chart)
+            const ctxB12 = document.getElementById('chartB12').getContext('2d');
+            chartB12 = new Chart(ctxB12, {
+                type: 'line',
+                data: {
+                    labels: ['Năm 1', 'Năm 2', 'Năm 3', 'Năm 4', 'Năm 5+'],
+                    datasets: [
+                        {
+                            label: 'Dự Trữ B12 Tại Gan (% còn lại)',
+                            data: [100, 75, 45, 20, 2],
+                            borderColor: '#16a34a',
+                            backgroundColor: 'rgba(22, 163, 74, 0.1)',
+                            fill: true,
+                            tension: 0.3,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Axit Methylmalonic (MMA) (µmol/L)',
+                            data: [0.12, 0.15, 0.28, 0.55, 1.20],
+                            borderColor: '#e11d48',
+                            backgroundColor: 'transparent',
+                            borderDash: [5, 5],
+                            tension: 0.3,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: { display: true, text: 'Trữ Lượng Gan (%)', font: { size: 10 } }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            grid: { drawOnChartArea: false },
+                            title: { display: true, text: 'MMA (µmol/L)', font: { size: 10 } }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } }
+                    }
+                }
+            });
+
+            // Chart 3: ALA to EPA/DHA Conversion (Grouped Bar Chart)
+            const ctxDHA = document.getElementById('chartDHA').getContext('2d');
+            chartDHA = new Chart(ctxDHA, {
+                type: 'bar',
+                data: {
+                    labels: ['ALA -> EPA', 'ALA -> DHA'],
+                    datasets: [
+                        {
+                            label: 'Nam Giới (%)',
+                            data: [5.0, 0.08],
+                            backgroundColor: '#4f46e5'
+                        },
+                        {
+                            label: 'Nữ Giới (Độ tuổi sinh đẻ) (%)',
+                            data: [8.0, 6.5],
+                            backgroundColor: '#ec4899'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Tỷ Lệ Chuyển Đổi (%)', font: { size: 10 } }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } }
+                    }
+                }
+            });
+
+            // Chart 4: Fracture Hazard Ratios (Horizontal Bar Chart)
+            const ctxFracture = document.getElementById('chartFracture').getContext('2d');
+            chartFracture = new Chart(ctxFracture, {
+                type: 'bar',
+                data: {
+                    labels: ['Ăn Thịt', 'Ăn Cá', 'Ăn Chay Trứng-Sữa', 'Thuần Chay (Vegan)'],
+                    datasets: [{
+                        label: 'Tỷ Số Nguy Cơ Gãy Xương Hông (HR)',
+                        data: [1.00, 1.26, 1.25, 2.31],
+                        backgroundColor: ['#64748b', '#0284c7', '#f59e0b', '#e11d48']
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Hazard Ratio (HR) - EPIC Oxford', font: { size: 10 } }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+
+            // Chart 5: Zinc Bioavailability Gauge (Bar Chart)
+            const ctxZinc = document.getElementById('chartZinc').getContext('2d');
+            chartZinc = new Chart(ctxZinc, {
+                type: 'bar',
+                data: {
+                    labels: ['[Phytate]:[Zinc] < 5', '[Phytate]:[Zinc] 5-15', '[Phytate]:[Zinc] > 15'],
+                    datasets: [{
+                        label: 'Sinh Khả Dụng Hấp Thu Kẽm (%)',
+                        data: [50, 32, 12],
+                        backgroundColor: ['#16a34a', '#f59e0b', '#e11d48']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 60,
+                            title: { display: true, text: 'Tỷ Lệ Hấp Thu Thực Tế (%)', font: { size: 10 } }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        // Calculator 1: Phytate : Zinc Molar Ratio
+        function calculatePhytateZinc() {
+            const phytateMg = parseFloat(document.getElementById('inputPhytate').value) || 0;
+            const zincMg = parseFloat(document.getElementById('inputZinc').value) || 1;
+
+            // Molar masses: Phytate = 660.08 g/mol, Zinc = 65.38 g/mol
+            const phytateMoles = phytateMg / 660.08;
+            const zincMoles = zincMg / 65.38;
+
+            const ratio = (phytateMoles / zincMoles).toFixed(2);
+
+            document.getElementById('resRatio').innerText = ratio;
+
+            const resBio = document.getElementById('resBio');
+            const resAdvice = document.getElementById('resAdvice');
+
+            if (ratio < 5) {
+                resBio.innerText = "Cao (~50% Hấp Thu)";
+                resBio.className = "font-bold text-brand-700";
+                resAdvice.innerText = "Tỷ số tối ưu! Khả năng hấp thu kẽm không bị cản trở bởi Phytate.";
+            } else if (ratio >= 5 && ratio <= 15) {
+                resBio.innerText = "Trung Bình (~30-35% Hấp Thu)";
+                resBio.className = "font-bold text-amber-600";
+                resAdvice.innerText = "Mức độ ức chế vừa phải. Nên áp dụng ngâm hạt hoặc bổ sung thêm kẽm.";
+            } else {
+                resBio.innerText = "Rất Thấp (< 15% Hấp Thu)";
+                resBio.className = "font-bold text-rose-600";
+                resAdvice.innerText = "Cảnh báo: Khẩu phần gây cản trở hấp thu kẽm nghiêm trọng! Nguy cơ suy giáp chức năng & rụng tóc.";
+            }
+        }
+
+        // Calculator 2: Leucine & MPS Threshold Checker
+        function checkLeucine() {
+            const proteinType = document.getElementById('selectProtein').value;
+            const grams = parseFloat(document.getElementById('inputGram').value) || 0;
+
+            let leucinePerGram = 0; // grams of leucine per gram of food
+
+            switch (proteinType) {
+                case 'soy_isolate':
+                    leucinePerGram = 0.08; // ~8% leucine in soy isolate
+                    break;
+                case 'pea_protein':
+                    leucinePerGram = 0.065; // ~6.5% leucine in pea isolate
+                    break;
+                case 'whole_beans':
+                    leucinePerGram = 0.015; // ~1.5% leucine in cooked whole beans
+                    break;
+                case 'brown_rice':
+                    leucinePerGram = 0.008; // ~0.8% leucine in cooked brown rice
+                    break;
+            }
+
+            const totalLeucine = (grams * leucinePerGram).toFixed(2);
+            document.getElementById('resLeucine').innerText = totalLeucine + " g";
+
+            const resMtor = document.getElementById('resMtor');
+            const resAdvice = document.getElementById('resAdvice');
+
+            if (totalLeucine >= 2.5) {
+                resMtor.innerText = "ĐẠT (Kích Hoạt mTORC1)";
+                resMtor.className = "font-bold text-brand-700";
+                document.getElementById('resLeucineAdvice').innerText = "Chúc mừng! Bữa ăn đủ nồng độ Leucine để kích hoạt quá trình tổng hợp protein cơ bắp (MPS).";
+            } else {
+                resMtor.innerText = "CHƯA ĐẠT (< 2.5g Leucine)";
+                resMtor.className = "font-bold text-rose-600";
+                document.getElementById('resLeucineAdvice').innerText = "Cảnh báo: Không đủ ngưỡng Leucine. Quá trình dị hóa cơ vẫn chiếm ưu thế, nguy cơ teo cơ mạn tính.";
+            }
+        }
+    </script>
+</body>
+</html>

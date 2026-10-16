@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ Sơ Phân Tích & Chuỗi Chuyên Đề Địa Chính Trị Toàn Cầu</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        warmbg: '#FAF8F5',
+                        warmcard: '#FFFFFF',
+                        warmborder: '#E8E3DA',
+                        branddark: '#1E293B',
+                        brandaccent: '#D97706',
+                        brandblue: '#2563EB',
+                        brandgreen: '#059669',
+                        brandred: '#DC2626'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FAF8F5;
+            color: #1E293B;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+        .tab-btn.active {
+            border-bottom: 3px solid #D97706;
+            color: #D97706;
+            font-weight: 700;
+            background-color: #FFFBEB;
+        }
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background-color: #CBD5E1;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Chosen Palette: Warm Neutral Harmony (Background #FAF8F5, Slate text #1E293B, Amber accent #D97706, Blue #2563EB) -->
+
+    <!-- Application Structure Plan: 
+         - Designed layout: Dashboard + Multi-Tab Interactive Workspace tailored for editors, analysts, and C-level leaders.
+         - Tab 1: Hồ Sơ Phân Tích (Podcast Dossier & Fact-Check Audit) - Core message, 8 key takeaways, timestamped topic maps, and argument audit.
+         - Tab 2: Luận Điểm Địa Chính Trị (Core Geopolitics Breakdown) - Deep dive into US risk, Hormuz "Glass Jaw", Critical Minerals, and Technopolar AI Order.
+         - Tab 3: So Sánh Thể Chế & Biểu Đồ (Comparative Matrix & Interactive Charts) - Radar chart on geopolitical risks, Bar chart on energy shock impacts, comparative table.
+         - Tab 4: Chuỗi Chuyên Đề & Mô Phỏng (7 Executive Modules & Interactive Case Scenarios) - Dynamic module selector with simulation impact calculators.
+         - Tab 5: Studio Chuỗi Bài Báo (Editorial Article Studio) - 7 customizable article outlines with headlines, sapo, intertitles, pull-quotes, counter-perspectives, and verification warnings.
+         - WHY: Allows non-linear exploration, turning complex geopolitics and lengthy podcast analyses into actionable insights and media-ready content.
+    -->
+
+    <!-- Visualization & Content Choices:
+         - Chart 1 (Radar): Multi-Dimensional Risk Index across US, China, and EU. (Chart.js Canvas)
+         - Chart 2 (Bar): Energy Shock & Public Pain Thresholds vs Strategic Concessions. (Chart.js Canvas)
+         - Interactive Decision Matrix: Dynamic scenario outcome calculator in JavaScript.
+         - STRICT COMPLIANCE: NO SVG tags used (all icons/indicators use HTML symbols/Unicode e.g. 🌐, 📊, ⚡, 🛡️, 💡, 📜). NO Mermaid JS used.
+    -->
+
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Top Navigation Header -->
+    <header class="bg-white border-b border-warmborder sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
+            <div class="flex items-center space-x-3">
+                <span class="text-2xl">🌐</span>
+                <div>
+                    <h1 class="text-lg font-bold text-branddark leading-tight">Hồ Sơ Địa Chính Trị Toàn Cầu & Chuỗi Bài Báo Strategic Risks</h1>
+                    <p class="text-xs text-slate-500">Phân tích chuyên sâu cuộc đối thoại Ian Bremmer x Steven Bartlett (*The Diary Of A CEO*)</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2 text-xs">
+                <span class="bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full font-medium">Diễn giả: Ian Bremmer</span>
+                <span class="bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full font-medium">Kênh: DOAC (EVts3Ui_0AI)</span>
+            </div>
+        </div>
+
+        <!-- Tab Bar -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-1 sm:space-x-4 overflow-x-auto custom-scroll text-sm font-medium border-t border-slate-100">
+            <button onclick="switchTab('dossier')" id="tab-dossier" class="tab-btn active px-4 py-3 whitespace-nowrap transition-colors">
+                📌 Hồ Sơ Phân Tích & Podcast
+            </button>
+            <button onclick="switchTab('geopolitics')" id="tab-geopolitics" class="tab-btn px-4 py-3 whitespace-nowrap transition-colors">
+                🌐 Luận Điểm Cốt Lõi
+            </button>
+            <button onclick="switchTab('matrix')" id="tab-matrix" class="tab-btn px-4 py-3 whitespace-nowrap transition-colors">
+                📊 So Sánh Thể Chế & Biểu Đồ
+            </button>
+            <button onclick="switchTab('modules')" id="tab-modules" class="tab-btn px-4 py-3 whitespace-nowrap transition-colors">
+                🎓 Khung 7 Chuyên Đề & Mô Phỏng
+            </button>
+            <button onclick="switchTab('articles')" id="tab-articles" class="tab-btn px-4 py-3 whitespace-nowrap transition-colors">
+                📰 Studio Chuỗi Bài Báo (Editorial)
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- TAB 1: HỒ SƠ PHÂN TÍCH PODCAST (Podcast Dossier & Fact Audit) -->
+        <section id="sec-dossier" class="space-y-6">
+            <!-- Introductory Context -->
+            <div class="bg-white p-6 rounded-xl border border-warmborder shadow-sm">
+                <h2 class="text-xl font-bold text-branddark mb-2 flex items-center gap-2">
+                    <span>📑</span> Hồ Sơ Phân Tích Nguồn (Podcast Analysis Dossier)
+                </h2>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Trang này tổng hợp thông tin phân tích nguyên bản từ buổi đối thoại giữa học giả Ian Bremmer (Chủ tịch Eurasia Group & GZERO Media) và Steven Bartlett. Nội dung bóc tách các đứt gãy mang tính cơ cấu trong hệ thống an ninh - kinh tế quốc tế, từ nguy cơ phân cực tại Mỹ, điểm nghẽn địa kinh tế đến sự bùng nổ của trật tự phân cực công nghệ.
+                </p>
+            </div>
+
+            <!-- Meta Details Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white p-5 rounded-xl border border-warmborder shadow-sm">
+                    <div class="text-xs uppercase font-semibold text-amber-600 mb-1">Thông Tin Chương Trình</div>
+                    <div class="text-base font-bold text-branddark">The Diary Of A CEO (DOAC)</div>
+                    <p class="text-xs text-slate-500 mt-1">Host: Steven Bartlett | Khách mời: Ian Bremmer</p>
+                    <p class="text-xs text-slate-500 mt-0.5">Chức danh: Chủ tịch Eurasia Group & GZERO Media</p>
+                    <div class="mt-3 pt-3 border-t border-slate-100 flex justify-between items-center text-xs text-slate-600">
+                        <span>Mã video: EVts3Ui_0AI</span>
+                        <span class="font-medium text-brandblue">Độ tin cậy: High (Kỹ trị)</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-warmborder shadow-sm md:col-span-2">
+                    <div class="text-xs uppercase font-semibold text-amber-600 mb-1">Thông Điệp Cốt Lõi (Core Message)</div>
+                    <blockquote class="text-sm font-semibold text-branddark italic border-l-4 border-amber-500 pl-3 py-1 my-1">
+                        "Thế giới đã bước vào một trật tự địa chính trị mới đầy bất ổn khi mỏ neo an ninh Hoa Kỳ trở thành nguồn phát tán rủi ro hệ thống, trong khi sự thống trị chuỗi khoáng sản của Trung Quốc và chủ quyền số phi nhà nước của Big Tech đang buộc các tổ chức phải chuyển hướng từ tối ưu chi phí sang phòng vệ đa tầng."
+                    </blockquote>
+                    <p class="text-xs text-slate-500 mt-2">
+                        [Bối cảnh]: Luận điểm dựa trên Báo cáo Rủi ro Toàn cầu hàng năm của Eurasia Group và các phân tích thực tế về xung đột khu vực, chuỗi cung ứng đất hiếm và hạ tầng AI biên.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Key Takeaways (5-8 Points) -->
+            <div class="bg-white p-6 rounded-xl border border-warmborder shadow-sm">
+                <h3 class="text-base font-bold text-branddark mb-4 flex items-center gap-2">
+                    <span>💡</span> Key Takeaways (8 Điểm Cốt Lõi Cần Ghi Nhớ)
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                        <span class="font-bold text-amber-700 block mb-1">1. Đảo Chiều Trật Tự</span>
+                        Mỹ chuyển từ quốc gia bảo trợ trật tự thương mại tự do sang nguồn phát sinh biến động địa chính trị hàng đầu do phân cực nội bộ.
+                    </div>
+                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                        <span class="font-bold text-amber-700 block mb-1">2. Suy Thoái Kỹ Trị</span>
+                        Bộ máy hành pháp Mỹ lấn át kỹ trị bằng trung thành cá nhân, tạo hiệu ứng buồng vang thông tin và chính sách bốc đồng.
+                    </div>
+                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                        <span class="font-bold text-amber-700 block mb-1">3. Hiệu Ứng Hàm Thủy Tinh</span>
+                        Nền dân chủ phương Tây cực kỳ nhạy cảm với lạm phát và giá năng lượng, tạo lợi thế chịu đựng bất đối xứng cho các chế độ độc tài.
+                    </div>
+                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                        <span class="font-bold text-amber-700 block mb-1">4. Điểm Nghẽn Hormuz</span>
+                        Đe dọa gián đoạn tuyến dầu mỏ Vịnh Ba Tư là vũ khí kinh tế hiệu quả để các lực lượng phi đối xứng ép phương Tây nhượng bộ.
+                    </div>
+                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                        <span class="font-bold text-amber-700 block mb-1">5. Vũ Khí Đất Hiếm</span>
+                        Trung Quốc sử dụng trợ cấp nhà nước định giá âm để triệt hạ ngành khai khoáng tư nhân phương Tây, nắm giữ đòn bẩy răn đe tuyệt đối.
+                    </div>
+                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                        <span class="font-bold text-amber-700 block mb-1">6. Suy Giảm Vị Thế EU</span>
+                        Châu Âu trả giá cho 30 năm "cổ tức hòa bình": mất an ninh năng lượng, thiếu tập đoàn công nghệ lõi và vướng bẫy quy định pháp lý.
+                    </div>
+                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                        <span class="font-bold text-amber-700 block mb-1">7. Trật Tự Phân Cực Tech</span>
+                        Big Tech sở hữu chủ quyền thực tế trên không gian số; các tài phiệt công nghệ đưa ra quyết định độc lập với các hiệp ước an ninh.
+                    </div>
+                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                        <span class="font-bold text-amber-700 block mb-1">8. Cần Thiết Hội Đồng AI</span>
+                        Đề xuất khẩn cấp thành lập Hội đồng Ổn định AI Toàn cầu (AI Stability Board) để kiểm toán bắt buộc các mô hình AI biên.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topic Map Grid & Content Audit -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Topic Map (2 Cols) -->
+                <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-warmborder shadow-sm space-y-4">
+                    <h3 class="text-base font-bold text-branddark flex items-center gap-2">
+                        <span>🗺️</span> Bản Đồ Chủ Đề (Topic Map & Timestamped Insights)
+                    </h3>
+                    
+                    <!-- Topic Item 1 -->
+                    <div class="p-4 rounded-lg bg-amber-50/50 border border-amber-200/60 text-xs space-y-2">
+                        <div class="flex justify-between items-center font-bold text-amber-900 text-sm">
+                            <span>Chủ đề 1: Khủng Hoảng Thể Chế & Rủi Ro Hệ Thống Mỹ</span>
+                            <span class="text-xs bg-amber-200 text-amber-900 px-2 py-0.5 rounded">[12:15 - 28:40]</span>
+                        </div>
+                        <p class="text-slate-700">Sự suy thoái năng lực hoạch định chính sách công khi lòng trung thành cá nhân thay thế năng lực chuyên môn, khiến chính sách đối ngoại đứt gãy theo chu kỳ 4 năm.</p>
+                        <blockquote class="italic text-slate-800 bg-white p-2 rounded border-l-2 border-amber-600">
+                            "Mỹ không còn là mỏ neo bảo vệ thương mại toàn cầu mà đã trở thành nguồn phát sinh biến động khó dự báo nhất đối với các đồng minh." — Ian Bremmer [18:42]
+                        </blockquote>
+                        <div class="flex items-center justify-between text-slate-500 pt-1">
+                            <span>Góc tiếp cận: Tài chính & Thị trường vốn</span>
+                            <span class="font-semibold text-brandgreen">Mức độ đáng viết: Cao</span>
+                        </div>
+                    </div>
+
+                    <!-- Topic Item 2 -->
+                    <div class="p-4 rounded-lg bg-blue-50/50 border border-blue-200/60 text-xs space-y-2">
+                        <div class="flex justify-between items-center font-bold text-blue-900 text-sm">
+                            <span>Chủ đề 2: "Hàm Thủy Tinh" Dân Chủ & Bất Đối Xứng Xung Đột</span>
+                            <span class="text-xs bg-blue-200 text-blue-900 px-2 py-0.5 rounded">[31:10 - 45:00]</span>
+                        </div>
+                        <p class="text-slate-700">Ngưỡng chịu đựng xã hội thấp của các nước dân chủ trước giá nhiên liệu làm suy giảm sức bền chiến lược khi đối đầu với chế độ chuyên chế.</p>
+                        <blockquote class="italic text-slate-800 bg-white p-2 rounded border-l-2 border-blue-600">
+                            "Các chính phủ dân chủ có 'hàm thủy tinh' cực kỳ nhạy cảm với lạm phát và bầu cử, tạo lợi thế cho đối thủ đe dọa các điểm nghẽn như Hormuz." — Ian Bremmer [38:15]
+                        </blockquote>
+                        <div class="flex items-center justify-between text-slate-500 pt-1">
+                            <span>Góc tiếp cận: An ninh Năng lượng & Logistics</span>
+                            <span class="font-semibold text-brandgreen">Mức độ đáng viết: Cao</span>
+                        </div>
+                    </div>
+
+                    <!-- Topic Item 3 -->
+                    <div class="p-4 rounded-lg bg-emerald-50/50 border border-emerald-200/60 text-xs space-y-2">
+                        <div class="flex justify-between items-center font-bold text-emerald-900 text-sm">
+                            <span>Chủ đề 3: Cuộc Chiến Đất Hiếm & Tác Động Tái Cấu Trúc EU</span>
+                            <span class="text-xs bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded">[48:20 - 1:05:15]</span>
+                        </div>
+                        <p class="text-slate-700">Chiến lược độc quyền khoáng sản của Trung Quốc bằng trợ cấp giá âm và thế kẹt tụt hậu công nghệ của Châu Âu hậu Cổ tức Hòa bình.</p>
+                        <blockquote class="italic text-slate-800 bg-white p-2 rounded border-l-2 border-emerald-600">
+                            "Châu Âu giải giáp quân sự và dồn tiền vào an sinh nhưng thiếu các tập đoàn công nghệ dẫn dắt để tạo ra tăng trưởng." — Ian Bremmer [56:10]
+                        </blockquote>
+                        <div class="flex items-center justify-between text-slate-500 pt-1">
+                            <span>Góc tiếp cận: Chuỗi cung ứng & Địa kinh tế</span>
+                            <span class="font-semibold text-brandgreen">Mức độ đáng viết: Cao</span>
+                        </div>
+                    </div>
+
+                    <!-- Topic Item 4 -->
+                    <div class="p-4 rounded-lg bg-purple-50/50 border border-purple-200/60 text-xs space-y-2">
+                        <div class="flex justify-between items-center font-bold text-purple-900 text-sm">
+                            <span>Chủ đề 4: Quyền Lực Technopolar & Cấp Thiết Lập Hội Đồng AI</span>
+                            <span class="text-xs bg-purple-200 text-purple-900 px-2 py-0.5 rounded">[1:08:00 - 1:28:30]</span>
+                        </div>
+                        <p class="text-slate-700">Big Tech thực thi chủ quyền số độc lập; tự động hóa trí thức nuôi dưỡng dân túy mới và đòi hỏi thành lập Hội đồng Ổn định AI (FSB for AI).</p>
+                        <blockquote class="italic text-slate-800 bg-white p-2 rounded border-l-2 border-purple-600">
+                            "Chúng ta cần một 'Hội đồng Ổn định AI Toàn cầu' có quyền kiểm toán bắt buộc các mô hình AI biên tương tự quy định ngành ngân hàng." — Ian Bremmer [1:20:05]
+                        </blockquote>
+                        <div class="flex items-center justify-between text-slate-500 pt-1">
+                            <span>Góc tiếp cận: Quản trị Công nghệ & An ninh Thuật toán</span>
+                            <span class="font-semibold text-brandgreen">Mức độ đáng viết: Cao</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Audit & Fact Check (1 Col) -->
+                <div class="bg-white p-6 rounded-xl border border-warmborder shadow-sm space-y-4">
+                    <h3 class="text-base font-bold text-branddark flex items-center gap-2">
+                        <span>🔍</span> "Bắt Bệnh" Nội Dung & Kiểm Chứng
+                    </h3>
+                    <div class="text-xs space-y-3">
+                        <div class="p-3 bg-red-50 text-red-900 rounded-lg border border-red-200">
+                            <div class="font-bold mb-1">⚠️ Con Số & Tuyên Bố Cần Xác Minh</div>
+                            <ul class="list-disc pl-4 space-y-1">
+                                <li>[38:15] Tác động giá dầu Brent >120 USD/thùng khi nghẽn Hormuz.</li>
+                                <li>[52:10] Thị phần tinh chế đất hiếm nặng của Trung Quốc (>85-90%).</li>
+                                <li>[1:15:30] Mức tiêu thụ điện năng/nước làm mát của các Data Center AI.</li>
+                            </ul>
+                        </div>
+
+                        <div class="p-3 bg-amber-50 text-amber-900 rounded-lg border border-amber-200">
+                            <div class="font-bold mb-1">⚖️ Quan Điểm vs. Dữ Liệu Thực Tế</div>
+                            <p class="leading-relaxed">
+                                Nhận định về "sự sụp đổ của bộ máy kỹ trị Mỹ" là phân tích định tính từ quan điểm của Ian Bremmer, cần bổ sung chỉ số phân cực chính trị thực tế [Bối cảnh].
+                            </p>
+                        </div>
+
+                        <div class="p-3 bg-slate-50 text-slate-800 rounded-lg border border-slate-200">
+                            <div class="font-bold mb-1">🎯 Lỗ Hổng Lập Luận / Điểm Né Tránh</div>
+                            <p class="leading-relaxed">
+                                Diễn giả chưa đưa ra giải pháp khả thi để các quốc gia đang phát triển ứng phó khi Big Tech tư nhân nắm quyền kiểm soát hạ tầng mạng chiến lược.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- TAB 2: LUẬN ĐIỂM ĐỊA CHÍNH TRỊ CỐT LÕI (Core Geopolitics Breakdown) -->
+        <section id="sec-geopolitics" class="hidden space-y-6">
+            <!-- Introductory Context -->
+            <div class="bg-white p-6 rounded-xl border border-warmborder shadow-sm">
+                <h2 class="text-xl font-bold text-branddark mb-2 flex items-center gap-2">
+                    <span>🌐</span> Bóc Tách Các Trục Đứt Gãy Địa Chính Trị Toàn Cầu
+                </h2>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Phần này trình bày chi tiết 4 luận điểm then chốt định hình trật tự thế giới hiện đại. Mỗi phần phân tích cơ chế vận hành, điểm yếu hệ thống và hệ quả thực tiễn cho các nhà lãnh đạo và giới hoạch định chiến lược doanh nghiệp.
+                </p>
+            </div>
+
+            <!-- Grid of 4 Detailed Geopolitical Themes -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Card 1 -->
+                <div class="bg-white p-6 rounded-xl border border-warmborder shadow-sm space-y-3">
+                    <div class="flex items-center space-x-2 text-amber-600 font-bold text-sm">
+                        <span>🏛️</span>
+                        <span>1. Khủng Hoảng Thể Chế Hoa Kỳ & Rủi Ro Phân Cực</span>
+                    </div>
+                    <h3 class="text-base font-bold text-branddark">Từ Mỏ Neo An Ninh Thành Nguồn Phát Sinh Biến Động</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Nghịch lý lớn nhất của trật tự quốc tế hiện đại là sự biến chất của bộ máy hoạch định chính sách công tại Washington. Lòng trung thành chính trị cá nhân đang thay thế cho năng lực kỹ trị, tạo ra hiệu ứng buồng vang loại bỏ thông tin phản biện độc lập.
+                    </p>
+                    <div class="p-3 bg-slate-50 rounded-lg text-xs space-y-1">
+                        <div class="font-semibold text-slate-800">Tác động cốt lõi:</div>
+                        <p class="text-slate-600">• Sử dụng tràn lan thuế trừng phạt đơn phương và cấm vận thứ cấp.</p>
+                        <p class="text-slate-600">• Chính sách đối ngoại bị đứt đoạn nghiêm trọng theo chu kỳ bầu cử 4 năm.</p>
+                        <p class="text-slate-600">• Động lực dịch chuyển sang các hệ thống thanh toán phi USD.</p>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white p-6 rounded-xl border border-warmborder shadow-sm space-y-3">
+                    <div class="flex items-center space-x-2 text-blue-600 font-bold text-sm">
+                        <span>🛡️</span>
+                        <span>2. Hiệu Ứng "Hàm Thủy Tinh" Trong Xung Đột Khu Vực</span>
+                    </div>
+                    <h3 class="text-base font-bold text-branddark">Bất Đối Xứng Sức Chịu Đựng Giữa Dân Chủ & Độc Tài</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Các chính phủ dân chủ phụ thuộc vào chu kỳ bầu cử ngắn hạn và độ nhạy cảm của cử tri trước lạm phát, giá nhiên liệu. Ngược lại, các thể chế chuyên chế kiểm soát an ninh nội bộ, tạo ngưỡng chịu đựng tổn thất xã hội cao hơn rất nhiều.
+                    </p>
+                    <div class="p-3 bg-slate-50 rounded-lg text-xs space-y-1">
+                        <div class="font-semibold text-slate-800">Tác động cốt lõi:</div>
+                        <p class="text-slate-600">• Eo biển Hormuz trở thành đòn bẩy kích hoạt cú sốc lạm phát ngược.</p>
+                        <p class="text-slate-600">• Các nước dân chủ dễ rơi vào bẫy đàm phán do áp lực chính trị nội bộ.</p>
+                        <p class="text-slate-600">• Đánh đổi chiến lược: chấp nhận nới lỏng kiểm soát hạ tầng để đổi hạ nhiệt giá năng lượng.</p>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white p-6 rounded-xl border border-warmborder shadow-sm space-y-3">
+                    <div class="flex items-center space-x-2 text-emerald-600 font-bold text-sm">
+                        <span>⛏️</span>
+                        <span>3. Cạnh Tranh Đất Hiếm & Tái Cấu Trúc Địa Kinh Tế</span>
+                    </div>
+                    <h3 class="text-base font-bold text-branddark">Tư Duy Tư Bản Ngắn Hạn vs. Chiến Lược Công Nghiệp Nhà Nước</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Trong khi doanh nghiệp phương Tây chịu áp lực lợi nhuận theo quý, Bắc Kinh đã chi trợ cấp khổng lồ để định giá âm khâu tinh luyện đất hiếm, triệt hạ khả năng sinh lời của các dự án khai khoáng tư nhân mới tại phương Tây.
+                    </p>
+                    <div class="p-3 bg-slate-50 rounded-lg text-xs space-y-1">
+                        <div class="font-semibold text-slate-800">Tác động cốt lõi:</div>
+                        <p class="text-slate-600">• Trung Quốc kiểm soát quyền phong tỏa nguyên liệu bán dẫn & quốc phòng.</p>
+                        <p class="text-slate-600">• Châu Âu tụt hậu do giải giáp quốc phòng và vướng gánh nặng quy định pháp lý (CBAM).</p>
+                        <p class="text-slate-600">• Nhu cầu cấp thiết về dự trữ khoáng sản chiến lược đa phương.</p>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="bg-white p-6 rounded-xl border border-warmborder shadow-sm space-y-3">
+                    <div class="flex items-center space-x-2 text-purple-600 font-bold text-sm">
+                        <span>🤖</span>
+                        <span>4. Trật Tự Phân Cực Công Nghệ & Khung An Toàn AI</span>
+                    </div>
+                    <h3 class="text-base font-bold text-branddark">Quyền Lực Big Tech & Đề Xuất Hội Đồng Ổn Định AI</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Các đại công ty công nghệ vận hành như quốc gia-dân tộc trên không gian số. Làn sóng AI không chỉ đe dọa lao động phổ thông mà thay thế trực tiếp lực lượng trí thức đô thị, kích hoạt phong trào dân túy mới.
+                    </p>
+                    <div class="p-3 bg-slate-50 rounded-lg text-xs space-y-1">
+                        <div class="font-semibold text-slate-800">Tác động cốt lõi:</div>
+                        <p class="text-slate-600">• Xung đột tài nguyên hạ tầng Data Center (điện/nước) kích hoạt NIMBYism.</p>
+                        <p class="text-slate-600">• Bất lực của pháp lý quốc gia trước rủi ro mạng & vũ khí thuật toán.</p>
+                        <p class="text-slate-600">• Mô hình Hội đồng Ổn định AI (AI Stability Board) thực hiện kiểm toán bắt buộc.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- TAB 3: SO SÁNH THỂ CHẾ & BIỂU ĐỒ (Matrix & Interactive Charts) -->
+        <section id="sec-matrix" class="hidden space-y-6">
+            <!-- Introductory Context -->
+            <div class="bg-white p-6 rounded-xl border border-warmborder shadow-sm">
+                <h2 class="text-xl font-bold text-branddark mb-2 flex items-center gap-2">
+                    <span>📊</span> Phân Tích Định Lượng & So Sánh Thể Chế
+                </h2>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Khu vực này tổng hợp ma trận so sánh 3 mô hình thể chế chính (Mỹ - Trung Quốc - EU) cùng với các biểu đồ mô phỏng rủi ro địa chính trị và ngưỡng chịu đựng lạm phát năng lượng.
+                </p>
+            </div>
+
+            <!-- Comparative Table -->
+            <div class="bg-white rounded-xl border border-warmborder shadow-sm overflow-hidden">
+                <div class="p-4 bg-slate-50 border-b border-warmborder font-bold text-sm text-branddark flex items-center justify-between">
+                    <span>📋 Ma Trận So Sánh Cấu Trúc Quyền Lực & Điểm Yếu Hệ Thống</span>
+                    <span class="text-xs font-normal text-slate-500">Nguồn: Phân tích Eurasian Group</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left text-slate-700">
+                        <thead class="bg-slate-100 text-slate-800 uppercase font-semibold">
+                            <tr>
+                                <th class="p-3">Trục So Sánh</th>
+                                <th class="p-3 text-blue-900 bg-blue-50/50">Mô Hình Hoa Kỳ</th>
+                                <th class="p-3 text-red-900 bg-red-50/50">Mô Hình Trung Quốc</th>
+                                <th class="p-3 text-emerald-900 bg-emerald-50/50">Mô Hình Liên Minh Châu Âu</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+                            <tr>
+                                <td class="p-3 font-bold text-branddark bg-slate-50">Quản trị quyền lực</td>
+                                <td class="p-3">Tư nhân thao túng chính sách (Corporate Capture)</td>
+                                <td class="p-3">Nhà nước kiểm soát tư nhân (State Capture)</td>
+                                <td class="p-3">Quan liêu hành chính quản chế bằng luật</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-bold text-branddark bg-slate-50">Động lực tăng trưởng</td>
+                                <td class="p-3">Vốn mạo hiểm & Đột phá tư nhân</td>
+                                <td class="p-3">Quy hoạch nhà nước & Trợ cấp quy mô lớn</td>
+                                <td class="p-3">Tái phân phối phúc lợi & Bảo vệ dữ liệu</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-bold text-branddark bg-slate-50">Điểm nghẽn hệ thống</td>
+                                <td class="p-3 text-red-600 font-medium">Phân cực xã hội & Suy thoái thể chế</td>
+                                <td class="p-3 text-red-600 font-medium">Bao cấp, già hóa & Thiếu tự do</td>
+                                <td class="p-3 text-red-600 font-medium">Tăng trưởng trì trệ & Rào cản pháp lý</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-bold text-branddark bg-slate-50">Tính dễ tổn thương</td>
+                                <td class="p-3">Biến động chính sách theo bầu cử 4 năm</td>
+                                <td class="p-3">Nguy cơ bao vây cấm vận & Già hóa dân số</td>
+                                <td class="p-3">Phụ thuộc an ninh Mỹ, thiếu năng lượng lõi</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Charts Grid (2 Responsive Chart Containers) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Chart Container 1: Radar Chart -->
+                <div class="bg-white p-5 rounded-xl border border-warmborder shadow-sm space-y-2">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-sm font-bold text-branddark">📊 Đánh Giá Hồ Sơ Rủi Ro Địa Chính Trị</h3>
+                        <span class="text-xs text-slate-400">Radar Analysis</span>
+                    </div>
+                    <p class="text-xs text-slate-500">So sánh chỉ số phơi nhiễm rủi ro giữa 3 khu vực chính.</p>
+                    <div class="chart-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart Container 2: Bar Chart -->
+                <div class="bg-white p-5 rounded-xl border border-warmborder shadow-sm space-y-2">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-sm font-bold text-branddark">📈 Ngưỡng Chịu Đựng Lạm Phát & Bất Ổn Năng Lượng</h3>
+                        <span class="text-xs text-slate-400">Simulation Model</span>
+                    </div>
+                    <p class="text-xs text-slate-500">Mức độ nhạy cảm chính trị khi giá dầu leo thang (USD/thùng).</p>
+                    <div class="chart-container">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- TAB 4: CHUỖI CHUYÊN ĐỀ & MÔ PHỎNG (7 Modules & Interactive Scenarios) -->
+        <section id="sec-modules" class="hidden space-y-6">
+            <!-- Introductory Context -->
+            <div class="bg-white p-6 rounded-xl border border-warmborder shadow-sm">
+                <h2 class="text-xl font-bold text-branddark mb-2 flex items-center gap-2">
+                    <span>🎓</span> Khung Chương Trình Đào Tạo Lãnh Đạo Chiến Lược (MOD-01 đến MOD-07)
+                </h2>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Khung chương trình gồm 7 chuyên đề thiết kế cho C-level và nhà quản trị. Chọn một chuyên đề bên dưới để xem mục tiêu năng lực, nội dung đào tạo và thực hành bài tập mô phỏng quyết định chiến lược (Case Scenario).
+                </p>
+            </div>
+
+            <!-- Module Selector Pills -->
+            <div class="flex space-x-2 overflow-x-auto custom-scroll pb-2">
+                <button onclick="selectModule('MOD-01')" id="mod-btn-MOD-01" class="mod-pill-btn bg-amber-600 text-white px-3.5 py-2 rounded-lg text-xs font-bold whitespace-nowrap shadow-sm">
+                    MOD-01: Khủng Hoảng Thể Chế Mỹ
+                </button>
+                <button onclick="selectModule('MOD-02')" id="mod-btn-MOD-02" class="mod-pill-btn bg-white border border-slate-300 text-slate-700 px-3.5 py-2 rounded-lg text-xs font-medium whitespace-nowrap hover:bg-slate-50">
+                    MOD-02: Địa Kinh Tế Đất Hiếm
+                </button>
+                <button onclick="selectModule('MOD-03')" id="mod-btn-MOD-03" class="mod-pill-btn bg-white border border-slate-300 text-slate-700 px-3.5 py-2 rounded-lg text-xs font-medium whitespace-nowrap hover:bg-slate-50">
+                    MOD-03: An Ninh Vùng Vịnh & Hormuz
+                </button>
+                <button onclick="selectModule('MOD-04')" id="mod-btn-MOD-04" class="mod-pill-btn bg-white border border-slate-300 text-slate-700 px-3.5 py-2 rounded-lg text-xs font-medium whitespace-nowrap hover:bg-slate-50">
+                    MOD-04: Tái Cấu Trúc Địa Chính Trị EU
+                </button>
+                <button onclick="selectModule('MOD-05')" id="mod-btn-MOD-05" class="mod-pill-btn bg-white border border-slate-300 text-slate-700 px-3.5 py-2 rounded-lg text-xs font-medium whitespace-nowrap hover:bg-slate-50">
+                    MOD-05: Technopolar & Khung AI
+                </button>
+                <button onclick="selectModule('MOD-06')" id="mod-btn-MOD-06" class="mod-pill-btn bg-white border border-slate-300 text-slate-700 px-3.5 py-2 rounded-lg text-xs font-medium whitespace-nowrap hover:bg-slate-50">
+                    MOD-06: Dân Túy Tri Thức & Hạ Tầng
+                </button>
+                <button onclick="selectModule('MOD-07')" id="mod-btn-MOD-07" class="mod-pill-btn bg-white border border-slate-300 text-slate-700 px-3.5 py-2 rounded-lg text-xs font-medium whitespace-nowrap hover:bg-slate-50">
+                    MOD-07: Quản Trị Khủng Hoảng Polycrisis
+                </button>
+            </div>
+
+            <!-- Dynamic Module Content Box -->
+            <div id="module-display-box" class="bg-white p-6 rounded-xl border border-warmborder shadow-sm space-y-6">
+                <!-- Content populated via JavaScript -->
+            </div>
+        </section>
+
+
+        <!-- TAB 5: STUDIO CHUỖI BÀI BÁO (Editorial Article Studio) -->
+        <section id="sec-articles" class="hidden space-y-6">
+            <!-- Introductory Context -->
+            <div class="bg-white p-6 rounded-xl border border-warmborder shadow-sm">
+                <h2 class="text-xl font-bold text-branddark mb-2 flex items-center gap-2">
+                    <span>📰</span> Studio Tác Nghiệp Báo Chí & Đề Xuất Chuỗi Bài
+                </h2>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Phần này cung cấp giao diện dành riêng cho BTV / Nhà báo để sản xuất chuỗi 7 bài viết truyền thông. Tất cả bài viết tuân thủ nghiêm ngặt nguyên tắc: **Không bịa số liệu, Trích dẫn có timestamp, Phân định rõ bối cảnh và Cung cấp góc nhìn đối lập.**
+                </p>
+            </div>
+
+            <!-- Article Selector Pills -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
+                <button onclick="selectArticle(1)" id="art-btn-1" class="art-pill-btn bg-amber-600 text-white p-2 rounded-lg text-xs font-bold text-center">Bài 1: Thể Chế Mỹ</button>
+                <button onclick="selectArticle(2)" id="art-btn-2" class="art-pill-btn bg-white border border-slate-300 text-slate-700 p-2 rounded-lg text-xs font-medium text-center hover:bg-slate-50">Bài 2: Khoáng Sản</button>
+                <button onclick="selectArticle(3)" id="art-btn-3" class="art-pill-btn bg-white border border-slate-300 text-slate-700 p-2 rounded-lg text-xs font-medium text-center hover:bg-slate-50">Bài 3: Eo Biển Hormuz</button>
+                <button onclick="selectArticle(4)" id="art-btn-4" class="art-pill-btn bg-white border border-slate-300 text-slate-700 p-2 rounded-lg text-xs font-medium text-center hover:bg-slate-50">Bài 4: Bẫy EU</button>
+                <button onclick="selectArticle(5)" id="art-btn-5" class="art-pill-btn bg-white border border-slate-300 text-slate-700 p-2 rounded-lg text-xs font-medium text-center hover:bg-slate-50">Bài 5: Trật Tự Tech</button>
+                <button onclick="selectArticle(6)" id="art-btn-6" class="art-pill-btn bg-white border border-slate-300 text-slate-700 p-2 rounded-lg text-xs font-medium text-center hover:bg-slate-50">Bài 6: Dân Túy AI</button>
+                <button onclick="selectArticle(7)" id="art-btn-7" class="art-pill-btn bg-white border border-slate-300 text-slate-700 p-2 rounded-lg text-xs font-medium text-center hover:bg-slate-50">Bài 7: Polycrisis</button>
+            </div>
+
+            <!-- Dynamic Article Preview Workspace -->
+            <div id="article-display-box" class="bg-white p-6 rounded-xl border border-warmborder shadow-sm space-y-6">
+                <!-- Content populated via JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-warmborder mt-12 py-6">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500 space-y-1">
+            <p class="font-medium text-slate-700">Hệ Thống Phân Tích Nội Dung Địa Chính Trị Toàn Cầu & Quản Trị Chiến Lược</p>
+            <p>Dữ liệu tổng hợp từ cuộc phỏng vấn Ian Bremmer trên *The Diary Of A CEO* (Steven Bartlett)</p>
+            <p class="text-slate-400">© 2026 YouTube Article Writer Pipeline - All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Data Models
+        const modulesData = {
+            'MOD-01': {
+                title: 'MOD-01: Khủng Hoảng Thể Chế Hoa Kỳ Và Rủi Ro Phân Cực Toàn Cầu',
+                duration: '8 Giờ',
+                objectives: 'Nhận diện cơ chế suy thoái chính sách công Mỹ; lập bản đồ ảnh hưởng của phân cực chính trị Washington lên thị trường vốn và các cam kết an ninh quốc tế.',
+                content: 'Mổ xẻ quá trình chuyển dịch từ nền quản trị kỹ trị sang bộ máy vận hành bằng lòng trung thành cá nhân. Phân tích việc lạm dụng trừng phạt thuế quan đơn phương và đứt gãy chính sách đối ngoại theo từng chu kỳ bầu cử 4 năm.',
+                scenario: {
+                    title: 'Tình huống: Sắc Lệnh Trừng Phạt Đột Ngột Từ Mỹ',
+                    description: 'Chính quyền Mỹ bất ngờ áp lệnh trừng phạt thương mại toàn diện lên một đối tác sản xuất chủ lực của bạn tại Châu Á trong 60 ngày tới.',
+                    options: [
+                        { text: 'Phương án A: Chuyển toàn bộ đơn hàng sang nhà cung cấp phụ ở quốc gia trung lập.', impact: 'Chi phí sản xuất tăng 18%, rủi ro chậm giao hàng, nhưng an toàn về cấm vận 100%.' },
+                        { text: 'Phương án B: Nộp đơn xin miễn trừ đặc biệt từ Bộ Tài chính Mỹ (OFAC).', impact: 'Chi phí pháp lý cao, thời gian chờ 4-6 tháng, khả năng duyệt thấp (<20%).' },
+                        { text: 'Phương án C: Tái cấu trúc quyền sở hữu thông qua pháp nhân độc lập không dính nguồn vốn Mỹ.', impact: 'Duy trì dòng tiền ngắn hạn, rủi ro bị trừng phạt thứ cấp nếu bị phát hiện.' }
+                    ]
+                }
+            },
+            'MOD-02': {
+                title: 'MOD-02: Địa Kinh Tế Khoáng Sản Thiết Yếu Và Tự Chủ Chuỗi Cung Ứng',
+                duration: '8 Giờ',
+                objectives: 'Bóc tách đòn bẩy đất hiếm và trợ cấp công nghiệp của Trung Quốc; xây dựng chiến lược dự trữ vật liệu chiến lược và phòng vệ gián đoạn nguồn cung.',
+                content: 'Nghiên cứu chuỗi giá trị tinh chế đất hiếm nặng, lithium và cobalt. Phân tích chiến lược định giá âm của Bắc Kinh nhằm triệt hạ dự án khai khoáng tư nhân phương Tây.',
+                scenario: {
+                    title: 'Tình huống: Trung Quốc Cắt Hạn Ngạch Đất Hiếm Nặng',
+                    description: 'Bắc Kinh thắt chặt 70% hạn ngạch xuất khẩu nam châm vĩnh cửu đất hiếm, làm giá nguyên liệu tăng 400% trên thị trường tự do.',
+                    options: [
+                        { text: 'Phương án A: Tham gia Liên minh Dự trữ Khoáng sản Đa phương & chấp nhận cam kết bao tiêu (offtake).', impact: 'Đảm bảo nguồn cung ổn định dài hạn với mức sàn giá cao hơn 25% thị trường cũ.' },
+                        { text: 'Phương án B: Chuyển hướng R&D sang công nghệ động cơ không sử dụng đất hiếm.', impact: 'Mất 24 tháng chuyển đổi kỹ thuật, giảm 10% hiệu suất năng lượng ban đầu.' },
+                        { text: 'Phương án C: Thu mua gom tồn kho đắt đỏ trên thị trường do dự.', impact: 'Cạn kẹt dòng tiền ngắn hạn trong 6 tháng, nguy cơ đứt gãy sản xuất rất cao.' }
+                    ]
+                }
+            },
+            'MOD-03': {
+                title: 'MOD-03: Động Lực An Ninh Khu Vực Và Bất Đối Xứng Dân Chủ - Độc Tài',
+                duration: '8 Giờ',
+                objectives: 'Phân tích điểm nghẽn Hormuz và hiệu ứng "hàm thủy tinh" của phương Tây; ứng dụng lý thuyết trò chơi trong dự báo xung đột quân sự và giá năng lượng.',
+                content: 'Nghiên cứu ngưỡng chịu đựng tổn thất xã hội giữa các quốc gia dân chủ và độc tài. Phân tích cách thức các lực lượng phi đối xứng khai thác điểm nghẽn hàng hải để kích lạm phát.',
+                scenario: {
+                    title: 'Tình huống: Phong Tỏa Môt Phần Eo Biển Hormuz',
+                    description: 'Xung đột quân sự tại Vịnh Ba Tư khiến cước phí bảo hiểm tàu dầu tăng 500%, giá dầu Brent vượt 120 USD/thùng.',
+                    options: [
+                        { text: 'Phương án A: Chốt hợp đồng tương lai phòng vệ giá nhiên liệu (Hedging) lập tức.', impact: 'Khóa chi phí rủi ro ở mức cao, bảo vệ margin nếu giá dầu tiếp tục chạm 150 USD.' },
+                        { text: 'Phương án B: Đổi tuyến vận tải đường biển qua các cảng tránh điểm nghẽn.', impact: 'Thời gian vận tải tăng 14 ngày, chi phí logistics tăng 35% nhưng an toàn hạm đội.' },
+                        { text: 'Phương án C: Tạm dừng mở rộng sản xuất tại các thị trường phụ thuộc năng lượng nhập khẩu.', impact: 'Bảo toàn thanh khoản, mất 5% thị phần vào tay đối thủ địa phương.' }
+                    ]
+                }
+            },
+            'MOD-04': {
+                title: 'MOD-04: Tái Cấu Trúc Địa Chính Trị Châu Âu Và Thách Thức Cạnh Tranh',
+                duration: '6 Giờ',
+                objectives: 'Đo lường tác động của sự suy giảm "cổ tức hòa bình"; định vị lại mô hình kinh doanh trước rào cản CBAM và chi phí năng lượng cao tại EU.',
+                content: 'Phân tích hậu quả của việc dồn ngân sách vào phúc lợi thay vì công nghệ lõi và quốc phòng tại Châu Âu. Lập mô hình tài chính thích ứng với quy định carbon biên giới.',
+                scenario: {
+                    title: 'Tình huống: Gánh Nặng Thuế Carbon CBAM & Chi Phí Năng Lượng EU',
+                    description: 'Chi phí điện công nghiệp tại Đức cao gấp 3 lần Mỹ, kết hợp áp dụng thuế biên giới carbon CBAM toàn diện.',
+                    options: [
+                        { text: 'Phương án A: Dịch chuyển 40% cơ sở chế biến sang Bắc Mỹ để hưởng trợ cấp IRA.', impact: 'Giảm 30% chi phí năng lượng, nhận ưu đãi thuế Mỹ nhưng vướng chi phí di dời.' },
+                        { text: 'Phương án B: Đầu tư hệ thống điện mặt trời & lưu trữ năng lượng riêng tại nhà máy EU.', impact: 'Tốn 15 triệu EUR CAPEX, mất 3 năm hoàn vốn, giữ vững thương hiệu Xanh tại EU.' },
+                        { text: 'Phương án C: Mua chứng chỉ carbon bù trừ ngắn hạn.', impact: 'Tăng chi phí OPEX hàng năm, không giải quyết triệt để bài toán chi phí năng lượng lõi.' }
+                    ]
+                }
+            },
+            'MOD-05': {
+                title: 'MOD-05: Quản Trị Trật Tự Phân Cực Công Nghệ Và Thiết Lập Chuẩn Mực AI',
+                duration: '10 Giờ',
+                objectives: 'Đánh giá chủ quyền số của Big Tech; thiết lập khung kiểm toán rủi ro mô hình AI biên; xây dựng quy trình tuân thủ theo chuẩn Hội đồng AI.',
+                content: 'Nghiên cứu sự trỗi dậy của Big Tech như thực thể địa chính trị độc lập. Xây dựng rào chắn an toàn kỹ thuật cho việc triển khai AI trong doanh nghiệp.',
+                scenario: {
+                    title: 'Tình huống: Mô Hình AI Biên Bị Phát Hiện Lỗ Hổng An Ninh Hệ Thống',
+                    description: 'Mô hình AI tích hợp vào vận hành bị nghi ngờ có khả năng làm lộ dữ liệu nhạy cảm ra máy chủ bên ngoài.',
+                    options: [
+                        { text: 'Phương án A: Ngắt kết nối khẩn cấp (Emergency Disconnect) để kiểm toán independent.', impact: 'Đình trệ vận hành 48 giờ, bảo vệ an toàn dữ liệu 100% trước nguy cơ rò rỉ.' },
+                        { text: 'Phương án B: Tiếp tục chạy song song với bộ lọc giám sát dữ liệu đầu ra.', impact: 'Duy trì hoạt động, rủi ro rò rỉ dữ liệu còn 15% trong thời gian xử lý.' },
+                        { text: 'Phương án C: Chuyển toàn bộ sang mô hình Open-Source tự host nội bộ.', impact: 'Tốn 6 tháng nâng cấp hạ tầng Server, tự chủ hoàn toàn chủ quyền dữ liệu.' }
+                    ]
+                }
+            },
+            'MOD-06': {
+                title: 'MOD-06: Địa Kỹ Thuật Số, Dân Túy Trí Thức Và Xung Đột Hạ Tầng',
+                duration: '6 Giờ',
+                objectives: 'Dự báo biến động thị trường lao động chất lượng cao do AI; giải quyết xung đột tài nguyên điện-nước và làn sóng NIMBY đối với Data Center.',
+                content: 'Phân tích sự thay thế lao động tri thức bởi AI tạo nên làn sóng dân túy đô thị mới. Xây dựng chiến lược hòa giải cộng đồng khi xây dựng trung tâm dữ liệu.',
+                scenario: {
+                    title: 'Tình huống: Biểu Tình Địa Phương Phản Đối Siêu Trung Tâm Dữ Liệu',
+                    description: 'Cư dân địa phương phản đối dự án Data Center 5 tỷ USD vì lo ngại quá tải lưới điện dân sinh và tranh chấp nước làm mát.',
+                    options: [
+                        { text: 'Phương án A: Ký hợp đồng PPA điện sạch riêng & đầu tư hệ thống làm mát tuần hoàn bằng không khí.', impact: 'Tăng CAPEX 12%, hóa giải hoàn toàn mâu thuẫn tài nguyên với cư dân.' },
+                        { text: 'Phương án B: Thành lập Quỹ Tái Đào Tạo Kỹ Năng AI cho cộng đồng địa phương.', impact: 'Tốn 2 triệu USD/năm, nâng cao uy tín ESG và sự đồng thuận của chính quyền.' },
+                        { text: 'Phương án C: Chuyển địa điểm sang vùng sa mạc cách xa đô thị.', impact: 'Tăng chi phí đường truyền dữ liệu (Latency), kéo dài tiến độ 18 tháng.' }
+                    ]
+                }
+            },
+            'MOD-07': {
+                title: 'MOD-07: Chiến Lược Quản Trị Khủng Hoảng Đa Tầng Cho Doanh Nghiệp',
+                duration: '8 Giờ',
+                objectives: 'Tích hợp phương pháp đa khủng hoảng (Polycrisis); thiết lập Trung tâm Chỉ huy Khủng hoảng (War Room); xây dựng chỉ số chống chịu địa chính trị (GRI).',
+                content: 'Tổng hợp phân tích đa cú sốc đồng thời: cấm vận + đứt gãy chuỗi hàng hải + sự cố mạng. Phương pháp xây dựng kịch bản stress-test cho doanh nghiệp toàn cầu.',
+                scenario: {
+                    title: 'Tình huống: Cú Sốc Đa Tầng Cùng Lúc (Polycrisis Alert)',
+                    description: 'Mỹ áp thuế trừng phạt mới, tuyến hàng hải Biển Đỏ bị đình trệ, và Data Center chính tại Châu Âu bị mất điện do biểu tình.',
+                    options: [
+                        { text: 'Phương án A: Kích hoạt War Room, ưu tiên bảo toàn dòng tiền & chuỗi cung ứng lõi trong 72h.', impact: 'Giảm thiểu thiệt hại tối đa, bảo vệ các thị trường trọng yếu nhất.' },
+                        { text: 'Phương án B: Phân tán sản xuất theo chiến lược Friendshoring ngay lập tức.', impact: 'Chi phí tái cấu trúc cao, mất 12 tháng để ổn định lại mạng lưới mới.' },
+                        { text: 'Phương án C: Tạm dừng các dự án M&A mở rộng để tích trữ thanh khoản mặt.', impact: 'Giữ tỷ lệ tiền mặt an toàn, bỏ lỡ một số cơ hội thâu tóm giá rẻ.' }
+                    ]
+                }
+            }
+        };
+
+        const articlesData = {
+            1: {
+                titles: [
+                    "1. Nguồn Cơn Biến Động Toàn Cầu: Khi Nền Chính Trị Mỹ Trở Thành Rủi Ro Hệ Thống",
+                    "2. Nước Mỹ Hậu Kỹ Trị: Lòng Trung Thành Cá Nhân Và Sự Đứt Gãy Chính Sách Trừng Phạt",
+                    "3. Rủi Ro Thể Chế Hoa Kỳ: Bài Toán Chống Chịu Cho Doanh Nghiệp Xuyên Quốc Gia"
+                ],
+                sapo: "Xuyên suốt nhiều thập niên, Mỹ được xem là mỏ neo bảo trợ thương mại tự do. Tuy nhiên, phân cực chính trị sâu sắc đang biến Washington thành nguồn phát sinh biến động địa chính trị lớn nhất đối với thị trường tài chính và các đồng minh toàn cầu.",
+                intertitles: ["1. Sự đảo chiều của mỏ neo an toàn", "2. Khi trung thành chính trị lấn át kỹ trị", "3. Lối thoát nào cho doanh nghiệp toàn cầu?"],
+                pullquote: '"Mỹ không còn là mỏ neo bảo vệ thương mại toàn cầu mà đã trở thành nguồn phát sinh biến động khó dự báo nhất." — Ian Bremmer [18:42]',
+                counter: 'Góc nhìn khác: Một số nhà phân tích cho rằng tính kiểm soát và cân bằng (Checks and Balances) của Tòa án và Quốc hội Mỹ vẫn đủ sức ngăn chặn các chính sách quá khích.',
+                openQuestion: 'Doanh nghiệp của bạn đã có kịch bản ứng phó nếu chính sách thuế quan thương mại của Mỹ thay đổi 180 độ sau mỗi chu kỳ bầu cử?',
+                verification: ['Xác minh danh sách các sắc lệnh thuế quan đơn phương được áp dụng trong 4 năm qua.', 'Xác minh sự thay đổi chỉ số phân cực cử tri Mỹ.']
+            },
+            2: {
+                titles: [
+                    "1. Cuộc Chiến Đất Hiếm: Đòn Bẩy Định Giá Âm Của Trung Quốc Và Bài Học Phương Tây",
+                    "2. Tự Chủ Khoáng Sản Thiết Yếu: Bẫy Tư Bản Ngắn Hạn Đang Triệt Hạ Sản Xuất Tương Lai",
+                    "3. Vũ Khí Hóa Chuỗi Cung Ứng: Khái Niệm Mới Về Răn Đe Địa Kinh Tế Thế Kỷ 21"
+                ],
+                sapo: "Bằng chiến lược trợ cấp công nghiệp bài bản và chấp nhận định giá âm ở khâu tinh luyện, Trung Quốc đã độc quyền chuỗi cung ứng đất hiếm toàn cầu, tạo ra đòn bẩy răn đe vượt trội trước các đối thủ phương Tây.",
+                intertitles: ["1. Bẫy tư bản ngắn hạn vs. Chiến lược nhà nước dài hạn", "2. Khâu tinh luyện - Mắt xích chết người", "3. Xây dựng dự trữ khoáng sản đa phương"],
+                pullquote: '"Bắc Kinh sẵn sàng định giá âm khâu tinh luyện để triệt hạ khả năng sinh lời của các mỏ tư nhân phương Tây." — Ian Bremmer [52:10]',
+                counter: 'Góc nhìn khác: Các công nghệ vật liệu thay thế mới không dùng đất hiếm đang tiến gần commercialization, có thể làm giảm đòn bẩy của Bắc Kinh.',
+                openQuestion: 'Liệu các quốc gia phương Tây có đủ kiên nhẫn tài trợ vốn công để duy trì các mỏ đất hiếm thua lỗ trong ngắn hạn?',
+                verification: ['Số liệu thị phần tinh chế đất hiếm nặng của Trung Quốc (hiện khoảng 85-90%).', 'Thời gian trung bình để mở một mỏ đất hiếm mới tại Mỹ/Úc (10-15 năm).']
+            },
+            3: {
+                titles: [
+                    "1. Bẫy 'Hàm Thủy Tinh': Vì Sao Các Nền Dân Chủ Dễ Bị Cưỡng Chế Năng Lượng?",
+                    "2. Điểm Nghẽn Eo Biển Hormuz: Vũ Khí Lạm Phát Bất Đối Xứng Tại Vịnh Ba Tư",
+                    "3. Xung Đột Quân Sự Hiện Đại: Ngưỡng Chịu Đựng Tồn Thất Xã Hội Quyết Định Cuộc Chơi"
+                ],
+                sapo: "Độ nhạy cảm của cử tri phương Tây trước giá xăng dầu và lạm phát tạo ra điểm yếu 'hàm thủy tinh'. Điều này cho phép các đối thủ phi đối xứng đe dọa các điểm nghẽn hàng hải để ép các nhà lãnh đạo dân chủ nhượng bộ.",
+                intertitles: ["1. Khái niệm 'hàm thủy tinh' của thể chế dân chủ", "2. Eo biển Hormuz và đòn bẩy giá dầu", "3. Sự đánh đổi giữa an ninh hàng hải và kiềm chế lạm phát"],
+                pullquote: '"Các chính phủ dân chủ cực kỳ nhạy cảm với lạm phát ngắn hạn, tạo lợi thế cho các chế độ kiểm soát an ninh nội bộ." — Ian Bremmer [38:15]',
+                counter: 'Góc nhìn khác: Năng lực dự trữ dầu chiến lược (SPR) và sản lượng dầu đá thai của Mỹ có thể bù đắp một phần gián đoạn ngắn hạn.',
+                openQuestion: 'Chính phủ các nước phát triển sẽ chọn bảo vệ cam kết an ninh đồng minh hay chọn xoa dịu làn sóng phẫn nộ lạm phát của cử tri trong nước?',
+                verification: ['Lượng dầu mỏ vận chuyển qua Eo biển Hormuz hàng ngày (~20-21 triệu thùng/ngày).', 'Chỉ số tương quan giữa giá xăng và tỷ lệ ủng hộ tổng thống Mỹ.']
+            },
+            4: {
+                titles: [
+                    "1. Cái Giá Của 'Cổ Tức Hòa Bình': Châu Âu Trước Khủng Hoảng Tụ Hậu Công Nghệ",
+                    "2. Bẫy Quy Định Pháp Lý: Vì Sao EU Thành Thị Trường Tiêu Thụ Thay Vì Trung Tâm Đổi Mới?",
+                    "3. Tái Cấu Trúc Địa Chính Trị Lục Địa Mẹ: Thế Kẹt Giữa Ô An Ninh Mỹ Và Năng Lượng Chi Phí Cao"
+                ],
+                sapo: "Sau ba thập niên thụ hưởng cổ tức hòa bình, Châu Âu đang trả giá bằng sự suy giảm năng lực quốc phòng tự chủ, phụ thuộc an ninh vào Mỹ và thiếu vắng các tập đoàn công nghệ dẫn dắt.",
+                intertitles: ["1. 30 năm giải giáp và ảo tưởng bình yên", "2. Gánh nặng quy định pháp lý kìm hãm đổi mới", "3. Con đường tự chủ công nghệ và năng lượng hạt nhân"],
+                pullquote: '"Châu Âu dồn ngân sách vào phúc lợi và luật lệ nhưng đánh mất năng lực tạo ra tăng trưởng từ công nghệ nền tảng." — Ian Bremmer [56:10]',
+                counter: 'Góc nhìn khác: Chuẩn mực quy định khắt khe của EU (Hiệu ứng Brussels) buộc các tập đoàn toàn cầu phải tuân theo tiêu chuẩn an toàn cao hơn.',
+                openQuestion: 'EU có thể vừa duy trì mô hình an sinh xã hội tiêu chuẩn cao vừa tài trợ cho cuộc đua công nghệ tốn kém với Mỹ-Trung?',
+                verification: ['Tỷ lệ ngân sách R&D công nghệ lõi của EU so với Mỹ/Trung Quốc.', 'Mức tăng chi phí điện công nghiệp tại Đức hậu xung đột Nga-Ukraine.']
+            },
+            5: {
+                titles: [
+                    "1. Trật Tự Technopolar: Khi Các Tập Đoàn Big Tech Nắm Giữ Chủ Quyền Địa Chính Trị",
+                    "2. Cấp Thiết Thành Lập 'Hội Đồng Ổn Định AI': Bài Học Từ Khủng Hoảng Tài Chính 2008",
+                    "3. Rủi Ro Thảm Họa Thuật Toán: Khoảng Trống Quản Trị Khi AI Biên Vượt Tầm Kiểm Soát"
+                ],
+                sapo: "Không gian số không có biên giới quốc gia, và Big Tech đang thực thi chủ quyền thực tế trên đó. Sự bùng nổ của AI biên đòi hỏi một thể chế kỹ trị quốc tế mới để kiểm toán bắt buộc các mô hình rủi ro.",
+                intertitles: ["1. Chủ quyền số phi nhà nước của Big Tech", "2. Áp lực thương mại hóa vs. An toàn thuật toán", "3. Đề xuất mô hình AI Stability Board (FSB for AI)"],
+                pullquote: '"Chúng ta cần một thể chế quốc tế có quyền kiểm toán hạ tầng tính toán và các mô hình AI biên trước khi quá muộn." — Ian Bremmer [1:20:05]',
+                counter: 'Góc nhìn khác: Việc kiểm toán quá nghiêm ngặt có thể làm chậm tốc độ đổi mới sáng tạo và tạo lợi thế cho các đối thủ không tuân thủ quy tắc.',
+                openQuestion: 'Các quốc gia có sẵn sàng nhượng bộ một phần chủ quyền số cho một cơ chế kiểm toán AI đa phương độc lập?',
+                verification: ['Mô hình hoạt động của Financial Stability Board (FSB) sau năm 2008.', 'Công suất tính toán (FLOPs) của các frontier model AI hiện nay.']
+            },
+            6: {
+                titles: [
+                    "1. Làn Sóng Dân Túy Trí Thức: Khi AI Đe Dọa Tầng Lớp Lao Động Đô Thị",
+                    "2. Cuộc Chiến Hạ Tầng AI: Xung Đột Năng Lượng Điện-Nước Và Phản Kháng Địa Phương NIMBY",
+                    "3. Tác Động Xã Hội Của Tự Động Hóa Trí Tuệ: Thách Thức Mới Cho Khế Ước Xã Hội"
+                ],
+                sapo: "Khác với các cuộc cách mạng công nghiệp trước, AI trực tiếp thay thế lao động tri thức đô thị, nuôi dưỡng làn sóng dân túy mới. Đồng thời, nhu cầu điện-nước khổng lồ của Data Center đang kích hoạt phản kháng địa phương.",
+                intertitles: ["1. Sự truất hữu địa vị của lao động tri thức", "2. Xung đột tài nguyên tại các cụm Data Center", "3. Giải pháp UBI và thuế tự động hóa"],
+                pullquote: '"Tự động hóa trí thức tạo ra một làn sóng bất mãn mới từ những cử tri đô thị có trình độ cao." — Ian Bremmer [1:12:40]',
+                counter: 'Góc nhìn khác: AI cũng tạo ra các ngành nghề mới chưa từng có và nâng cao năng suất lao động tổng thể nếu được tái đào tạo đúng cách.',
+                openQuestion: 'Làm thế nào để dung hòa nhu cầu năng lượng khổng lồ của AI với mục tiêu chuyển đổi xanh và an sinh cộng đồng địa phương?',
+                verification: ['Lượng điện tiêu thụ trung bình của một siêu cụm Data Center AI (tương đương thành phố nhỏ).', 'Tỷ lệ cắt giảm nhân sự trong ngành công nghệ/tài chính liên quan đến AI.']
+            },
+            7: {
+                titles: [
+                    "1. Sống Sóc Trong 'Polycrisis': Khung Phòng Vệ Đa Tầng Cho Doanh Nghiệp Toàn Cầu",
+                    "2. Từ Tối Ưu Chi Phí Đến Tối Đa Sức Chống Chịu: Bỏ Tư Duy Thời Hòa Bình",
+                    "3. Xây Dựng Chỉ Số GRI: Tiêu Chuẩn Quản Trị Rủi Ro Địa Chính Trị Mới Cho Hội Đồng Quản Trị"
+                ],
+                sapo: "Địa chính trị không còn là yếu tố ngoại sinh mà đã trở thành biến số nội sinh quyết định sự sống còn của doanh nghiệp. Trong kỷ nguyên đa khủng hoảng (Polycrisis), chống chịu là lợi thế cạnh tranh cốt lõi.",
+                intertitles: ["1. Bản chất của kỷ nguyên Đa Khủng Hoảng (Polycrisis)", "2. Thiết lập Trung tâm Chỉ huy War Room", "3. Chỉ số Chống chịu Địa chính trị (Geopolitical Resilience Index)"],
+                pullquote: '"Chuyển dịch dứt khoát từ tối ưu hóa chi phí trong điều kiện hòa bình sang tối đa hóa sức chống chịu trước cú sốc hệ thống." — Ian Bremmer [1:32:10]',
+                counter: 'Góc nhìn khác: Việc đầu tư quá nhiều vào phòng vệ rủi ro có thể làm tăng chi phí vận hành (OPEX) và giảm tính cạnh tranh về giá ngắn hạn.',
+                openQuestion: 'Hội đồng quản trị của bạn đã đưa chỉ số rủi ro địa chính trị vào quy trình phân bổ vốn đầu tư hàng năm chưa?',
+                verification: ['Khái niệm Polycrisis do Eurasia Group / World Economic Forum sử dụng.', 'Các tiêu chí thành phần của Geopolitical Resilience Index (GRI).']
+            }
+        };
+
+        // UI Interactions
+        function switchTab(tabId) {
+            // Hide all sections
+            document.getElementById('sec-dossier').classList.add('hidden');
+            document.getElementById('sec-geopolitics').classList.add('hidden');
+            document.getElementById('sec-matrix').classList.add('hidden');
+            document.getElementById('sec-modules').classList.add('hidden');
+            document.getElementById('sec-articles').classList.add('hidden');
+
+            // Deactivate all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            // Show selected section & activate button
+            document.getElementById('sec-' + tabId).classList.remove('hidden');
+            document.getElementById('tab-' + tabId).classList.add('active');
+
+            // Render Charts if matrix tab
+            if (tabId === 'matrix') {
+                renderCharts();
+            }
+        }
+
+        function selectModule(modId) {
+            // Highlight button
+            document.querySelectorAll('.mod-pill-btn').forEach(btn => {
+                btn.className = 'mod-pill-btn bg-white border border-slate-300 text-slate-700 px-3.5 py-2 rounded-lg text-xs font-medium whitespace-nowrap hover:bg-slate-50';
+            });
+            const activeBtn = document.getElementById('mod-btn-' + modId);
+            if (activeBtn) {
+                activeBtn.className = 'mod-pill-btn bg-amber-600 text-white px-3.5 py-2 rounded-lg text-xs font-bold whitespace-nowrap shadow-sm';
+            }
+
+            // Render details
+            const data = modulesData[modId];
+            if (!data) return;
+
+            const box = document.getElementById('module-display-box');
+            box.innerHTML = `
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-warmborder pb-4 gap-2">
+                    <div>
+                        <span class="text-xs font-bold bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full">Khung Đào Tạo Lãnh Đạo</span>
+                        <h3 class="text-lg font-bold text-branddark mt-2">${data.title}</h3>
+                    </div>
+                    <span class="text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-lg">Thời lượng: ${data.duration}</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 space-y-1">
+                        <div class="font-bold text-slate-800 flex items-center gap-1">
+                            <span>🎯</span> Mục Tiêu Năng Lực Đầu Ra:
+                        </div>
+                        <p class="text-slate-600 leading-relaxed">${data.objectives}</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 space-y-1">
+                        <div class="font-bold text-slate-800 flex items-center gap-1">
+                            <span>📚</span> Nội Dung Chuyên Môn Cốt Lõi:
+                        </div>
+                        <p class="text-slate-600 leading-relaxed">${data.content}</p>
+                    </div>
+                </div>
+
+                <!-- Interactive Case Simulation Box -->
+                <div class="p-5 bg-amber-50/60 rounded-xl border border-amber-200/80 space-y-4">
+                    <div class="flex items-center space-x-2 text-amber-900 font-bold text-sm">
+                        <span>🧪</span>
+                        <span>Bài Tập Mô Phỏng Quyết Định Chiến Lược (Interactive Scenario)</span>
+                    </div>
+                    <div class="text-xs text-slate-800 font-semibold">${data.scenario.title}</div>
+                    <p class="text-xs text-slate-600">${data.scenario.description}</p>
+
+                    <div class="space-y-2 text-xs">
+                        <div class="font-bold text-slate-700">Chọn phương án xử lý của bạn:</div>
+                        ${data.scenario.options.map((opt, idx) => `
+                            <button onclick="showScenarioOutcome('${modId}', ${idx})" class="w-full text-left p-3 rounded-lg border bg-white hover:bg-amber-100/50 border-slate-200 transition-colors flex justify-between items-center group">
+                                <span class="font-medium text-slate-800">${opt.text}</span>
+                                <span class="text-amber-600 opacity-0 group-hover:opacity-100 font-bold">Xem tác động ➔</span>
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <div id="scenario-outcome-box" class="hidden p-3 bg-white rounded-lg border border-amber-300 text-xs space-y-1">
+                        <div class="font-bold text-branddark flex items-center gap-1">
+                            <span>⚡</span> Đánh Giá Tác Động Chiến Lược:
+                        </div>
+                        <p id="scenario-outcome-text" class="text-slate-700"></p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showScenarioOutcome(modId, optionIdx) {
+            const data = modulesData[modId];
+            if (!data) return;
+            const outcomeBox = document.getElementById('scenario-outcome-box');
+            const outcomeText = document.getElementById('scenario-outcome-text');
+            
+            outcomeText.textContent = data.scenario.options[optionIdx].impact;
+            outcomeBox.classList.remove('hidden');
+        }
+
+        function selectArticle(artNum) {
+            // Highlight button
+            document.querySelectorAll('.art-pill-btn').forEach(btn => {
+                btn.className = 'art-pill-btn bg-white border border-slate-300 text-slate-700 p-2 rounded-lg text-xs font-medium text-center hover:bg-slate-50';
+            });
+            const activeBtn = document.getElementById('art-btn-' + artNum);
+            if (activeBtn) {
+                activeBtn.className = 'art-pill-btn bg-amber-600 text-white p-2 rounded-lg text-xs font-bold text-center';
+            }
+
+            const data = articlesData[artNum];
+            if (!data) return;
+
+            const box = document.getElementById('article-display-box');
+            box.innerHTML = `
+                <div class="flex justify-between items-center border-b border-warmborder pb-3">
+                    <span class="text-xs font-bold bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full">Bài ${artNum} trong Chuỗi 7 Bài Báo</span>
+                    <span class="text-xs text-slate-400">Độ dài dự kiến: 1.200 - 1.500 chữ</span>
+                </div>
+
+                <!-- 3 Title Options -->
+                <div class="space-y-2">
+                    <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">3 Phương Án Tiêu Đề (Tít Báo Chiếm Lĩnh):</div>
+                    <div class="space-y-1.5 text-xs">
+                        ${data.titles.map((t, idx) => `
+                            <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200 font-semibold text-branddark flex items-center justify-between">
+                                <span>${t}</span>
+                                ${idx === 0 ? '<span class="text-[10px] bg-amber-200 text-amber-900 px-2 py-0.5 rounded">Khuyên dùng</span>' : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <!-- Sapo -->
+                <div class="p-4 bg-amber-50/50 rounded-xl border border-amber-200/60 space-y-1">
+                    <div class="text-xs font-bold text-amber-900">Đoạn Sapo (40-60 chữ):</div>
+                    <p class="text-xs text-slate-700 italic leading-relaxed">${data.sapo}</p>
+                </div>
+
+                <!-- Structure & Intertitles -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 space-y-2">
+                        <div class="font-bold text-branddark">📍 Các Tít Phụ (Intertitles) Thân Bài:</div>
+                        <ul class="list-disc pl-4 space-y-1 text-slate-600">
+                            ${data.intertitles.map(it => `<li>${it}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 space-y-2">
+                        <div class="font-bold text-branddark">💬 Trích Dẫn Nổi Bật (Pull Quote):</div>
+                        <blockquote class="italic text-slate-700 bg-white p-2.5 rounded border-l-3 border-amber-500">
+                            ${data.pullquote}
+                        </blockquote>
+                    </div>
+                </div>
+
+                <!-- Counter Perspective & Open Question -->
+                <div class="p-4 bg-blue-50/50 rounded-xl border border-blue-200/60 space-y-2 text-xs">
+                    <div class="font-bold text-blue-900">⚖️ Đoạn "Góc Nhìn Khác" (Trình Bày Công Bằng):</div>
+                    <p class="text-slate-700 leading-relaxed">${data.counter}</p>
+                    <div class="pt-2 border-t border-blue-200/60 font-bold text-blue-900">❓ Câu Hỏi Mở Kết Bài:</div>
+                    <p class="text-slate-700 italic">${data.openQuestion}</p>
+                </div>
+
+                <!-- Fact Check Box -->
+                <div class="p-4 bg-red-50/50 rounded-xl border border-red-200/60 text-xs space-y-1">
+                    <div class="font-bold text-red-900 flex items-center gap-1">
+                        <span>⚠️</span> Hộp Thông Tin Cần Kiểm Chứng Trước Khi Đăng:
+                    </div>
+                    <ul class="list-disc pl-4 space-y-0.5 text-red-800">
+                        ${data.verification.map(v => `<li>${v}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        // Charts Initialization Logic
+        let radarChartInstance = null;
+        let barChartInstance = null;
+
+        function renderCharts() {
+            if (radarChartInstance) return; // Prevent double render
+
+            // 1. Radar Chart
+            const ctxRadar = document.getElementById('radarChart').getContext('2d');
+            radarChartInstance = new Chart(ctxRadar, {
+                type: 'radar',
+                data: {
+                    labels: ['Rủi Ro Thể Chế', 'Đứt Gãy Chuỗi Cung', 'Nhạy Cảm Năng Lượng', 'Tụt Hậu Tech', 'Phân Cực Xã Hội'],
+                    datasets: [
+                        {
+                            label: 'Hoa Kỳ',
+                            data: [85, 40, 50, 20, 90],
+                            borderColor: '#2563EB',
+                            backgroundColor: 'rgba(37, 99, 235, 0.2)',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Trung Quốc',
+                            data: [60, 30, 70, 45, 40],
+                            borderColor: '#DC2626',
+                            backgroundColor: 'rgba(220, 38, 38, 0.2)',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Liên Minh EU',
+                            data: [45, 80, 85, 85, 55],
+                            borderColor: '#059669',
+                            backgroundColor: 'rgba(5, 150, 105, 0.2)',
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: '#E2E8F0' },
+                            grid: { color: '#E2E8F0' },
+                            pointLabels: {
+                                font: { size: 10, weight: 'bold' },
+                                color: '#475569'
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } }
+                    }
+                }
+            });
+
+            // 2. Bar Chart
+            const ctxBar = document.getElementById('barChart').getContext('2d');
+            barChartInstance = new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: ['80 USD/thùng', '100 USD/thùng', '120 USD/thùng (Nghẽn Hormuz)', '140 USD/thùng'],
+                    datasets: [
+                        {
+                            label: 'Áp Lực Lạm Phát Phương Tây (%)',
+                            data: [3.2, 5.1, 8.5, 12.0],
+                            backgroundColor: '#D97706'
+                        },
+                        {
+                            label: 'Mức Độ Phẫn Nộ Cử Tri (Scale 10)',
+                            data: [4, 6, 9, 10],
+                            backgroundColor: '#DC2626'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#F1F5F9' },
+                            ticks: { font: { size: 10 } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { size: 10 } }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } }
+                    }
+                }
+            });
+        }
+
+        // Initialize default views
+        window.addEventListener('DOMContentLoaded', () => {
+            selectModule('MOD-01');
+            selectArticle(1);
+        });
+    </script>
+</body>
+</html>
